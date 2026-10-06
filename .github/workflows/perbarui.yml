@@ -1,0 +1,46 @@
+name: Perbarui Risiko Karhutla
+
+on:
+  schedule:
+    - cron: "30 21 * * *"  # 21.30 UTC = 05.30 WITA, sisakan waktu kalau GitHub telat
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: perbarui-risiko
+  cancel-in-progress: false
+
+jobs:
+  perbarui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Pasang library
+        run: pip install -r requirements.txt
+
+      - name: Uji konsistensi dengan notebook
+        run: python python/uji_konsistensi.py
+
+      - name: Ambil prakiraan dan hitung risiko
+        run: python python/ambil_prakiraan.py
+
+      - name: Commit kalau data berubah
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/risiko.json
+          if git diff --cached --quiet; then
+            echo "Tidak ada perubahan"
+          else
+            git commit -m "data: perbarui risiko.json [otomatis]"
+            git pull --rebase
+            git push
+          fi
