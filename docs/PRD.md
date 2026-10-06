@@ -204,8 +204,8 @@ File ini adalah kontrak utama antara backend (Python) dan frontend (HTML/JS). Se
 | Peran | Penanggung Jawab | Tanggung Jawab | Deliverables |
 |---|---|---|---|
 | Python / data dan fuzzy | Rahmat Riyadi | Migrasi modul fuzzy, otomasi ambil data Open-Meteo, hitung hari tanpa hujan, buat JSON harian | `fuzzy_karhutla.py`, `ambil_prakiraan.py`, `risiko.json` |
-| Frontend / peta interaktif | Pengembang A | Peta Leaflet, pewarnaan 52 grid, kontrol tanggal, modal detail cuaca | `index.html` (bagian peta), `js/peta.js` |
-| Frontend / UI dan informasi | Pengembang B | Header, ringkasan risiko, tabel wilayah, CSS, halaman Tentang | `index.html` (bagian info), `tentang.html`, `css/gaya.css`, `js/tabel.js` |
+| Frontend / peta interaktif | Fahri (Pengembang A) | Peta Leaflet, pewarnaan 52 grid, kontrol tanggal, modal detail cuaca | `index.html` (bagian peta), `js/peta.js` |
+| Frontend / UI dan informasi | Pengembang B (Richo atau Husein, belum final) | Header, ringkasan risiko, tabel wilayah, CSS, halaman Tentang | `index.html` (bagian info), `tentang.html`, `css/gaya.css`, `js/tabel.js` |
 
 ### Aturan Kolaborasi
 
@@ -231,13 +231,13 @@ web-karhutla-kaltim/
 ├── AGENTS.md
 ├── README.md
 ├── requirements.txt
-├── index.html              (Pengembang A + B)
-├── tentang.html            (Pengembang B)
+├── index.html              (Fahri (Pengembang A) + Pengembang B (Richo atau Husein, belum final))
+├── tentang.html            (Pengembang B (Richo atau Husein, belum final))
 ├── css/
-│   └── gaya.css            (Pengembang B)
+│   └── gaya.css            (Pengembang B (Richo atau Husein, belum final))
 ├── js/
-│   ├── peta.js             (Pengembang A)
-│   └── tabel.js            (Pengembang B)
+│   ├── peta.js             (Fahri (Pengembang A))
+│   └── tabel.js            (Pengembang B (Richo atau Husein, belum final))
 ├── data/
 │   ├── risiko.json         (output harian)
 │   └── grid_kaltim.csv     (koordinat 52 titik)
@@ -261,8 +261,8 @@ Hosting cadangan: mini-PC server lokal milik Rahmat, kalau suatu saat butuh kont
 
 **Tahap 2: Kerja paralel**
 - Rahmat: `fuzzy_karhutla.py` dan `ambil_prakiraan.py`
-- Pengembang A: peta Leaflet, pewarnaan grid, kontrol tanggal, popup info
-- Pengembang B: layout UI, ringkasan, saran aksi, tabel wilayah, halaman Tentang
+- Fahri (Pengembang A): peta Leaflet, pewarnaan grid, kontrol tanggal, popup info
+- Pengembang B (Richo atau Husein, belum final): layout UI, ringkasan, saran aksi, tabel wilayah, halaman Tentang
 
 **Tahap 3: Integrasi**
 - Hubungkan data asli dari Python ke antarmuka
@@ -286,7 +286,7 @@ Hosting cadangan: mini-PC server lokal milik Rahmat, kalau suatu saat butuh kont
 
 ### Keputusan yang Perlu Difinalkan
 
-1. Siapa Pengembang A dan Pengembang B
+1. Pengembang A: Fahri (sudah fix). Pengembang B: Richo atau Husein (belum fix)
 2. Domain resmi dan nama repo publik (usulan: `web-karhutla-kaltim`)
 3. Rencana dan target responden kuesioner SUS
 4. Perlu tidaknya resolusi tingkat kecamatan di versi berikutnya

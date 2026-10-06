@@ -39,7 +39,8 @@ Tahap 1: persiapan dasar (struktur repo dan skema data).
 ## Tim
 
 - Rahmat Riyadi: data, model fuzzy, otomasi
-- [Nama teman]: peta interaktif dan antarmuka
+- Fahri: peta interaktif
+- Richo / Husein: antarmuka dan informasi (peran Pengembang B, belum final)
 
 ## Disclaimer
 

@@ -21,8 +21,8 @@ Kalau ada yang bertentangan antara permintaan dan PRD, tanya dulu, jangan langsu
 
 | File | Pemilik |
 |---|---|
-| `js/peta.js`, bagian peta di `index.html` | Pengembang A |
-| `css/gaya.css`, `js/tabel.js`, `tentang.html`, bagian info di `index.html` | Pengembang B |
+| `js/peta.js`, bagian peta di `index.html` | Fahri (Pengembang A) |
+| `css/gaya.css`, `js/tabel.js`, `tentang.html`, bagian info di `index.html` | Pengembang B (Richo atau Husein, belum final) |
 | `python/`, `.github/`, `data/risiko.json` (isi asli) | Rahmat (JANGAN DISENTUH) |
 
 Hanya edit file milik peran yang sedang dikerjakan, supaya tidak bentrok saat merge.
