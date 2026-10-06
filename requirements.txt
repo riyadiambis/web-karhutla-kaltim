@@ -1,4 +1,6 @@
-pandas
-numpy
-scikit-fuzzy
-requests
+pandas>=2.2
+numpy>=1.26
+scipy>=1.11
+scikit-fuzzy>=0.5.0
+packaging
+requests>=2.31
