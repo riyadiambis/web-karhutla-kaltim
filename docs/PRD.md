@@ -2,7 +2,7 @@
 
 Tanggal: 5 Oktober 2026
 Penyusun: Rahmat Riyadi
-Status: Tahap 1 (persiapan dasar)
+Status: Tahap 2 (pipeline data selesai, frontend berjalan)
 
 ## 1. Ringkasan Produk
 

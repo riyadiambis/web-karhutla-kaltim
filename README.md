@@ -4,7 +4,7 @@ Web statis yang menampilkan peta risiko kebakaran hutan dan lahan (karhutla) Kal
 
 ## Status
 
-Tahap 1: persiapan dasar (struktur repo dan skema data).
+Tahap 2: pipeline data Python selesai (otomasi harian menunggu uji jalan pertama di GitHub Actions), menunggu frontend (peta dan antarmuka).
 
 ## Fitur Utama
 
@@ -41,6 +41,17 @@ Tahap 1: persiapan dasar (struktur repo dan skema data).
 - Rahmat Riyadi: data, model fuzzy, otomasi
 - Fahri: peta interaktif
 - Richo / Husein: antarmuka dan informasi (peran Pengembang B, belum final)
+
+## Menjalankan Pipeline Data (lokal)
+
+Butuh Python 3.11 atau lebih baru.
+
+```bash
+pip install -r requirements.txt
+python python/uji_konsistensi.py
+python python/ambil_prakiraan.py --dry-run
+python python/ambil_prakiraan.py
+```
 
 ## Disclaimer
 
