@@ -1,0 +1,28 @@
+{
+  "diperbarui": "2026-10-06T06:00:00+08:00",
+  "tanggal": ["2026-10-06", "2026-10-07", "2026-10-08"],
+  "titik": [
+    {
+      "id": 0,
+      "lat": -2.0,
+      "lon": 116.0,
+      "kabupaten": "Paser",
+      "prakiraan": [
+        {"tanggal": "2026-10-06", "skor": 72.4, "kelas": "Tinggi", "suhu": 33.1, "kelembapan": 52, "hujan": 0.4, "angin": 14.2, "hari_tanpa_hujan": 12},
+        {"tanggal": "2026-10-07", "skor": 78.9, "kelas": "Sangat Tinggi", "suhu": 34.0, "kelembapan": 48, "hujan": 0.0, "angin": 15.5, "hari_tanpa_hujan": 13},
+        {"tanggal": "2026-10-08", "skor": 45.2, "kelas": "Sedang", "suhu": 31.2, "kelembapan": 66, "hujan": 5.1, "angin": 10.3, "hari_tanpa_hujan": 0}
+      ]
+    },
+    {
+      "id": 1,
+      "lat": 0.5,
+      "lon": 117.1,
+      "kabupaten": "Kutai Kartanegara",
+      "prakiraan": [
+        {"tanggal": "2026-10-06", "skor": 22.0, "kelas": "Rendah", "suhu": 30.2, "kelembapan": 80, "hujan": 12.4, "angin": 8.0, "hari_tanpa_hujan": 0},
+        {"tanggal": "2026-10-07", "skor": 30.5, "kelas": "Sedang", "suhu": 31.5, "kelembapan": 72, "hujan": 2.0, "angin": 9.1, "hari_tanpa_hujan": 1},
+        {"tanggal": "2026-10-08", "skor": 55.3, "kelas": "Tinggi", "suhu": 33.0, "kelembapan": 58, "hujan": 0.2, "angin": 12.0, "hari_tanpa_hujan": 2}
+      ]
+    }
+  ]
+}
