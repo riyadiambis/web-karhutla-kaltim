@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pratinjau Data Risiko Karhutla (acuan frontend)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 12px; background: #fafafa; color: #222; }
+  .catatan { background: #fff3cd; border: 1px solid #e0c060; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+  .alur { font-size: 13px; color: #555; margin: 6px 0 10px; }
+  #tanggal button { margin: 2px; padding: 6px 10px; border: 1px solid #888; background: #fff; border-radius: 4px; cursor: pointer; }
+  #tanggal button.aktif { background: #222; color: #fff; }
+  .isi { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+  #peta { flex: 2 1 420px; height: 560px; border: 1px solid #ccc; border-radius: 6px; }
+  .samping { flex: 1 1 260px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 4px 6px; text-align: left; }
+  .badge { display: inline-block; padding: 1px 6px; border-radius: 4px; color: #fff; font-size: 12px; }
+  .legenda span { display: inline-block; margin-right: 10px; font-size: 13px; }
+  #galat { color: #b00; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="catatan"><b>Pratinjau data (acuan untuk tim frontend).</b> Ini bukan tampilan web resmi. Tampilan resmi ada di index.html dan dikerjakan tim frontend. Halaman ini contoh cara membaca data/risiko.json.</div>
+<div class="alur">Alur data: Open-Meteo (prakiraan cuaca) &rarr; python/ambil_prakiraan.py &rarr; fuzzy Mamdani (python/fuzzy_karhutla.py) &rarr; data/risiko.json &rarr; halaman ini</div>
+<div id="info">Memuat data...</div>
+<div id="galat"></div>
+<div id="tanggal"></div>
+<div class="legenda" id="legenda"></div>
+<div class="isi">
+  <div id="peta"></div>
+  <div class="samping">
+    <h3>Ringkasan hari terpilih</h3>
+    <table id="ringkasan"></table>
+    <h3>Per kabupaten</h3>
+    <table id="kabupaten"></table>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const WARNA = { "Rendah": "#2e9e4f", "Sedang": "#f2c230", "Tinggi": "#e03b2f", "Sangat Tinggi": "#8b1a1a" };
+const URUT_KELAS = ["Rendah", "Sedang", "Tinggi", "Sangat Tinggi"];
+const SETENGAH_GRID = 0.25;
+let data = null;
+let peta = null;
+let lapisan = null;
+
+function hitungRingkasan(d, idx) {
+  const hasil = { "Rendah": 0, "Sedang": 0, "Tinggi": 0, "Sangat Tinggi": 0 };
+  d.titik.forEach(t => { hasil[t.prakiraan[idx].kelas] += 1; });
+  return hasil;
+}
+
+function rekapKabupaten(d, idx) {
+  const kab = {};
+  d.titik.forEach(t => {
+    const p = t.prakiraan[idx];
+    if (!kab[t.kabupaten]) kab[t.kabupaten] = { jumlah: 0, total: 0, tertinggi: "Rendah" };
+    const k = kab[t.kabupaten];
+    k.jumlah += 1;
+    k.total += p.skor;
+    if (URUT_KELAS.indexOf(p.kelas) > URUT_KELAS.indexOf(k.tertinggi)) k.tertinggi = p.kelas;
+  });
+  return Object.keys(kab).sort().map(nama => ({
+    nama: nama,
+    jumlah: kab[nama].jumlah,
+    rerata: kab[nama].total / kab[nama].jumlah,
+    tertinggi: kab[nama].tertinggi
+  }));
+}
+
+function badge(kelas) {
+  return `<span class="badge" style="background:${WARNA[kelas]}">${kelas}</span>`;
+}
+
+function isiPopup(t, p) {
+  return `<b>Titik ${t.id}, ${t.kabupaten}</b><br>` +
+    `${p.tanggal}<br>` +
+    `Skor: <b>${p.skor}</b> ${badge(p.kelas)}<br>` +
+    `Suhu maks: ${p.suhu} &deg;C<br>` +
+    `Kelembapan min: ${p.kelembapan} %<br>` +
+    `Hujan: ${p.hujan} mm<br>` +
+    `Angin maks: ${p.angin} km/jam<br>` +
+    `Hari tanpa hujan: ${p.hari_tanpa_hujan}`;
+}
+
+function gambar(idx) {
+  document.querySelectorAll("#tanggal button").forEach((b, i) => b.classList.toggle("aktif", i === idx));
+
+  if (lapisan) lapisan.remove();
+  lapisan = L.layerGroup();
+  data.titik.forEach(t => {
+    const p = t.prakiraan[idx];
+    L.rectangle(
+      [[t.lat - SETENGAH_GRID, t.lon - SETENGAH_GRID], [t.lat + SETENGAH_GRID, t.lon + SETENGAH_GRID]],
+      { color: "#ffffff", weight: 1, fillColor: WARNA[p.kelas], fillOpacity: 0.65 }
+    ).bindPopup(isiPopup(t, p)).addTo(lapisan);
+  });
+  lapisan.addTo(peta);
+
+  const r = hitungRingkasan(data, idx);
+  document.getElementById("ringkasan").innerHTML =
+    "<tr><th>Kelas</th><th>Jumlah titik</th></tr>" +
+    URUT_KELAS.map(k => `<tr><td>${badge(k)}</td><td>${r[k]}</td></tr>`).join("");
+
+  document.getElementById("kabupaten").innerHTML =
+    "<tr><th>Kabupaten</th><th>Titik</th><th>Rerata skor</th><th>Tertinggi</th></tr>" +
+    rekapKabupaten(data, idx).map(k =>
+      `<tr><td>${k.nama}</td><td>${k.jumlah}</td><td>${k.rerata.toFixed(1)}</td><td>${badge(k.tertinggi)}</td></tr>`
+    ).join("");
+}
+
+function mulai() {
+  peta = L.map("peta");
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 12,
+    attribution: "&copy; OpenStreetMap"
+  }).addTo(peta);
+
+  const batas = data.titik.map(t => [t.lat, t.lon]);
+  peta.fitBounds(batas, { padding: [30, 30] });
+
+  document.getElementById("info").innerHTML =
+    `Diperbarui: <b>${data.diperbarui}</b> | ${data.titik.length} titik | ${data.tanggal.length} hari`;
+  document.getElementById("legenda").innerHTML = URUT_KELAS.map(k => badge(k)).join(" ");
+
+  const label = ["Hari ini", "Besok", "+2", "+3", "+4", "+5", "+6", "+7"];
+  document.getElementById("tanggal").innerHTML = data.tanggal.map((tgl, i) =>
+    `<button title="${tgl}">${label[i] || tgl}<br><small>${tgl}</small></button>`
+  ).join("");
+  document.querySelectorAll("#tanggal button").forEach((b, i) => b.addEventListener("click", () => gambar(i)));
+
+  gambar(0);
+}
+
+if (location.protocol === "file:") {
+  document.getElementById("info").textContent = "";
+  document.getElementById("galat").textContent =
+    "Halaman ini harus dibuka lewat server lokal: jalankan 'python -m http.server 8000' di folder repo, lalu buka http://localhost:8000/pratinjau.html";
+} else {
+  fetch("data/risiko.json?t=" + Date.now())
+    .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(d => { data = d; mulai(); })
+    .catch(e => {
+      document.getElementById("info").textContent = "";
+      document.getElementById("galat").textContent = "Data belum bisa dimuat: " + e.message;
+    });
+}
+</script>
+</body>
+</html>

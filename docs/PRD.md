@@ -233,6 +233,7 @@ web-karhutla-kaltim/
 ├── requirements.txt
 ├── index.html              (Fahri (Pengembang A) + Pengembang B (Richo atau Husein, belum final))
 ├── tentang.html            (Pengembang B (Richo atau Husein, belum final))
+├── pratinjau.html          (acuan data, Rahmat)
 ├── css/
 │   └── gaya.css            (Pengembang B (Richo atau Husein, belum final))
 ├── js/
@@ -291,3 +292,4 @@ Hosting cadangan: mini-PC server lokal milik Rahmat, kalau suatu saat butuh kont
 3. Rencana dan target responden kuesioner SUS
 4. Perlu tidaknya resolusi tingkat kecamatan di versi berikutnya
 5. Prosedur koordinasi dan lisensi data dengan BPBD setempat
+6. Kota Samarinda, Balikpapan, Bontang, dan Kabupaten Mahakam Ulu belum muncul di tabel karena tidak ada titik grid yang jatuh di wilayahnya. Tentukan: dicatat sebagai keterbatasan V1, atau ditambah fitur "titik grid terdekat".

@@ -25,6 +25,7 @@ Tahap 2: pipeline data Python selesai (otomasi harian menunggu uji jalan pertama
 ## Struktur Folder
 
 - `index.html`, `tentang.html`: halaman web
+- `pratinjau.html`: halaman acuan untuk melihat isi `data/risiko.json` di peta (bukan tampilan resmi)
 - `css/`, `js/`: tampilan dan interaksi
 - `data/`: `risiko.json` (output harian) dan `grid_kaltim.csv` (koordinat grid)
 - `python/`: mesin fuzzy dan pengambil data
@@ -52,6 +53,8 @@ python python/uji_konsistensi.py
 python python/ambil_prakiraan.py --dry-run
 python python/ambil_prakiraan.py
 ```
+
+Untuk melihat hasilnya di peta, jalankan `python -m http.server 8000` lalu buka `http://localhost:8000/pratinjau.html`.
 
 ## Disclaimer
 

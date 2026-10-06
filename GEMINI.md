@@ -24,6 +24,7 @@ Kalau ada yang bertentangan antara permintaan dan PRD, tanya dulu, jangan langsu
 | `js/peta.js`, bagian peta di `index.html` | Fahri (Pengembang A) |
 | `css/gaya.css`, `js/tabel.js`, `tentang.html`, bagian info di `index.html` | Pengembang B (Richo atau Husein, belum final) |
 | `python/`, `.github/`, `data/risiko.json` (isi asli) | Rahmat (JANGAN DISENTUH) |
+| `pratinjau.html` | Rahmat (acuan, boleh dibaca dan ditiru logikanya, jangan diedit) |
 
 Hanya edit file milik peran yang sedang dikerjakan, supaya tidak bentrok saat merge.
 
@@ -31,7 +32,9 @@ Hanya edit file milik peran yang sedang dikerjakan, supaya tidak bentrok saat me
 
 - Frontend membaca `data/risiko.json` lewat `fetch`.
 - JANGAN ubah struktur JSON. Kalau butuh field baru, minta persetujuan tim dulu.
-- Selama backend belum jadi, pakai `data/risiko.json` versi dummy.
+- `data/risiko.json` sudah berisi data ASLI dan diperbarui otomatis setiap hari sekitar 05.30 WITA oleh GitHub Actions (commit dari github-actions[bot]).
+- JANGAN edit `data/risiko.json` secara manual. Selalu `git pull --rebase` sebelum mulai kerja dan sebelum push, karena bot commit setiap hari.
+- Nama kabupaten di data sudah berspasi (contoh "Kutai Kartanegara"). Saat ini ada 6 kabupaten: Berau, Kutai Barat, Kutai Kartanegara, Kutai Timur, Paser, Penajam Paser Utara.
 - Kalau `fetch` gagal, tampilkan pesan ramah ("Data belum bisa dimuat, coba lagi nanti"), jangan biarkan halaman kosong atau error.
 
 Struktur singkat:
@@ -88,6 +91,8 @@ python -m http.server 8000
 ```
 
 Lalu buka `http://localhost:8000`.
+
+Untuk melihat contoh tampilan data, buka `http://localhost:8000/pratinjau.html`. Halaman ini hanya acuan: logika membaca JSON, menghitung ringkasan, dan rekap per kabupaten boleh ditiru ke `js/peta.js` dan `js/tabel.js`, tapi tampilan resmi tetap dibuat di `index.html`.
 
 ## Alur kerja Git
 
