@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tentang | Peringatan Dini Risiko Karhutla Kaltim</title>
+<link rel="stylesheet" href="css/gaya.css">
+</head>
+<body>
+<header class="kepala">
+  <div class="bungkus">
+    <h1>Peringatan Dini Risiko Karhutla Kaltim</h1>
+    <p class="diperbarui">Tentang situs ini</p>
+    <nav class="menu"><a href="index.html">Beranda</a><a href="tentang.html" aria-current="page">Tentang</a></nav>
+  </div>
+</header>
+
+<main class="bungkus teks">
+  <h2>Apa yang ditampilkan situs ini?</h2>
+  <p>Peta risiko kebakaran hutan dan lahan (karhutla) di Kalimantan Timur untuk hari ini sampai 7 hari ke depan. Wilayah dibagi menjadi 52 titik grid, dan tiap titik diberi warna sesuai tingkat risikonya: Rendah, Sedang, Tinggi, atau Sangat Tinggi.</p>
+
+  <h2>Bagaimana risiko dihitung?</h2>
+  <p>Risiko dihitung dari prakiraan cuaca: suhu, kelembapan, hujan, angin, dan berapa hari berturut-turut tidak turun hujan. Cuaca tidak bisa dibagi tegas menjadi "kering" atau "basah". Karena itu dipakai sistem fuzzy Mamdani, yang menilai kondisi secara bertahap, mirip cara petugas berpengalaman menimbang tanda-tanda di lapangan.</p>
+  <p>Sistem ini memakai 45 aturan. Hari dianggap tanpa hujan bila curah hujannya kurang dari 3 mm. Hasilnya berupa skor 0 sampai 100, lalu dikelompokkan menjadi empat kelas risiko.</p>
+
+  <h2>Seberapa bisa dipercaya?</h2>
+  <p>Model diuji dengan 57.105 titik panas NASA FIRMS pada 2019-2026 dan menghasilkan AUC 0,773. Pada kelas Sangat Tinggi, titik panas terdeteksi di 57,22% hari-grid, sedangkan pada kelas Rendah hanya 2,88%.</p>
+  <p><strong>Perlu diingat:</strong> skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran. Prakiraan untuk 5 hari ke atas lebih mudah meleset.</p>
+
+  <h2>Sumber data</h2>
+  <ul>
+    <li>Prakiraan cuaca: <a href="https://open-meteo.com/">Open-Meteo</a></li>
+    <li>Validasi titik panas: <a href="https://firms.modaps.eosdis.nasa.gov/">NASA FIRMS</a></li>
+    <li>Peta dasar: &copy; OpenStreetMap, ditampilkan dengan Leaflet</li>
+  </ul>
+  <p>Data diperbarui otomatis setiap pagi sekitar pukul 05.30 WITA.</p>
+
+  <h2>Pengembang</h2>
+  <ul>
+    <li>Rahmat Riyadi: data, model fuzzy, dan otomasi</li>
+    <li>Fahri: peta interaktif</li>
+    <li>Richo / Husein: antarmuka dan informasi</li>
+  </ul>
+  <p>Kontak resmi: akan ditambahkan setelah ditentukan tim.</p>
+</main>
+
+<footer class="kaki">
+  <div class="bungkus"><p><strong>Penting:</strong> skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran.</p></div>
+</footer>
+</body>
+</html>
