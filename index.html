@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b4553">
+<meta name="theme-color" content="#0a100d">
 <title>Peringatan Dini Risiko Karhutla Kaltim</title>
 <meta name="description" content="Peta risiko kebakaran hutan dan lahan Kalimantan Timur untuk hari ini sampai 7 hari ke depan.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -11,67 +11,55 @@
 </head>
 <body>
 <header class="kepala">
-  <div class="bungkus">
-    <h1>Peringatan Dini Risiko Karhutla Kaltim</h1>
-    <p class="diperbarui" id="diperbarui">Diperbarui: memuat...</p>
+  <div class="bungkus lebar">
+    <h1><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z" fill="#f2c230"/></svg>Peringatan Dini Karhutla Kaltim</h1>
     <nav class="menu"><a href="index.html" aria-current="page">Beranda</a><a href="tentang.html">Tentang</a></nav>
   </div>
 </header>
 
-<main class="bungkus">
-  <p id="galat" class="galat" role="alert" hidden></p>
-
-  <!-- BAGIAN PETA (Pengembang A) -->
-  <section id="tanggal-bungkus" aria-labelledby="jdl-tanggal">
-    <h2 id="jdl-tanggal" class="sr">Pilih tanggal</h2>
-    <div id="tanggal" class="tanggal" role="group" aria-label="Pilih tanggal prakiraan"></div>
-    <p id="catatan" class="catatan" hidden>Prakiraan 5 hari ke atas kurang akurat. Cek lagi saat harinya makin dekat.</p>
+<main class="dash">
+  <!-- BAGIAN INFO (Pengembang B) -->
+  <section id="hero" class="hero" data-kelas="" aria-labelledby="jdl-rek">
+    <p id="hero-tgl" class="hero-tgl">Memuat data...</p>
+    <h2 id="jdl-rek" class="hero-judul"><span class="sr">Risiko tertinggi: </span><span id="rek-kelas">&nbsp;</span></h2>
+    <p id="rek-teks" class="hero-teks"></p>
+    <p id="diperbarui" class="diperbarui">Diperbarui: memuat...</p>
   </section>
 
-  <div class="isi">
-    <section class="kolom-peta" aria-label="Peta risiko">
-      <div id="peta" role="application" aria-label="Peta risiko karhutla Kalimantan Timur"></div>
-      <ul class="legenda" aria-label="Legenda">
-        <li><i class="kotak k-rendah"></i>Rendah</li>
-        <li><i class="kotak k-sedang"></i>Sedang</li>
-        <li><i class="kotak k-tinggi"></i>Tinggi</li>
-        <li><i class="kotak k-sangat"></i>Sangat Tinggi</li>
-      </ul>
-      <p class="petunjuk">Ketuk kotak berwarna di peta untuk melihat cuaca di titik itu.</p>
+  <!-- BAGIAN PETA (Pengembang A) -->
+  <div class="kolom-peta">
+    <p id="galat" class="galat" role="alert" hidden></p>
+    <section id="tanggal-bungkus" aria-labelledby="jdl-tanggal">
+      <h2 id="jdl-tanggal" class="sr">Pilih tanggal</h2>
+      <div id="tanggal" class="tanggal" role="group" aria-label="Pilih tanggal prakiraan"></div>
+      <p id="catatan" class="catatan" hidden>Prakiraan 5 hari ke atas kurang akurat. Cek lagi saat harinya makin dekat.</p>
     </section>
-
-    <!-- BAGIAN INFO (Pengembang B) -->
-    <aside class="samping">
-      <section class="panel ringkas" aria-labelledby="jdl-ringkas">
-        <h2 id="jdl-ringkas">Ringkasan <span id="tgl-ringkas"></span></h2>
-        <ul id="ringkasan" class="ringkasan"></ul>
-      </section>
-      <section class="panel" id="rekomendasi" aria-labelledby="jdl-rek">
-        <h2 id="jdl-rek">Yang perlu dilakukan hari ini</h2>
-        <p id="rek-kelas"></p>
-        <p id="rek-teks"></p>
-      </section>
-    </aside>
+    <div id="peta" role="application" aria-label="Peta risiko karhutla Kalimantan Timur"></div>
   </div>
 
-  <section class="panel" aria-labelledby="jdl-tabel">
+  <section class="kartu ringkas" aria-labelledby="jdl-ringkas">
+    <h2 id="jdl-ringkas">Jumlah titik per kelas</h2>
+    <div id="bar" class="bar" role="img" aria-label="Perbandingan jumlah titik per kelas"></div>
+    <ul id="ringkasan" class="ringkasan"></ul>
+    <p class="petunjuk">Ketuk lingkaran berwarna di peta untuk melihat cuaca di titik itu.</p>
+  </section>
+
+  <section class="kartu kab-panel" aria-labelledby="jdl-tabel">
     <h2 id="jdl-tabel">Risiko per kabupaten/kota</h2>
     <label class="cari" for="cari">Cari kabupaten
       <input id="cari" type="search" placeholder="Contoh: Berau" autocomplete="off">
     </label>
-    <table class="tabel">
-      <thead><tr><th scope="col">Kabupaten</th><th scope="col">Titik</th><th scope="col">Rerata skor</th><th scope="col">Risiko tertinggi</th></tr></thead>
-      <tbody id="isi-tabel"></tbody>
-    </table>
+    <ul id="isi-tabel" class="daftar-kab"></ul>
     <p id="kosong" class="kosong" hidden>Tidak ada kabupaten yang cocok.</p>
-    <p class="kecil">Samarinda, Balikpapan, Bontang, dan Mahakam Ulu belum tampil karena belum ada titik grid di wilayah itu.</p>
+    <p class="kecil">Diurutkan dari rerata skor tertinggi. Samarinda, Balikpapan, Bontang, dan Mahakam Ulu belum tampil karena belum ada titik grid di wilayah itu.</p>
   </section>
 </main>
 
 <footer class="kaki">
-  <div class="bungkus">
-    <p><strong>Sumber data:</strong> prakiraan cuaca dari <a href="https://open-meteo.com/">Open-Meteo</a>; validasi titik panas dari <a href="https://firms.modaps.eosdis.nasa.gov/">NASA FIRMS</a>.</p>
-    <p><strong>Penting:</strong> skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran.</p>
+  <div class="bungkus lebar kolom-kaki">
+    <div><h2>Peringatan Dini Karhutla Kaltim</h2><p>Prakiraan risiko kebakaran hutan dan lahan hari ini sampai 7 hari ke depan, untuk 52 titik grid di Kalimantan Timur.</p></div>
+    <div><h2>Sumber data</h2><p>Prakiraan cuaca: <a href="https://open-meteo.com/">Open-Meteo</a></p><p>Validasi titik panas: <a href="https://firms.modaps.eosdis.nasa.gov/">NASA FIRMS</a></p></div>
+    <div><h2>Penting</h2><p>Skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran.</p></div>
   </div>
 </footer>
 

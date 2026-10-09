@@ -1,8 +1,8 @@
 /* Bagian peta: ambil data, peta Leaflet, tombol tanggal, modal detail. Pemilik: Pengembang A */
 (function () {
   var WARNA = { "Rendah": "#2e9e4f", "Sedang": "#f2c230", "Tinggi": "#e03b2f", "Sangat Tinggi": "#8b1a1a" };
-  var SETENGAH = 0.25;
-  var data, peta, lapisan, idx = 0, pemicu = null;
+  var SETENGAH = 0.35, RADIUS = 25000;
+  var data, peta, lapisan, batas, idx = 0, pemicu = null;
   function $(id) { return document.getElementById(id); }
 
   function galat(pesan) {
@@ -36,15 +36,19 @@
     idx = i;
     document.querySelectorAll("#tanggal button").forEach(function (b, n) {
       b.setAttribute("aria-pressed", n === i ? "true" : "false");
+      if (n === i) { var w = $("tanggal"); w.scrollLeft = b.offsetLeft - (w.clientWidth - b.offsetWidth) / 2; }
     });
     $("catatan").hidden = i < 5;
     if (lapisan) lapisan.remove();
     lapisan = L.layerGroup();
-    data.titik.forEach(function (t) {
+    data.titik.slice().sort(function (a, b) { return a.prakiraan[i].skor - b.prakiraan[i].skor; }).forEach(function (t) {
       var p = t.prakiraan[i];
-      L.rectangle([[t.lat - SETENGAH, t.lon - SETENGAH], [t.lat + SETENGAH, t.lon + SETENGAH]],
-        { color: "#fff", weight: 1, fillColor: WARNA[p.kelas], fillOpacity: 0.65 })
+      var dasar = { stroke: false, fillColor: WARNA[p.kelas], fillOpacity: 0.75 };
+      L.circle([t.lat, t.lon], Object.assign({ radius: RADIUS }, dasar))
+        .bindTooltip(t.kabupaten + ": skor " + p.skor + " (" + p.kelas + ")", { sticky: true })
         .on("click", function () { bukaModal(t, p); })
+        .on("mouseover", function () { this.setStyle({ stroke: true, color: "#fff", weight: 2, fillOpacity: 0.9 }); this.bringToFront(); })
+        .on("mouseout", function () { this.setStyle({ stroke: false, fillOpacity: 0.75 }); })
         .addTo(lapisan);
     });
     lapisan.addTo(peta);
@@ -52,10 +56,19 @@
   }
 
   function mulai() {
-    peta = L.map("peta");
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    peta = L.map("peta", { zoomControl: false });
+    L.control.zoom({ position: "topright" }).addTo(peta);
+    if (window.ResizeObserver) new ResizeObserver(function () { peta.invalidateSize(); }).observe($("peta"));
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",
       { maxZoom: 12, attribution: "&copy; OpenStreetMap" }).addTo(peta);
-    peta.fitBounds(data.titik.map(function (t) { return [t.lat, t.lon]; }), { padding: [30, 30] });
+    batas = L.latLngBounds([]);
+    data.titik.forEach(function (t) {
+      batas.extend([t.lat - SETENGAH, t.lon - SETENGAH]);
+      batas.extend([t.lat + SETENGAH, t.lon + SETENGAH]);
+    });
+    pasKan();
+    peta.setMaxBounds(batas.pad(0.7));
+    peta.setMinZoom(Math.max(peta.getZoom() - 1, 4));
 
     Tabel.setPembaruan(data.diperbarui);
     var label = ["Hari ini", "Besok", "+2", "+3", "+4", "+5", "+6", "+7"];
@@ -69,9 +82,15 @@
     gambar(0);
   }
 
+  function pasKan() {
+    if (!peta || !batas) return;
+    peta.invalidateSize();
+    peta.fitBounds(batas, { padding: [14, 14] });
+  }
   function sesuaikan() { if (peta) peta.invalidateSize(); }
+  window.addEventListener("load", pasKan);
   window.addEventListener("resize", sesuaikan);
-  window.addEventListener("orientationchange", function () { setTimeout(sesuaikan, 250); });
+  window.addEventListener("orientationchange", function () { setTimeout(pasKan, 250); });
 
   $("tutup").addEventListener("click", tutupModal);
   $("modal").addEventListener("click", function (e) { if (e.target === this) tutupModal(); });
@@ -83,6 +102,6 @@
     fetch("data/risiko.json?t=" + Date.now())
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (d) { data = d; mulai(); })
-      .catch(function () { galat("Data belum bisa dimuat, coba lagi nanti."); });
+      .catch(function (e) { console.error(e); galat("Data belum bisa dimuat, coba lagi nanti."); });
   }
 })();
