@@ -1,0 +1,464 @@
+{
+ "sumber": "riset/fuzzy-mamdani-karhutla-kaltim.ipynb",
+ "dibuat_oleh": "python/ekstrak_riset.py",
+ "batas": {
+  "sel": 16,
+  "variabel": {
+   "suhu": [
+    25.6,
+    29.5,
+    31.8
+   ],
+   "kelembapan": [
+    57.0,
+    69.0,
+    80.0
+   ],
+   "hujan": [
+    3.0,
+    7.5,
+    22.7
+   ],
+   "angin": [
+    6.2,
+    9.0,
+    13.6
+   ],
+   "hari_tanpa_hujan": [
+    5.0,
+    10.0,
+    20.0
+   ]
+  }
+ },
+ "aturan_kekeringan": {
+  "sel": 27,
+  "kolom": [
+   "curah hujan",
+   "hari tanpa hujan",
+   "skor",
+   "kekeringan"
+  ],
+  "baris": [
+   [
+    "rendah",
+    "pendek",
+    2,
+    "sedang"
+   ],
+   [
+    "rendah",
+    "menengah",
+    3,
+    "tinggi"
+   ],
+   [
+    "rendah",
+    "panjang",
+    4,
+    "tinggi"
+   ],
+   [
+    "sedang",
+    "pendek",
+    1,
+    "rendah"
+   ],
+   [
+    "sedang",
+    "menengah",
+    2,
+    "sedang"
+   ],
+   [
+    "sedang",
+    "panjang",
+    3,
+    "tinggi"
+   ],
+   [
+    "tinggi",
+    "pendek",
+    0,
+    "rendah"
+   ],
+   [
+    "tinggi",
+    "menengah",
+    1,
+    "rendah"
+   ],
+   [
+    "tinggi",
+    "panjang",
+    2,
+    "sedang"
+   ]
+  ]
+ },
+ "aturan_cuaca_api": {
+  "sel": 29,
+  "kolom": [
+   "suhu",
+   "kelembapan",
+   "angin",
+   "skor",
+   "cuaca api"
+  ],
+  "baris": [
+   [
+    "rendah",
+    "kering",
+    "pelan",
+    2,
+    "rendah"
+   ],
+   [
+    "rendah",
+    "kering",
+    "sedang",
+    3,
+    "sedang"
+   ],
+   [
+    "rendah",
+    "kering",
+    "kencang",
+    4,
+    "tinggi"
+   ],
+   [
+    "rendah",
+    "sedang",
+    "pelan",
+    1,
+    "rendah"
+   ],
+   [
+    "rendah",
+    "sedang",
+    "sedang",
+    2,
+    "rendah"
+   ],
+   [
+    "rendah",
+    "sedang",
+    "kencang",
+    3,
+    "sedang"
+   ],
+   [
+    "rendah",
+    "lembap",
+    "pelan",
+    0,
+    "rendah"
+   ],
+   [
+    "rendah",
+    "lembap",
+    "sedang",
+    1,
+    "rendah"
+   ],
+   [
+    "rendah",
+    "lembap",
+    "kencang",
+    2,
+    "rendah"
+   ],
+   [
+    "sedang",
+    "kering",
+    "pelan",
+    3,
+    "sedang"
+   ],
+   [
+    "sedang",
+    "kering",
+    "sedang",
+    4,
+    "tinggi"
+   ],
+   [
+    "sedang",
+    "kering",
+    "kencang",
+    5,
+    "tinggi"
+   ],
+   [
+    "sedang",
+    "sedang",
+    "pelan",
+    2,
+    "rendah"
+   ],
+   [
+    "sedang",
+    "sedang",
+    "sedang",
+    3,
+    "sedang"
+   ],
+   [
+    "sedang",
+    "sedang",
+    "kencang",
+    4,
+    "tinggi"
+   ],
+   [
+    "sedang",
+    "lembap",
+    "pelan",
+    1,
+    "rendah"
+   ],
+   [
+    "sedang",
+    "lembap",
+    "sedang",
+    2,
+    "rendah"
+   ],
+   [
+    "sedang",
+    "lembap",
+    "kencang",
+    3,
+    "sedang"
+   ],
+   [
+    "tinggi",
+    "kering",
+    "pelan",
+    4,
+    "tinggi"
+   ],
+   [
+    "tinggi",
+    "kering",
+    "sedang",
+    5,
+    "tinggi"
+   ],
+   [
+    "tinggi",
+    "kering",
+    "kencang",
+    6,
+    "tinggi"
+   ],
+   [
+    "tinggi",
+    "sedang",
+    "pelan",
+    3,
+    "sedang"
+   ],
+   [
+    "tinggi",
+    "sedang",
+    "sedang",
+    4,
+    "tinggi"
+   ],
+   [
+    "tinggi",
+    "sedang",
+    "kencang",
+    5,
+    "tinggi"
+   ],
+   [
+    "tinggi",
+    "lembap",
+    "pelan",
+    2,
+    "rendah"
+   ],
+   [
+    "tinggi",
+    "lembap",
+    "sedang",
+    3,
+    "sedang"
+   ],
+   [
+    "tinggi",
+    "lembap",
+    "kencang",
+    4,
+    "tinggi"
+   ]
+  ]
+ },
+ "aturan_risiko": {
+  "sel": 31,
+  "kolom": [
+   "kekeringan",
+   "cuaca api",
+   "skor",
+   "risiko"
+  ],
+  "baris": [
+   [
+    "rendah",
+    "rendah",
+    0,
+    "rendah"
+   ],
+   [
+    "rendah",
+    "sedang",
+    1,
+    "rendah"
+   ],
+   [
+    "rendah",
+    "tinggi",
+    2,
+    "sedang"
+   ],
+   [
+    "sedang",
+    "rendah",
+    1,
+    "rendah"
+   ],
+   [
+    "sedang",
+    "sedang",
+    2,
+    "sedang"
+   ],
+   [
+    "sedang",
+    "tinggi",
+    3,
+    "tinggi"
+   ],
+   [
+    "tinggi",
+    "rendah",
+    2,
+    "sedang"
+   ],
+   [
+    "tinggi",
+    "sedang",
+    3,
+    "tinggi"
+   ],
+   [
+    "tinggi",
+    "tinggi",
+    4,
+    "sangat tinggi"
+   ]
+  ]
+ },
+ "himpunan_output": {
+  "tiga_kelas": {
+   "rendah": [
+    0,
+    0,
+    20,
+    50
+   ],
+   "sedang": [
+    20,
+    50,
+    80
+   ],
+   "tinggi": [
+    50,
+    80,
+    100,
+    100
+   ]
+  },
+  "empat_kelas": {
+   "rendah": [
+    0,
+    0,
+    12.5,
+    37.5
+   ],
+   "sedang": [
+    12.5,
+    37.5,
+    62.5
+   ],
+   "tinggi": [
+    37.5,
+    62.5,
+    87.5
+   ],
+   "sangat tinggi": [
+    62.5,
+    87.5,
+    100,
+    100
+   ]
+  }
+ },
+ "skor_bahaya": {
+  "suhu": {
+   "rendah": 0,
+   "sedang": 1,
+   "tinggi": 2
+  },
+  "kelembapan": {
+   "lembap": 0,
+   "sedang": 1,
+   "kering": 2
+  },
+  "hujan": {
+   "tinggi": 0,
+   "sedang": 1,
+   "rendah": 2
+  },
+  "angin": {
+   "pelan": 0,
+   "sedang": 1,
+   "kencang": 2
+  },
+  "hari_tanpa_hujan": {
+   "pendek": 0,
+   "menengah": 1,
+   "panjang": 2
+  }
+ },
+ "label": {
+  "suhu": [
+   "rendah",
+   "sedang",
+   "tinggi"
+  ],
+  "kelembapan": [
+   "kering",
+   "sedang",
+   "lembap"
+  ],
+  "hujan": [
+   "rendah",
+   "sedang",
+   "tinggi"
+  ],
+  "angin": [
+   "pelan",
+   "sedang",
+   "kencang"
+  ],
+  "hari_tanpa_hujan": [
+   "pendek",
+   "menengah",
+   "panjang"
+  ]
+ }
+}

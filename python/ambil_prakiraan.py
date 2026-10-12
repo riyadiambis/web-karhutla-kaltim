@@ -36,7 +36,7 @@ TOTAL_HARI = HARI_LALU + HARI_DEPAN
 AWAL_TAMPIL = HARI_LALU - HARI_TAMPIL_LALU  # indeks 89
 JUMLAH_TITIK = 203
 BATCH = 20  # titik per permintaan
-JEDA_ANTAR_BATCH = 2  # detik
+JEDA_ANTAR_BATCH = 30  # detik
 PERCOBAAN = 3
 
 # nama variabel Open-Meteo -> nama kolom kita
@@ -80,12 +80,21 @@ def ambil_batch(lats, lons):
     }
     jeda = 5
     isi = None
-    for percobaan in range(1, PERCOBAAN + 1):
+    percobaan_429 = 0
+    percobaan_lain = 0
+    while True:
         try:
             r = requests.get(URL, params=params, timeout=60)
             if r.status_code == 400:
                 # salah parameter, tidak ada gunanya diulang
                 raise ValueError(f"Open-Meteo menolak permintaan: {r.text[:300]}")
+            if r.status_code == 429:
+                percobaan_429 += 1
+                print(f"  terkena batas kuota (HTTP 429) ke-{percobaan_429}: tunggu 60 detik...")
+                if percobaan_429 >= PERCOBAAN:
+                    raise RuntimeError("Batas kuota Open-Meteo (HTTP 429) tercapai setelah 3 kali mencoba")
+                time.sleep(60)
+                continue
             r.raise_for_status()
             # Tangani respons status 200 yang isinya bukan JSON valid
             try:
@@ -96,14 +105,16 @@ def ambil_batch(lats, lons):
         except ValueError as e:
             if "Open-Meteo menolak permintaan" in str(e):
                 raise
-            print(f"  percobaan {percobaan} gagal: {e}")
-            if percobaan == PERCOBAAN:
+            percobaan_lain += 1
+            print(f"  percobaan {percobaan_lain} gagal: {e}")
+            if percobaan_lain >= PERCOBAAN:
                 raise
             time.sleep(jeda)
             jeda *= 2
         except Exception as e:
-            print(f"  percobaan {percobaan} gagal: {e}")
-            if percobaan == PERCOBAAN:
+            percobaan_lain += 1
+            print(f"  percobaan {percobaan_lain} gagal: {e}")
+            if percobaan_lain >= PERCOBAAN:
                 raise
             time.sleep(jeda)
             jeda *= 2
@@ -257,7 +268,16 @@ def tulis_atomik(data, tujuan):
     os.replace(sementara, tujuan)
 
 
+def format_durasi(detik_total):
+    menit = int(detik_total // 60)
+    detik = detik_total % 60
+    if menit > 0:
+        return f"{detik_total:.1f} detik ({menit} menit {detik:.1f} detik)"
+    return f"{detik_total:.1f} detik"
+
+
 def main():
+    waktu_mulai = time.time()
     ap = argparse.ArgumentParser(description="Perbarui data/risiko.json dari prakiraan Open-Meteo")
     ap.add_argument("--dry-run", action="store_true", help="hitung dan tampilkan ringkasan tanpa menulis file")
     args = ap.parse_args()
@@ -272,14 +292,19 @@ def main():
         traceback.print_exc()
         print(f"GAGAL: {e}")
         print("data/risiko.json yang lama tidak diubah.")
+        durasi = time.time() - waktu_mulai
+        print(f"Waktu proses: {format_durasi(durasi)}")
         return 1
 
     ringkas(data)
+    durasi = time.time() - waktu_mulai
     if args.dry_run:
         print("Dry-run: file tidak ditulis.")
+        print(f"Waktu proses: {format_durasi(durasi)}")
         return 0
     tulis_atomik(data, OUT_JSON)
     print(f"OK: {OUT_JSON} ditulis.")
+    print(f"Waktu proses: {format_durasi(durasi)}")
     return 0
 
 

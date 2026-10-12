@@ -69,9 +69,7 @@
   }
 
   function cariIndeksHariIni() {
-    var d = new Date();
-    var y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), tgl = String(d.getDate()).padStart(2, "0");
-    var tglIni = y + "-" + m + "-" + tgl;
+    var tglIni = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Makassar" });
     var pos = data.tanggal.indexOf(tglIni);
     return pos !== -1 ? pos : (data.tanggal.length >= 11 ? 3 : 0);
   }
@@ -130,7 +128,7 @@
   }
 
   function mulai() {
-    peta = L.map("peta", { zoomControl: false });
+    peta = L.map("peta", { zoomControl: false, maxZoom: 13, maxBoundsViscosity: 1.0 });
     L.control.zoom({ position: "topright" }).addTo(peta);
 
     // Tombol kontrol mode Peta Saja di pojok kiri atas peta
@@ -157,17 +155,23 @@
       }
     }, 0);
 
-    if (window.ResizeObserver) new ResizeObserver(function () { peta.invalidateSize(); }).observe($("peta"));
+    if (window.ResizeObserver) new ResizeObserver(function () { sesuaikan(); }).observe($("peta"));
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-      { maxZoom: 12, attribution: "&copy; OpenStreetMap" }).addTo(peta);
+      { maxZoom: 13, attribution: "&copy; OpenStreetMap" }).addTo(peta);
     batas = L.latLngBounds([]);
     data.titik.forEach(function (t) {
       batas.extend([t.lat - BATAS_SETENGAH, t.lon - BATAS_SETENGAH]);
       batas.extend([t.lat + BATAS_SETENGAH, t.lon + BATAS_SETENGAH]);
     });
+
+    // Batasi geser peta dengan maxBounds = batas grid diperlebar sekitar 1 derajat
+    var batasGeser = L.latLngBounds(
+      [batas.getSouth() - 1.0, batas.getWest() - 1.0],
+      [batas.getNorth() + 1.0, batas.getEast() + 1.0]
+    );
+    peta.setMaxBounds(batasGeser);
+
     pasKan();
-    peta.setMaxBounds(batas.pad(0.5));
-    peta.setMinZoom(Math.max(peta.getZoom() - 1, 4));
 
     Tabel.setPembaruan(data.diperbarui);
 
@@ -175,10 +179,13 @@
     $("tanggal").innerHTML = data.tanggal.map(function (tgl, i) {
       var d = new Date(tgl + "T00:00:00").toLocaleDateString("id-ID", { day: "numeric", month: "short" });
       var delta = i - idxHariIni;
-      var teks = (delta === 0) ? "Hari ini" : (delta === 1) ? "Besok" : (delta < 0) ? "H" + delta : "+" + delta;
-      var kelasTombol = delta < 0 ? ' class="lewat"' : "";
-      var sub = (delta < 0) ? d + " &bull; Lewat" : d;
-      return '<button type="button" aria-pressed="false"' + kelasTombol + '>' + teks + "<small>" + sub + "</small></button>";
+      var teks = (delta === 0) ? "Hari ini" : (delta === 1) ? "Besok" : (delta === -1) ? "Kemarin" : (delta < 0) ? "H" + delta : "+" + delta;
+      var kelasTombol = [];
+      if (delta < 0) kelasTombol.push("lewat");
+      if (delta === 0) kelasTombol.push("tgl-hari-ini");
+      var kelasAttr = kelasTombol.length ? ' class="' + kelasTombol.join(" ") + '"' : "";
+      var sub = d + (delta < 0 ? '<span class="tag-lewat"> &bull; Lewat</span>' : "");
+      return '<button type="button" aria-pressed="false"' + kelasAttr + '>' + teks + "<small>" + sub + "</small></button>";
     }).join("");
 
     document.querySelectorAll("#tanggal button").forEach(function (b, i) {
@@ -192,9 +199,23 @@
   function pasKan() {
     if (!peta || !batas) return;
     peta.invalidateSize();
+    peta.setMinZoom(0);
     peta.fitBounds(batas, { padding: [14, 14] });
+    var minZ = peta.getBoundsZoom(batas, false, [14, 14]);
+    peta.setMinZoom(minZ);
   }
-  function sesuaikan() { if (peta) peta.invalidateSize(); }
+
+  function sesuaikan() {
+    if (!peta || !batas) return;
+    peta.invalidateSize();
+    peta.setMinZoom(0);
+    var minZ = peta.getBoundsZoom(batas, false, [14, 14]);
+    peta.setMinZoom(minZ);
+    if (peta.getZoom() < minZ) {
+      peta.setZoom(minZ);
+    }
+  }
+
   window.addEventListener("load", pasKan);
   window.addEventListener("resize", sesuaikan);
   window.addEventListener("orientationchange", function () { setTimeout(pasKan, 250); });

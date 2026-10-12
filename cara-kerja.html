@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a100d">
+<title>Cara Kerja | Peringatan Dini Risiko Karhutla Kaltim</title>
+<meta name="description" content="Cara sistem fuzzy Mamdani menghitung skor risiko karhutla Kaltim dari data cuaca, lengkap dengan contoh hitungan.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="css/gaya.css">
+</head>
+<body data-data="validasi cara_kerja contoh_hitung">
+<header class="kepala">
+  <div class="bungkus lebar">
+    <h1><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z" fill="#f2c230"/></svg>Peringatan Dini Karhutla Kaltim</h1>
+    <nav class="menu"><a href="index.html">Beranda</a><a href="cara-kerja.html" aria-current="page">Cara Kerja</a><a href="tentang.html">Tentang</a></nav>
+  </div>
+</header>
+
+<div class="artikel">
+  <nav class="toc" aria-label="Daftar isi">
+    <p class="toc-judul">Daftar isi</p>
+    <ol>
+      <li><a href="#alur">Alur kerja</a></li>
+      <li><a href="#variabel">Lima data cuaca</a></li>
+      <li><a href="#keanggotaan">Fungsi keanggotaan</a></li>
+      <li><a href="#kenapa">Kenapa fuzzy</a></li>
+      <li><a href="#aturan">45 aturan</a></li>
+      <li><a href="#inferensi">Inferensi Mamdani</a></li>
+      <li><a href="#contoh">Contoh hitungan</a></li>
+      <li><a href="#nyata">Hasil di dunia nyata</a></li>
+      <li><a href="#batasan">Keterbatasan</a></li>
+    </ol>
+  </nav>
+
+  <main class="isi">
+    <section id="alur">
+      <h2>Alur kerja sistem</h2>
+      <p class="pengantar">Setiap pagi sistem mengambil data cuaca untuk 203 titik grid di Kalimantan Timur, lalu menilai seberapa berbahaya kondisi itu untuk kebakaran hutan dan lahan.</p>
+      <ol class="alur">
+        <li><b>Data cuaca</b>Suhu, kelembapan, hujan, angin, dan hari tanpa hujan tiap titik.</li>
+        <li><b>Fuzzifikasi</b>Tiap angka diubah menjadi derajat "seberapa rendah, sedang, tinggi".</li>
+        <li><b>Aturan</b>45 aturan JIKA-MAKA menilai bahaya secara bertahap.</li>
+        <li><b>Defuzzifikasi</b>Hasil semua aturan digabung menjadi satu angka.</li>
+        <li><b>Skor dan kelas</b>Skor 0 sampai 100, lalu kelas Rendah sampai Sangat Tinggi.</li>
+      </ol>
+    </section>
+
+    <section id="variabel">
+      <h2>Lima data cuaca yang dipakai</h2>
+      <div class="tabel-gulir">
+        <table class="tabel">
+          <thead><tr><th>Data</th><th>Satuan</th><th>Kenapa dipakai</th></tr></thead>
+          <tbody>
+            <tr><td><b>Suhu maksimum harian</b></td><td>&deg;C</td><td>Suhu tertinggi dalam sehari, saat daun, ranting, dan serasah paling kering dan paling mudah terbakar.</td></tr>
+            <tr><td><b>Kelembapan udara minimum harian</b></td><td>%</td><td>Kelembapan terendah dalam sehari, biasanya siang hari. Bersama suhu maksimum, ini mewakili kondisi terkering dalam sehari.</td></tr>
+            <tr><td><b>Curah hujan harian</b></td><td>mm</td><td>Hujan membasahi bahan bakar. Makin sedikit hujan, makin berbahaya.</td></tr>
+            <tr><td><b>Kecepatan angin maksimum</b></td><td>km/jam</td><td>Angin membantu api menyebar lebih cepat dan memasok udara.</td></tr>
+            <tr><td><b>Hari tanpa hujan</b></td><td>hari</td><td>Jumlah hari berturut-turut dengan hujan kurang dari 3 mm. Ambang 3 mm dipakai karena data cuaca model (ERA5) cenderung mencatat gerimis berlebihan di daerah tropis.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="kecil">Riset memakai data ERA5 2019 sampai 2026. Sistem harian memakai prakiraan Open-Meteo dengan variabel yang sama.</p>
+    </section>
+
+    <section id="keanggotaan">
+      <h2>Fungsi keanggotaan</h2>
+      <p>Setiap data dibagi menjadi tiga himpunan, misalnya suhu "rendah", "sedang", dan "tinggi". Himpunan di kedua tepi berbentuk trapesium supaya nilai yang sangat rendah atau sangat tinggi tetap punya derajat penuh (1). Himpunan tengah berbentuk segitiga.</p>
+      <p>Batas ditentukan secara campuran: suhu, kelembapan, dan angin memakai persentil 10, 50, dan 90 (P10, P50, P90) data harian; curah hujan memakai ambang 3 mm, P50, dan P90; hari tanpa hujan memakai kategori BMKG 5, 10, dan 20 hari. Batas ini dikunci tetap sehingga hasil di notebook riset dan di situs selalu sama.</p>
+      <div data-isi="batas"></div>
+      <p class="kecil">Warna di grafik menunjukkan tingkat bahaya himpunan: hijau aman, kuning sedang, merah berbahaya. Sumbu datar dipotong supaya bagian penting terlihat.</p>
+      <div class="grid-mf">
+        <div class="kartu-grafik"><h3>Suhu maksimum</h3><div class="grafik" data-grafik="mf-suhu"></div></div>
+        <div class="kartu-grafik"><h3>Kelembapan minimum</h3><div class="grafik" data-grafik="mf-kelembapan"></div></div>
+        <div class="kartu-grafik"><h3>Curah hujan</h3><div class="grafik" data-grafik="mf-hujan"></div></div>
+        <div class="kartu-grafik"><h3>Kecepatan angin maksimum</h3><div class="grafik" data-grafik="mf-angin"></div></div>
+        <div class="kartu-grafik"><h3>Hari tanpa hujan</h3><div class="grafik" data-grafik="mf-hari_tanpa_hujan"></div></div>
+      </div>
+      <p class="kecil">Sumber batas: notebook bagian C2. Bentuk himpunan: bagian C3.</p>
+    </section>
+
+    <section id="kenapa">
+      <h2>Kenapa fuzzy, bukan if-else biasa?</h2>
+      <p>Cara if-else memakai batas tegas. Dengan batas kering 57%, kelembapan 56,9% dianggap kering, tetapi 57,1% tidak, padahal bedanya hanya 0,2%. Hasil bisa melompat hanya karena angka sedikit bergeser.</p>
+      <div data-isi="kenapa"></div>
+      <p>Dengan fuzzy, kedua nilai itu tetap hampir sama keringnya. Perubahan kecil di cuaca hanya menghasilkan perubahan kecil di skor. Pada uji 2019 sampai 2026, cara ini juga lebih baik membedakan hari berapi (AUC 0,802 berbanding 0,748 untuk if-else, lihat <a href="tentang.html#percaya">Tentang</a>).</p>
+    </section>
+
+    <section id="aturan">
+      <h2>Sistem bertingkat dengan 45 aturan</h2>
+      <p>Aturan disusun dalam dua tingkat supaya mudah ditelusuri. Setiap himpunan diberi skor bahaya 0 (aman), 1 (sedang), atau 2 (berbahaya). Jumlah skor menentukan hasil aturan.</p>
+      <div class="tingkat" aria-label="Susunan aturan bertingkat">
+        <div class="tk-grup">
+          <div class="tk-masuk"><span>Curah hujan</span><span>Hari tanpa hujan</span></div>
+          <div class="tk-indeks">Indeks Kekeringan<small>9 aturan</small></div>
+        </div>
+        <div class="tk-grup">
+          <div class="tk-masuk"><span>Suhu</span><span>Kelembapan</span><span>Angin</span></div>
+          <div class="tk-indeks">Indeks Cuaca Api<small>27 aturan</small></div>
+        </div>
+        <div class="tk-akhir">Skor Risiko Karhutla<small>9 aturan dari kedua indeks, lalu kelas Rendah sampai Sangat Tinggi</small></div>
+      </div>
+
+      <h3>Tingkat 1: Indeks Kekeringan (9 aturan)</h3>
+      <p>Skor bahaya: hujan tinggi 0, sedang 1, rendah 2; hari tanpa hujan pendek 0, menengah 1, panjang 2. Jumlah 0 sampai 1 menjadi rendah, 2 sedang, 3 sampai 4 tinggi.</p>
+      <div data-isi="aturan-kekeringan"></div>
+
+      <h3>Tingkat 1: Indeks Cuaca Api (27 aturan)</h3>
+      <p>Skor bahaya: suhu rendah 0, sedang 1, tinggi 2; kelembapan lembap 0, sedang 1, kering 2; angin pelan 0, sedang 1, kencang 2. Jumlah 0 sampai 2 menjadi rendah, 3 sedang, 4 sampai 6 tinggi.</p>
+      <details class="lanjut">
+        <summary>Lihat 27 aturan cuaca api</summary>
+        <div data-isi="aturan-api"></div>
+      </details>
+
+      <h3>Tingkat 2: Skor Risiko (9 aturan)</h3>
+      <p>Skor bahaya kedua indeks: rendah 0, sedang 1, tinggi 2. Jumlah 0 sampai 1 menjadi risiko rendah, 2 sedang, 3 tinggi, dan 4 sangat tinggi.</p>
+      <div data-isi="aturan-risiko"></div>
+      <p class="kecil">Sumber tabel: notebook bagian D3, D4, dan D5.</p>
+    </section>
+
+    <section id="inferensi">
+      <h2>Inferensi Mamdani</h2>
+      <p>Setiap aturan diproses dalam tiga tahap:</p>
+      <ol>
+        <li><b>Implikasi MIN.</b> Kekuatan aturan adalah derajat terkecil dari bagian JIKA. Himpunan hasil dipotong setinggi kekuatan itu.</li>
+        <li><b>Agregasi MAX.</b> Semua potongan digabung; di tiap titik diambil nilai terbesar.</li>
+        <li><b>Defuzzifikasi centroid.</b> Gabungan itu diubah menjadi satu angka, yaitu titik beratnya.</li>
+      </ol>
+      <p>Indeks kekeringan dan indeks cuaca api memakai tiga himpunan hasil pada rentang 0 sampai 100. Skor risiko memakai empat himpunan.</p>
+      <div class="grid-mf">
+        <div class="kartu-grafik"><h3>Himpunan hasil tingkat 1 (3 kelas)</h3><div class="grafik" data-grafik="out-3"></div></div>
+        <div class="kartu-grafik"><h3>Himpunan skor risiko (4 kelas)</h3><div class="grafik" data-grafik="out-4"></div></div>
+      </div>
+      <p>Skor akhir dikelompokkan menjadi empat kelas: <span class="badge b-rendah">Rendah</span> 0 sampai 25, <span class="badge b-sedang">Sedang</span> 25 sampai 50, <span class="badge b-tinggi">Tinggi</span> 50 sampai 75, dan <span class="badge b-sangat">Sangat Tinggi</span> 75 sampai 100.</p>
+    </section>
+
+    <section id="contoh">
+      <h2>Contoh hitungan langkah demi langkah</h2>
+      <p>Dua contoh berikut dihitung dengan modul fuzzy yang sama dengan sistem harian, memakai data cuaca historis dari notebook riset. Angka derajat ditampilkan dua desimal.</p>
+      <article class="contoh" data-isi="contoh-1"></article>
+      <article class="contoh" data-isi="contoh-2"></article>
+    </section>
+
+    <section id="nyata">
+      <h2>Hasil di dunia nyata</h2>
+      <p>Peta berikut membandingkan hari paling aman dan hari paling berisiko pada 2026 menurut sistem, lengkap dengan titik panas yang benar-benar terdeteksi satelit pada hari itu.</p>
+      <figure class="gambar-riset">
+        <h3>Hari paling aman vs paling berisiko 2026</h3>
+        <p class="jelas">Saat hampir semua kotak hijau, tidak ada titik panas. Saat kotak merah mendominasi, titik panas bermunculan.</p>
+        <button type="button" aria-label="Perbesar peta hari paling aman dan paling berisiko 2026"><img src="img/riset/g2-peta-aman-vs-berisiko-2026.png" width="1400" height="714" loading="lazy" alt="Dua peta grid Kalimantan Timur: kiri hari paling aman 2026 hampir seluruhnya hijau tanpa titik panas, kanan hari paling berisiko 2026 didominasi merah dan merah tua dengan banyak titik panas."><span>Perbesar</span></button>
+        <figcaption data-isi="g2">Kiri: hari paling aman 2026. Kanan: hari paling berisiko 2026. Sumber: notebook bagian G2.</figcaption>
+      </figure>
+    </section>
+
+    <section id="batasan">
+      <h2>Keterbatasan</h2>
+      <ul>
+        <li>Sistem hanya menilai cuaca. Sumber api (misalnya pembakaran lahan oleh manusia), jenis lahan, dan gambut belum diperhitungkan.</li>
+        <li>Data cuaca berupa rata-rata area sekitar 28 km, sehingga lebih halus dibanding pengukuran stasiun.</li>
+        <li>Karena pemicu api tidak dinilai, banyak alarm tidak diikuti kebakaran (presisi masih rendah).</li>
+        <li>Prakiraan H+4 ke atas lebih mudah meleset.</li>
+      </ul>
+      <p>Skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian kebakaran. Hasil uji lengkap ada di halaman <a href="tentang.html#percaya">Tentang</a>.</p>
+    </section>
+  </main>
+</div>
+
+<footer class="kaki">
+  <div class="bungkus lebar"><p><strong>Penting:</strong> skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran.</p></div>
+</footer>
+
+<dialog id="lightbox" class="lightbox" aria-label="Gambar diperbesar">
+  <div class="lb-atas"><p></p><button type="button" class="lb-tutup" aria-label="Tutup">&times;</button></div>
+  <div class="lb-gulir"><img alt=""></div>
+</dialog>
+
+<script src="js/grafik.js"></script>
+</body>
+</html>

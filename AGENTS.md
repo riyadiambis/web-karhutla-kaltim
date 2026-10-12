@@ -79,7 +79,7 @@ Tambahan (kerjakan setelah yang wajib): filter pencarian di tabel dan layout res
 - Tampilkan TEKS kelas risiko di samping warna (untuk pengguna buta warna). Jangan andalkan warna saja.
 - Mobile first. Target sentuh tombol cukup besar, tidak ada scroll horizontal di HP.
 - Target load kurang dari 3 detik di jaringan seluler.
-- Untuk H+5 sampai H+7, tampilkan catatan kecil bahwa akurasi prakiraan menurun.
+- Untuk H+4 sampai H+7, tampilkan catatan kecil bahwa akurasi prakiraan menurun.
 - Wajib ada disclaimer: skor adalah potensi bahaya berbasis cuaca, BUKAN kepastian kebakaran.
 
 ## Cara menjalankan lokal

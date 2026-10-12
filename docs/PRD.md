@@ -85,7 +85,7 @@ File JSON jadi "kontrak data" antara tim data dan tim antarmuka. Dengan begitu a
 
 ## 6. Kebutuhan Fungsional dan Desain Antarmuka
 
-Aplikasi punya dua halaman: Beranda (peta) dan Tentang (metodologi).
+Aplikasi punya tiga halaman: Beranda (peta), Cara Kerja (metode fuzzy), dan Tentang (latar belakang dan hasil validasi). Navigasi ketiganya sama di setiap halaman.
 
 ### Tata Letak Beranda (`index.html`)
 
@@ -134,12 +134,25 @@ Aplikasi punya dua halaman: Beranda (peta) dan Tentang (metodologi).
 | Tinggi | 50 - 75 | Merah | Dilarang membakar lahan. Siapkan pasokan air dan sarana pemadam. |
 | Sangat Tinggi | 75 - 100 | Merah Tua | Dilarang total membakar. Laporkan kemunculan asap/api ke petugas. |
 
+### Halaman Cara Kerja (`cara-kerja.html`)
+
+- Diagram alur: data cuaca, fuzzifikasi, aturan, defuzzifikasi, skor dan kelas
+- Lima variabel input, satuan, dan alasan pemilihannya
+- Tabel batas fungsi keanggotaan dan grafik SVG fungsi keanggotaan 5 variabel
+- Kenapa fuzzy, bukan if-else (contoh kelembapan 56,9% vs 57,1%)
+- Sistem bertingkat 45 aturan (tabel 9 aturan kekeringan, 27 aturan cuaca api, 9 aturan risiko)
+- Inferensi Mamdani (MIN, MAX, centroid) dan himpunan output 3 kelas dan 4 kelas
+- Dua contoh hitungan langkah demi langkah yang sama dengan `riset/uji_referensi.csv`
+- Peta hari paling aman vs paling berisiko 2026 (notebook G2), keterbatasan, dan tautan ke Tentang
+
 ### Halaman Tentang (`tentang.html`)
 
-- Penjelasan fuzzy Mamdani secara intuitif dan non-teknis
+- Penjelasan fuzzy Mamdani secara intuitif dan non-teknis, dengan tautan ke Cara Kerja
 - Atribusi sumber data (Open-Meteo dan NASA FIRMS)
-- Ringkasan validasi ilmiah model (AUC 0,802)
+- Ringkasan validasi ilmiah model (AUC 0,802) beserta grafik: titik panas per kelas (E6), AUC tiga metode (F2), kurva ROC (H1), matriks kebingungan (H2), porsi hari vs titik panas (H3), AUC per tahun (H5), serta ambang alarm (H4) dan deret harian 2026 (G3) di bagian yang bisa dibuka-tutup
 - Informasi pengembang dan kontak resmi
+
+Kedua halaman memakai tata letak artikel: lebar konten sekitar 960 px dengan daftar isi sticky di kiri pada layar di atas 1024 px, dan satu kolom di HP. Angka grafik dibaca dari `data/validasi.json`, `data/cara_kerja.json`, dan `data/contoh_hitung.json` (disalin dari output notebook oleh `python/ekstrak_riset.py`). Gambar yang datanya tidak ada di repo disimpan di `img/riset/`.
 
 ## 7. Spesifikasi Data (`data/risiko.json`)
 
@@ -232,21 +245,28 @@ web-karhutla-kaltim/
 ├── README.md
 ├── requirements.txt
 ├── index.html              (Fahri (Pengembang A) + Pengembang B (Richo atau Husein, belum final))
+├── cara-kerja.html         (halaman metode)
 ├── tentang.html            (Pengembang B (Richo atau Husein, belum final))
 ├── pratinjau.html          (acuan data, Rahmat)
 ├── css/
 │   └── gaya.css            (Pengembang B (Richo atau Husein, belum final))
 ├── js/
 │   ├── peta.js             (Fahri (Pengembang A))
-│   └── tabel.js            (Pengembang B (Richo atau Husein, belum final))
+│   ├── tabel.js            (Pengembang B (Richo atau Husein, belum final))
+│   └── grafik.js           (grafik halaman Cara Kerja dan Tentang)
 ├── data/
 │   ├── risiko.json         (output harian)
-│   └── grid_kaltim.csv     (koordinat 203 titik)
+│   ├── grid_kaltim.csv     (koordinat 203 titik)
+│   ├── validasi.json       (angka grafik validasi dari notebook)
+│   ├── cara_kerja.json     (batas fungsi keanggotaan dan 45 aturan dari notebook)
+│   └── contoh_hitung.json  (dua contoh hitungan fuzzy)
+├── img/riset/              (gambar notebook: ROC, peta 2026, deret harian)
 ├── docs/
 │   └── PRD.md
 ├── python/
 │   ├── fuzzy_karhutla.py   (Rahmat)
-│   └── ambil_prakiraan.py  (Rahmat)
+│   ├── ambil_prakiraan.py  (Rahmat)
+│   └── ekstrak_riset.py    (Rahmat, salin angka dan gambar notebook)
 └── .github/workflows/
     └── perbarui.yml        (Rahmat)
 ```
@@ -282,7 +302,7 @@ Hosting cadangan: mini-PC server lokal milik Rahmat, kalau suatu saat butuh kont
 - **Lisensi API:** pemakaian Open-Meteo harus sesuai ketentuan kuota non-komersial.
 - **Hari tanpa hujan:** dihitung dari riwayat cuaca ditambah prakiraan, dengan ambang hujan 3 mm.
 - **Konsistensi parameter:** 45 aturan inferensi dan batas variabel harus identik dengan studi awal.
-- **Akurasi jangka panjang:** prakiraan H+5 sampai H+7 menurun secara alami, jadi harus dijelaskan di UI.
+- **Akurasi jangka panjang:** prakiraan H+4 sampai H+7 menurun secara alami, jadi harus dijelaskan di UI.
 - **Pengembangan akademis:** web ini jadi bahan Paper 2 (penerapan sistem dan uji usabilitas).
 
 ### Keputusan yang Perlu Difinalkan

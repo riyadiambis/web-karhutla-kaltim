@@ -1,0 +1,427 @@
+{
+ "dibuat_oleh": "skrip sementara yang menjalankan python/fuzzy_karhutla.py (tidak di-commit)",
+ "referensi": "riset/uji_referensi.csv",
+ "contoh": [
+  {
+   "id": 0,
+   "tanggal": "2019-07-28",
+   "input": {
+    "suhu": 31.2,
+    "kelembapan": 49.0,
+    "hujan": 0.0,
+    "angin": 12.5,
+    "hari_tanpa_hujan": 19.0
+   },
+   "derajat": {
+    "suhu": {
+     "rendah": 0.0,
+     "sedang": 0.261,
+     "tinggi": 0.739
+    },
+    "kelembapan": {
+     "kering": 1.0,
+     "sedang": 0.0,
+     "lembap": 0.0
+    },
+    "hujan": {
+     "rendah": 1.0,
+     "sedang": 0.0,
+     "tinggi": 0.0
+    },
+    "angin": {
+     "pelan": 0.0,
+     "sedang": 0.239,
+     "kencang": 0.761
+    },
+    "hari_tanpa_hujan": {
+     "pendek": 0.0,
+     "menengah": 0.1,
+     "panjang": 0.9
+    }
+   },
+   "aturan_kekeringan": [
+    {
+     "jika": [
+      [
+       "hujan",
+       "rendah",
+       1.0
+      ],
+      [
+       "hari_tanpa_hujan",
+       "menengah",
+       0.1
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.1
+    },
+    {
+     "jika": [
+      [
+       "hujan",
+       "rendah",
+       1.0
+      ],
+      [
+       "hari_tanpa_hujan",
+       "panjang",
+       0.9
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.9
+    }
+   ],
+   "aturan_cuaca_api": [
+    {
+     "jika": [
+      [
+       "suhu",
+       "sedang",
+       0.261
+      ],
+      [
+       "kelembapan",
+       "kering",
+       1.0
+      ],
+      [
+       "angin",
+       "sedang",
+       0.239
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.239
+    },
+    {
+     "jika": [
+      [
+       "suhu",
+       "sedang",
+       0.261
+      ],
+      [
+       "kelembapan",
+       "kering",
+       1.0
+      ],
+      [
+       "angin",
+       "kencang",
+       0.761
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.261
+    },
+    {
+     "jika": [
+      [
+       "suhu",
+       "tinggi",
+       0.739
+      ],
+      [
+       "kelembapan",
+       "kering",
+       1.0
+      ],
+      [
+       "angin",
+       "sedang",
+       0.239
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.239
+    },
+    {
+     "jika": [
+      [
+       "suhu",
+       "tinggi",
+       0.739
+      ],
+      [
+       "kelembapan",
+       "kering",
+       1.0
+      ],
+      [
+       "angin",
+       "kencang",
+       0.761
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.739
+    }
+   ],
+   "derajat_indeks": {
+    "kekeringan": {
+     "rendah": 0.0,
+     "sedang": 0.0,
+     "tinggi": 1.0
+    },
+    "cuaca_api": {
+     "rendah": 0.0,
+     "sedang": 0.0,
+     "tinggi": 1.0
+    }
+   },
+   "aturan_risiko": [
+    {
+     "jika": [
+      [
+       "indeks_kekeringan",
+       "tinggi",
+       1.0
+      ],
+      [
+       "indeks_cuaca_api",
+       "tinggi",
+       1.0
+      ]
+     ],
+     "maka": "sangat tinggi",
+     "kekuatan": 1.0
+    }
+   ],
+   "indeks_kekeringan": 81.0,
+   "indeks_cuaca_api": 80.1,
+   "skor_risiko": 86.6,
+   "kelas_risiko": "Sangat Tinggi",
+   "referensi": {
+    "indeks_kekeringan": 81.0,
+    "indeks_cuaca_api": 80.1,
+    "skor_risiko": 86.6,
+    "kelas_risiko": "Sangat Tinggi"
+   },
+   "cocok": true
+  },
+  {
+   "id": 93,
+   "tanggal": "2024-03-05",
+   "input": {
+    "suhu": 32.6,
+    "kelembapan": 60.0,
+    "hujan": 2.5,
+    "angin": 8.7,
+    "hari_tanpa_hujan": 1.0
+   },
+   "derajat": {
+    "suhu": {
+     "rendah": 0.0,
+     "sedang": 0.0,
+     "tinggi": 1.0
+    },
+    "kelembapan": {
+     "kering": 0.75,
+     "sedang": 0.25,
+     "lembap": 0.0
+    },
+    "hujan": {
+     "rendah": 1.0,
+     "sedang": 0.0,
+     "tinggi": 0.0
+    },
+    "angin": {
+     "pelan": 0.107,
+     "sedang": 0.893,
+     "kencang": 0.0
+    },
+    "hari_tanpa_hujan": {
+     "pendek": 1.0,
+     "menengah": 0.0,
+     "panjang": 0.0
+    }
+   },
+   "aturan_kekeringan": [
+    {
+     "jika": [
+      [
+       "hujan",
+       "rendah",
+       1.0
+      ],
+      [
+       "hari_tanpa_hujan",
+       "pendek",
+       1.0
+      ]
+     ],
+     "maka": "sedang",
+     "kekuatan": 1.0
+    }
+   ],
+   "aturan_cuaca_api": [
+    {
+     "jika": [
+      [
+       "suhu",
+       "tinggi",
+       1.0
+      ],
+      [
+       "kelembapan",
+       "kering",
+       0.75
+      ],
+      [
+       "angin",
+       "pelan",
+       0.107
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.107
+    },
+    {
+     "jika": [
+      [
+       "suhu",
+       "tinggi",
+       1.0
+      ],
+      [
+       "kelembapan",
+       "kering",
+       0.75
+      ],
+      [
+       "angin",
+       "sedang",
+       0.893
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.75
+    },
+    {
+     "jika": [
+      [
+       "suhu",
+       "tinggi",
+       1.0
+      ],
+      [
+       "kelembapan",
+       "sedang",
+       0.25
+      ],
+      [
+       "angin",
+       "pelan",
+       0.107
+      ]
+     ],
+     "maka": "sedang",
+     "kekuatan": 0.107
+    },
+    {
+     "jika": [
+      [
+       "suhu",
+       "tinggi",
+       1.0
+      ],
+      [
+       "kelembapan",
+       "sedang",
+       0.25
+      ],
+      [
+       "angin",
+       "sedang",
+       0.893
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.25
+    }
+   ],
+   "derajat_indeks": {
+    "kekeringan": {
+     "rendah": 0.0,
+     "sedang": 1.0,
+     "tinggi": 0.0
+    },
+    "cuaca_api": {
+     "rendah": 0.0,
+     "sedang": 0.137,
+     "tinggi": 0.863
+    }
+   },
+   "aturan_risiko": [
+    {
+     "jika": [
+      [
+       "indeks_kekeringan",
+       "sedang",
+       1.0
+      ],
+      [
+       "indeks_cuaca_api",
+       "sedang",
+       0.137
+      ]
+     ],
+     "maka": "sedang",
+     "kekuatan": 0.137
+    },
+    {
+     "jika": [
+      [
+       "indeks_kekeringan",
+       "sedang",
+       1.0
+      ],
+      [
+       "indeks_cuaca_api",
+       "tinggi",
+       0.863
+      ]
+     ],
+     "maka": "tinggi",
+     "kekuatan": 0.863
+    }
+   ],
+   "indeks_kekeringan": 50.0,
+   "indeks_cuaca_api": 75.9,
+   "skor_risiko": 58.1,
+   "kelas_risiko": "Tinggi",
+   "referensi": {
+    "indeks_kekeringan": 50.0,
+    "indeks_cuaca_api": 75.9,
+    "skor_risiko": 58.1,
+    "kelas_risiko": "Tinggi"
+   },
+   "cocok": true
+  }
+ ],
+ "kenapa_fuzzy": {
+  "batas_kering": 57.0,
+  "nilai": [
+   {
+    "kelembapan": 56.9,
+    "fuzzy": {
+     "kering": 1.0,
+     "sedang": 0.0,
+     "lembap": 0.0
+    },
+    "ifelse_poin": 1
+   },
+   {
+    "kelembapan": 57.1,
+    "fuzzy": {
+     "kering": 0.992,
+     "sedang": 0.008,
+     "lembap": 0.0
+    },
+    "ifelse_poin": 0
+   }
+  ]
+ }
+}
