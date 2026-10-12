@@ -8,6 +8,7 @@
 <meta name="description" content="Cara sistem fuzzy Mamdani menghitung skor risiko karhutla Kaltim dari data cuaca, lengkap dengan contoh hitungan.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="css/gaya.css">
+<link rel="stylesheet" href="css/artikel.css">
 </head>
 <body data-data="validasi cara_kerja contoh_hitung">
 <header class="kepala">
@@ -29,19 +30,26 @@
       <li><a href="#inferensi">Inferensi Mamdani</a></li>
       <li><a href="#contoh">Contoh hitungan</a></li>
       <li><a href="#nyata">Hasil di dunia nyata</a></li>
+      <li><a href="#istilah">Istilah singkat</a></li>
       <li><a href="#batasan">Keterbatasan</a></li>
     </ol>
   </nav>
 
   <main class="isi">
+    <div class="hero-hal">
+      <p class="label">Cara kerja</p>
+      <p class="judul-hal">Dari data cuaca menjadi satu skor risiko</p>
+      <p>Sistem membaca lima data cuaca di tiap titik, menilainya dengan 45 aturan JIKA-MAKA seperti yang dilakukan petugas berpengalaman, lalu menyatukannya menjadi skor 0 sampai 100. Bagian yang teknis bisa dilewati, dan ringkasan di awal tiap bagian sudah cukup untuk memahami garis besarnya.</p>
+    </div>
+
     <section id="alur">
       <h2>Alur kerja sistem</h2>
       <p class="pengantar">Setiap pagi sistem mengambil data cuaca untuk 203 titik grid di Kalimantan Timur, lalu menilai seberapa berbahaya kondisi itu untuk kebakaran hutan dan lahan.</p>
       <ol class="alur">
         <li><b>Data cuaca</b>Suhu, kelembapan, hujan, angin, dan hari tanpa hujan tiap titik.</li>
-        <li><b>Fuzzifikasi</b>Tiap angka diubah menjadi derajat "seberapa rendah, sedang, tinggi".</li>
+        <li><b>Fuzzifikasi</b>Tiap angka diubah menjadi derajat "seberapa rendah, sedang, tinggi". Satu suhu bisa sedikit "sedang" sekaligus sedikit "tinggi".</li>
         <li><b>Aturan</b>45 aturan JIKA-MAKA menilai bahaya secara bertahap.</li>
-        <li><b>Defuzzifikasi</b>Hasil semua aturan digabung menjadi satu angka.</li>
+        <li><b>Defuzzifikasi</b>Hasil semua aturan digabung kembali menjadi satu angka biasa.</li>
         <li><b>Skor dan kelas</b>Skor 0 sampai 100, lalu kelas Rendah sampai Sangat Tinggi.</li>
       </ol>
     </section>
@@ -65,8 +73,12 @@
 
     <section id="keanggotaan">
       <h2>Fungsi keanggotaan</h2>
+      <div class="ringkas-box"><b>Ringkasnya</b>Tiap data cuaca dinilai lewat tiga tingkat: rendah, sedang, dan tinggi. Satu angka boleh masuk dua tingkat sekaligus dengan derajat berbeda. Itulah bedanya dengan batas tegas.</div>
       <p>Setiap data dibagi menjadi tiga himpunan, misalnya suhu "rendah", "sedang", dan "tinggi". Himpunan di kedua tepi berbentuk trapesium supaya nilai yang sangat rendah atau sangat tinggi tetap punya derajat penuh (1). Himpunan tengah berbentuk segitiga.</p>
-      <p>Batas ditentukan secara campuran: suhu, kelembapan, dan angin memakai persentil 10, 50, dan 90 (P10, P50, P90) data harian; curah hujan memakai ambang 3 mm, P50, dan P90; hari tanpa hujan memakai kategori BMKG 5, 10, dan 20 hari. Batas ini dikunci tetap sehingga hasil di notebook riset dan di situs selalu sama.</p>
+      <details class="lanjut">
+        <summary>Detail teknis: dari mana batasnya</summary>
+        <div><p>Batas ditentukan secara campuran: suhu, kelembapan, dan angin memakai persentil 10, 50, dan 90 (P10, P50, P90) data harian; curah hujan memakai ambang 3 mm, P50, dan P90; hari tanpa hujan memakai kategori BMKG 5, 10, dan 20 hari. Batas ini dikunci tetap sehingga hasil di notebook riset dan di situs selalu sama.</p></div>
+      </details>
       <div data-isi="batas"></div>
       <p class="kecil">Warna di grafik menunjukkan tingkat bahaya himpunan: hijau aman, kuning sedang, merah berbahaya. Sumbu datar dipotong supaya bagian penting terlihat.</p>
       <div class="grid-mf">
@@ -88,6 +100,7 @@
 
     <section id="aturan">
       <h2>Sistem bertingkat dengan 45 aturan</h2>
+      <div class="ringkas-box"><b>Ringkasnya</b>Aturan disusun dua tingkat. Pertama, sistem menilai kekeringan (hujan dan hari tanpa hujan) serta kondisi cuaca api (suhu, kelembapan, angin). Kedua, kedua penilaian itu digabung menjadi skor risiko.</div>
       <p>Aturan disusun dalam dua tingkat supaya mudah ditelusuri. Setiap himpunan diberi skor bahaya 0 (aman), 1 (sedang), atau 2 (berbahaya). Jumlah skor menentukan hasil aturan.</p>
       <div class="tingkat" aria-label="Susunan aturan bertingkat">
         <div class="tk-grup">
@@ -120,6 +133,7 @@
 
     <section id="inferensi">
       <h2>Inferensi Mamdani</h2>
+      <div class="ringkas-box"><b>Ringkasnya</b>Tiap aturan memberi "suara" dengan kekuatan berbeda. Semua suara digabung, lalu diambil titik beratnya sebagai satu skor akhir.</div>
       <p>Setiap aturan diproses dalam tiga tahap:</p>
       <ol>
         <li><b>Implikasi MIN.</b> Kekuatan aturan adalah derajat terkecil dari bagian JIKA. Himpunan hasil dipotong setinggi kekuatan itu.</li>
@@ -152,9 +166,21 @@
       </figure>
     </section>
 
+    <section id="istilah">
+      <h2>Istilah singkat</h2>
+      <dl class="kamus">
+        <dt>Fuzzy</dt><dd>Cara menilai yang mengenal "agak" dan "sedikit", bukan hanya ya atau tidak.</dd>
+        <dt>Himpunan</dt><dd>Satu tingkat penilaian, misalnya suhu "rendah", "sedang", atau "tinggi".</dd>
+        <dt>Derajat keanggotaan</dt><dd>Seberapa kuat sebuah angka masuk ke satu tingkat, dari 0 (tidak sama sekali) sampai 1 (penuh).</dd>
+        <dt>Persentil (P10, P50, P90)</dt><dd>Nilai pembatas dari data harian: 10%, 50%, dan 90% hari nilainya lebih kecil dari batas itu.</dd>
+        <dt>ERA5</dt><dd>Data cuaca hasil olahan model global yang dipakai untuk riset 2019 sampai 2026.</dd>
+        <dt>Titik panas</dt><dd>Titik yang terdeteksi satelit sebagai suhu permukaan sangat tinggi, biasanya tanda ada api.</dd>
+      </dl>
+    </section>
+
     <section id="batasan">
       <h2>Keterbatasan</h2>
-      <ul>
+      <ul class="batasan">
         <li>Sistem hanya menilai cuaca. Sumber api (misalnya pembakaran lahan oleh manusia), jenis lahan, dan gambut belum diperhitungkan.</li>
         <li>Data cuaca berupa rata-rata area sekitar 28 km, sehingga lebih halus dibanding pengukuran stasiun.</li>
         <li>Karena pemicu api tidak dinilai, banyak alarm tidak diikuti kebakaran (presisi masih rendah).</li>

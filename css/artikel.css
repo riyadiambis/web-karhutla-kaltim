@@ -1,0 +1,43 @@
+/* Tambahan tampilan untuk halaman Tentang dan Cara Kerja (melengkapi gaya.css, tidak mengubahnya) */
+.hero-hal{margin:6px 0 10px;padding:22px 20px;background:var(--kartu);border:1px solid var(--garis);border-left:5px solid var(--sedang);border-radius:var(--r)}
+.hero-hal .label{margin:0 0 6px;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--sedang);font-weight:700}
+.hero-hal .judul-hal{margin:0 0 10px;font-size:clamp(1.5rem,5vw,2.2rem);font-weight:800;line-height:1.2;letter-spacing:-.02em;color:var(--ink)}
+.hero-hal p:last-child{margin:0;font-size:1.05rem}
+
+.angka-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}
+.angka{background:var(--kartu);border:1px solid var(--garis);border-radius:12px;padding:14px}
+.angka b{display:block;font-size:clamp(1.6rem,6vw,2.1rem);line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.angka span{display:block;margin-top:6px;font-size:.88rem;line-height:1.4;color:var(--redam)}
+
+.ringkas-box{margin:14px 0;padding:14px 16px;background:var(--s2);border-left:4px solid var(--sedang);border-radius:0 12px 12px 0;color:#d6e1dc}
+.ringkas-box b{display:block;margin-bottom:2px;font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--sedang)}
+.peringatan{margin:22px 0;padding:14px 16px;background:#3a3112;border:1px solid #6b5a1c;border-radius:12px;color:#f6e7a6}
+.peringatan p{margin:0;color:inherit}
+
+.chip-row{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;padding:0}
+.chip-row li{padding:7px 14px;background:var(--s2);border:1px solid var(--garis);border-radius:999px;font-size:.92rem;font-weight:600;color:var(--ink)}
+
+.kelas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0 18px}
+.kelas-grid>div{padding:14px;background:var(--kartu);border:1px solid var(--garis);border-top:5px solid var(--w);border-radius:12px}
+.kelas-grid em{display:block;font-style:normal;font-weight:700;font-size:.9rem;color:var(--ink)}
+.kelas-grid b{display:block;margin:4px 0;font-size:1.7rem;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ink)}
+.kelas-grid span{font-size:.84rem;line-height:1.4;color:var(--redam)}
+.kelas-grid .rendah{--w:#2e9e4f}.kelas-grid .sedang{--w:#f2c230}.kelas-grid .tinggi{--w:#e03b2f}.kelas-grid .sangat{--w:#8b1a1a}
+
+.kamus{margin:8px 0}
+.kamus dt{margin-top:14px;font-weight:700;color:var(--ink)}
+.kamus dd{margin:2px 0 0;color:#d6e1dc}
+
+.tim-grid{display:grid;gap:10px;margin:12px 0}
+.tim-grid>div{padding:14px 16px;background:var(--kartu);border:1px solid var(--garis);border-radius:12px}
+.tim-grid b{display:block;color:var(--ink)}
+.tim-grid span{font-size:.9rem;color:var(--redam)}
+
+.batasan{list-style:none;margin:12px 0;padding:0;display:grid;gap:10px}
+.batasan li{padding:12px 14px 12px 16px;background:var(--kartu);border:1px solid var(--garis);border-left:4px solid var(--tinggi);border-radius:0 12px 12px 0}
+
+@media (min-width:700px){
+  .angka-grid,.kelas-grid{grid-template-columns:repeat(4,1fr)}
+  .tim-grid{grid-template-columns:repeat(3,1fr)}
+  .hero-hal{padding:28px 28px}
+}

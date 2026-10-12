@@ -8,6 +8,7 @@
 <meta name="description" content="Tentang situs peringatan dini karhutla Kaltim dan hasil validasi model terhadap titik panas NASA FIRMS.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="css/gaya.css">
+<link rel="stylesheet" href="css/artikel.css">
 </head>
 <body data-data="validasi">
 <header class="kepala">
@@ -30,22 +31,74 @@
   </nav>
 
   <main class="isi">
+    <div class="hero-hal">
+      <p class="label">Tentang situs ini</p>
+      <p class="judul-hal">Seberapa mudah api menyala di Kalimantan Timur?</p>
+      <p>Situs ini menjawabnya dari data cuaca, lalu menampilkannya sebagai peta berwarna yang mudah dibaca. Di halaman ini Anda bisa melihat apa yang ditampilkan, cara menghitungnya, dan seberapa bisa dipercaya hasilnya.</p>
+    </div>
+
     <section id="apa">
       <h2>Apa yang ditampilkan situs ini?</h2>
-      <p>Peta risiko kebakaran hutan dan lahan (karhutla) di Kalimantan Timur mencakup 11 hari: 3 hari evaluasi riwayat (H-3 sampai H-1, kondisi yang sudah terjadi), hari ini, serta 7 hari ke depan (H+1 sampai H+7, prakiraan cuaca). Wilayah dibagi menjadi 203 titik grid (resolusi 0,25 derajat atau sekitar 28 km, sesuai resolusi asli ERA5), dan tiap titik diberi warna sesuai tingkat risikonya: Rendah, Sedang, Tinggi, atau Sangat Tinggi.</p>
+      <p>Peta potensi kebakaran hutan dan lahan (karhutla) di Kalimantan Timur. Wilayah dibagi menjadi kotak-kotak kecil, dan tiap kotak diberi warna sesuai tingkat risikonya: Rendah, Sedang, Tinggi, atau Sangat Tinggi.</p>
+      <div class="angka-grid">
+        <div class="angka"><b>203</b><span>titik grid yang dinilai</span></div>
+        <div class="angka"><b>11</b><span>hari: 3 hari lalu, hari ini, dan 7 hari ke depan</span></div>
+        <div class="angka"><b>28 km</b><span>jarak antar titik (resolusi 0,25 derajat)</span></div>
+        <div class="angka"><b>4</b><span>kelas risiko berwarna</span></div>
+      </div>
+      <p class="kecil">H-3 sampai H-1 adalah kondisi yang sudah terjadi, dipakai untuk evaluasi. Hari ini dan H+1 sampai H+7 adalah prakiraan cuaca. Resolusi 28 km mengikuti resolusi asli data ERA5.</p>
     </section>
 
     <section id="hitung">
       <h2>Bagaimana risiko dihitung?</h2>
-      <p>Risiko dihitung dari prakiraan cuaca: suhu, kelembapan, hujan, angin, dan berapa hari berturut-turut tidak turun hujan. Cuaca tidak bisa dibagi tegas menjadi "kering" atau "basah". Karena itu dipakai sistem fuzzy Mamdani, yang menilai kondisi secara bertahap, mirip cara petugas berpengalaman menimbang tanda-tanda di lapangan.</p>
-      <p>Sistem ini memakai 45 aturan. Hari dianggap tanpa hujan bila curah hujannya kurang dari 3 mm. Hasilnya berupa skor 0 sampai 100, lalu dikelompokkan menjadi empat kelas risiko. Penjelasan lengkap beserta contoh hitungan ada di halaman <a href="cara-kerja.html">Cara Kerja</a>.</p>
+      <p>Seperti petugas berpengalaman yang menimbang beberapa tanda sekaligus, sistem membaca lima data cuaca di setiap titik:</p>
+      <ul class="chip-row"><li>Suhu</li><li>Kelembapan</li><li>Hujan</li><li>Angin</li><li>Hari tanpa hujan</li></ul>
+      <p>Cuaca tidak bisa dibagi tegas menjadi "kering" atau "basah". Karena itu dipakai sistem fuzzy Mamdani, yang menilai kondisi secara bertahap, bukan dengan satu garis batas yang kaku.</p>
+      <div class="ringkas-box"><b>Intinya</b>Sistem memakai 45 aturan. Hari dianggap tanpa hujan bila curah hujannya kurang dari 3 mm. Hasilnya berupa skor 0 sampai 100, lalu dikelompokkan menjadi empat kelas risiko.</div>
+      <p>Penjelasan lengkap beserta contoh hitungan ada di halaman <a href="cara-kerja.html">Cara Kerja</a>.</p>
     </section>
 
     <section id="percaya">
       <h2>Seberapa bisa dipercaya?</h2>
-      <p>Model diuji melalui validasi retrospektif 2019 sampai 20 September 2026 terhadap 57.105 titik panas NASA FIRMS. Model fuzzy menghasilkan AUC 0,802 (lebih unggul dibanding model if-else tegas dengan AUC 0,748 dan indikator hari tanpa hujan saja dengan AUC 0,701, serta unggul konsisten di 8 dari 8 tahun evaluasi). Korelasi Spearman bulanan mencapai 0,666.</p>
-      <p>Tingkat kemunculan titik panas meningkat tajam seiring naiknya kelas risiko. Persentase hari-grid yang memuat titik panas adalah: Rendah 0,70%, Sedang 2,81%, Tinggi 9,19%, dan Sangat Tinggi 28,93%. Status alarm (gabungan kelas Tinggi dan Sangat Tinggi) muncul pada 19,2% hari-grid, namun berhasil mencakup 60,94% hari-grid berapi dan 72,9% titik panas, dengan presisi 10,55% atau lift 3,17 kali lipat dibandingkan peluang dasar (3,32%).</p>
-      <p class="kecil">"Hari-grid" adalah satu titik grid pada satu hari. Grafik di bawah dibuat dari angka hasil notebook riset (<code>data/validasi.json</code>).</p>
+      <div class="ringkas-box"><b>Singkatnya</b>Makin tinggi kelas risiko, makin sering titik panas (tanda api yang terlihat satelit) benar-benar muncul. Di kelas Rendah, kurang dari 1 dari 100 hari-grid memuat titik panas. Di kelas Sangat Tinggi, sekitar 29 dari 100.</div>
+
+      <div class="angka-grid">
+        <div class="angka"><b>0,802</b><span>skor kemampuan model membedakan hari berapi (AUC). 1 berarti sempurna, 0,5 sama dengan menebak</span></div>
+        <div class="angka"><b>8 dari 8</b><span>tahun evaluasi di mana model fuzzy unggul dibanding cara sederhana</span></div>
+        <div class="angka"><b>57.105</b><span>titik panas NASA FIRMS dipakai untuk menguji (2019 sampai 20 September 2026)</span></div>
+        <div class="angka"><b>72,9%</b><span>titik panas muncul pada hari berstatus alarm (kelas Tinggi dan Sangat Tinggi)</span></div>
+      </div>
+
+      <h3>Titik panas di tiap kelas risiko</h3>
+      <div class="kelas-grid">
+        <div class="rendah"><em>Rendah</em><b>0,70%</b><span>hari-grid memuat titik panas</span></div>
+        <div class="sedang"><em>Sedang</em><b>2,81%</b><span>hari-grid memuat titik panas</span></div>
+        <div class="tinggi"><em>Tinggi</em><b>9,19%</b><span>hari-grid memuat titik panas</span></div>
+        <div class="sangat"><em>Sangat Tinggi</em><b>28,93%</b><span>hari-grid memuat titik panas</span></div>
+      </div>
+
+      <details class="lanjut">
+        <summary>Rincian angka dan artinya</summary>
+        <div>
+          <p>Model diuji melalui validasi retrospektif 2019 sampai 20 September 2026 terhadap 57.105 titik panas NASA FIRMS. Berikut arti angka-angkanya.</p>
+          <dl class="kamus">
+            <dt>Hari-grid</dt>
+            <dd>Satu titik grid pada satu hari. Itulah satuan yang dihitung.</dd>
+            <dt>AUC: fuzzy 0,802, if-else tegas 0,748, hari tanpa hujan saja 0,701</dt>
+            <dd>Ukuran seberapa baik cara hitung membedakan hari berapi dari hari tanpa api. Model fuzzy paling tinggi dan unggul konsisten di 8 dari 8 tahun evaluasi.</dd>
+            <dt>Korelasi Spearman bulanan 0,666</dt>
+            <dd>Seberapa selaras naik-turunnya skor risiko dengan naik-turunnya jumlah titik panas dari bulan ke bulan. Makin dekat ke 1, makin selaras.</dd>
+            <dt>Status alarm</dt>
+            <dd>Gabungan kelas Tinggi dan Sangat Tinggi. Alarm muncul pada 19,2% hari-grid, tetapi berhasil mencakup 60,94% hari-grid berapi dan 72,9% titik panas.</dd>
+            <dt>Presisi 10,55%</dt>
+            <dd>Dari semua alarm, sekitar 11 dari 100 benar-benar diikuti titik panas. Sisanya alarm yang tidak berujung api, karena sistem hanya menilai cuaca.</dd>
+            <dt>Lift 3,17 kali lipat</dt>
+            <dd>Peluang titik panas pada hari alarm 3,17 kali lipat peluang dasar (3,32% hari-grid memuat titik panas).</dd>
+          </dl>
+        </div>
+      </details>
+
+      <p class="kecil">Grafik di bawah dibuat dari angka hasil notebook riset (<code>data/validasi.json</code>).</p>
 
       <div class="kartu-grafik">
         <h3>Titik panas per kelas risiko</h3>
@@ -108,7 +161,7 @@
         </div>
       </details>
 
-      <p><strong>Perlu diingat:</strong> skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran. Nilai H-3 sampai H-1 mencerminkan kondisi yang sudah terjadi untuk evaluasi, sedangkan prakiraan untuk H+4 ke atas merupakan perkiraan kasar yang lebih dinamis.</p>
+      <div class="peringatan"><p><strong>Perlu diingat:</strong> skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran. Nilai H-3 sampai H-1 mencerminkan kondisi yang sudah terjadi untuk evaluasi, sedangkan prakiraan untuk H+4 ke atas merupakan perkiraan kasar yang lebih dinamis.</p></div>
     </section>
 
     <section id="sumber">
@@ -123,11 +176,11 @@
 
     <section id="pengembang">
       <h2>Pengembang</h2>
-      <ul>
-        <li>Rahmat Riyadi: data, model fuzzy, dan otomasi</li>
-        <li>Fahri: peta interaktif</li>
-        <li>Richo / Husein: antarmuka dan informasi</li>
-      </ul>
+      <div class="tim-grid">
+        <div><b>Rahmat Riyadi</b><span>Data, model fuzzy, dan otomasi</span></div>
+        <div><b>Fahri</b><span>Peta interaktif</span></div>
+        <div><b>Richo / Husein</b><span>Antarmuka dan informasi</span></div>
+      </div>
       <p>Kontak resmi: akan ditambahkan setelah ditentukan tim.</p>
     </section>
   </main>
