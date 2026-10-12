@@ -1,0 +1,344 @@
+{
+ "sumber": "riset/fuzzy-mamdani-karhutla-kaltim.ipynb",
+ "dibuat_oleh": "python/ekstrak_riset.py",
+ "ringkasan": {
+  "hari_grid": 572460,
+  "periode": "2019-01-01 sampai 2026-09-20",
+  "titik_grid": 203,
+  "titik_panas": 57105,
+  "persen_hari_grid_ada_api": 3.32,
+  "spearman_bulanan": 0.666,
+  "spearman_harian_jul_sep_2026": 0.653,
+  "sel": {
+   "hari_grid": 5,
+   "periode": 5,
+   "titik_grid": 5,
+   "titik_panas": 38,
+   "persen_hari_grid_ada_api": 46,
+   "spearman_bulanan": 50,
+   "spearman_harian_jul_sep_2026": 62
+  }
+ },
+ "e6": {
+  "sel": 48,
+  "kelas": [
+   {
+    "kelas": "Rendah",
+    "jumlah_hari_grid": 263560,
+    "persen_ada_api": 0.7,
+    "rata2_titik_panas": 0.012,
+    "kali_lipat_vs_rata2": 0.21
+   },
+   {
+    "kelas": "Sedang",
+    "jumlah_hari_grid": 198974,
+    "persen_ada_api": 2.81,
+    "rata2_titik_panas": 0.061,
+    "kali_lipat_vs_rata2": 0.85
+   },
+   {
+    "kelas": "Tinggi",
+    "jumlah_hari_grid": 102336,
+    "persen_ada_api": 9.19,
+    "rata2_titik_panas": 0.291,
+    "kali_lipat_vs_rata2": 2.76
+   },
+   {
+    "kelas": "Sangat Tinggi",
+    "jumlah_hari_grid": 7590,
+    "persen_ada_api": 28.93,
+    "rata2_titik_panas": 1.558,
+    "kali_lipat_vs_rata2": 8.7
+   }
+  ]
+ },
+ "f2": {
+  "sel": 54,
+  "metode": [
+   {
+    "metode": "Fuzzy Mamdani",
+    "auc": 0.802,
+    "spearman_bulanan": 0.666
+   },
+   {
+    "metode": "Hari tanpa hujan saja",
+    "auc": 0.701,
+    "spearman_bulanan": 0.603
+   },
+   {
+    "metode": "If-else tegas",
+    "auc": 0.748,
+    "spearman_bulanan": 0.622
+   }
+  ]
+ },
+ "f3": {
+  "sel": 56,
+  "hari_alarm": 109926,
+  "persen_hari_alarm": 19.2,
+  "presisi": 10.55,
+  "recall": 60.94
+ },
+ "h2": {
+  "tn": 455101,
+  "fp": 98329,
+  "fn": 7433,
+  "tp": 11597,
+  "sel_gambar": 69,
+  "sel_ukuran": 70,
+  "ukuran": [
+   {
+    "ukuran": "Akurasi",
+    "nilai": 81.52,
+    "arti": "semua tebakan yang benar"
+   },
+   {
+    "ukuran": "Presisi",
+    "nilai": 10.55,
+    "arti": "alarm yang benar ada api"
+   },
+   {
+    "ukuran": "Recall (sensitivitas)",
+    "nilai": 60.94,
+    "arti": "api yang tertangkap alarm"
+   },
+   {
+    "ukuran": "Spesifisitas",
+    "nilai": 82.23,
+    "arti": "hari tanpa api yang benar dinilai aman"
+   },
+   {
+    "ukuran": "F1-score",
+    "nilai": 17.99,
+    "arti": "keseimbangan presisi dan recall"
+   },
+   {
+    "ukuran": "Peluang dasar",
+    "nilai": 3.32,
+    "arti": "peluang api kalau asal pilih hari"
+   },
+   {
+    "ukuran": "Lift",
+    "nilai": 3.17,
+    "arti": "presisi dibagi peluang dasar (satuan: kali)"
+   },
+   {
+    "ukuran": "Akurasi kalau selalu bilang aman",
+    "nilai": 96.68,
+    "arti": "pembanding: model yang tidak berguna"
+   }
+  ],
+  "verifikasi": {
+   "tp_plus_fp_sama_hari_alarm_sel_56": true,
+   "jumlah_empat_sel_sama_baris_data_sel_5": true,
+   "presisi_sama_sel_70": true,
+   "recall_sama_sel_70": true,
+   "spesifisitas_sama_sel_70": true,
+   "akurasi_sama_sel_70": true,
+   "catatan": "TN, FP, FN, TP hanya tertulis di gambar sel 69. Dicek silang: TP+FP = hari alarm (sel 56), jumlah keempatnya = jumlah baris data (sel 5), dan presisi, recall, spesifisitas, akurasi hasil hitung ulang sama dengan sel 70."
+  }
+ },
+ "h3": {
+  "sel": 72,
+  "persen_titik_panas_di_hari_alarm": 72.9,
+  "kelas": [
+   {
+    "kelas": "Rendah",
+    "hari": 263560,
+    "titik": 3266,
+    "persen_hari_grid": 46.04,
+    "persen_titik_panas": 5.72
+   },
+   {
+    "kelas": "Sedang",
+    "hari": 198974,
+    "titik": 12208,
+    "persen_hari_grid": 34.76,
+    "persen_titik_panas": 21.38
+   },
+   {
+    "kelas": "Tinggi",
+    "hari": 102336,
+    "titik": 29803,
+    "persen_hari_grid": 17.88,
+    "persen_titik_panas": 52.19
+   },
+   {
+    "kelas": "Sangat Tinggi",
+    "hari": 7590,
+    "titik": 11828,
+    "persen_hari_grid": 1.33,
+    "persen_titik_panas": 20.71
+   }
+  ]
+ },
+ "h4": {
+  "sel": 74,
+  "ambang_dipakai": 50,
+  "baris": [
+   {
+    "ambang": 25,
+    "persen_hari_alarm": 53.96,
+    "presisi": 5.56,
+    "recall": 90.29,
+    "f1": 10.48,
+    "lift": 1.67
+   },
+   {
+    "ambang": 30,
+    "persen_hari_alarm": 45.8,
+    "presisi": 6.26,
+    "recall": 86.3,
+    "f1": 11.68,
+    "lift": 1.88
+   },
+   {
+    "ambang": 35,
+    "persen_hari_alarm": 37.58,
+    "presisi": 7.15,
+    "recall": 80.84,
+    "f1": 13.14,
+    "lift": 2.15
+   },
+   {
+    "ambang": 40,
+    "persen_hari_alarm": 28.9,
+    "presisi": 8.2,
+    "recall": 71.33,
+    "f1": 14.72,
+    "lift": 2.47
+   },
+   {
+    "ambang": 45,
+    "persen_hari_alarm": 24.44,
+    "presisi": 9.11,
+    "recall": 66.98,
+    "f1": 16.04,
+    "lift": 2.74
+   },
+   {
+    "ambang": 50,
+    "persen_hari_alarm": 19.2,
+    "presisi": 10.55,
+    "recall": 60.94,
+    "f1": 17.99,
+    "lift": 3.17
+   },
+   {
+    "ambang": 55,
+    "persen_hari_alarm": 13.94,
+    "presisi": 12.62,
+    "recall": 52.9,
+    "f1": 20.37,
+    "lift": 3.8
+   },
+   {
+    "ambang": 60,
+    "persen_hari_alarm": 10.54,
+    "presisi": 14.57,
+    "recall": 46.17,
+    "f1": 22.15,
+    "lift": 4.38
+   },
+   {
+    "ambang": 65,
+    "persen_hari_alarm": 2.33,
+    "presisi": 24.84,
+    "recall": 17.41,
+    "f1": 20.47,
+    "lift": 7.47
+   },
+   {
+    "ambang": 70,
+    "persen_hari_alarm": 1.66,
+    "presisi": 27.1,
+    "recall": 13.51,
+    "f1": 18.03,
+    "lift": 8.15
+   },
+   {
+    "ambang": 75,
+    "persen_hari_alarm": 1.33,
+    "presisi": 28.93,
+    "recall": 11.54,
+    "f1": 16.5,
+    "lift": 8.7
+   }
+  ]
+ },
+ "h5": {
+  "sel": 76,
+  "tahun": [
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025,
+   2026
+  ],
+  "seri": {
+   "Fuzzy Mamdani": [
+    0.817,
+    0.728,
+    0.716,
+    0.725,
+    0.799,
+    0.774,
+    0.752,
+    0.819
+   ],
+   "If-else tegas": [
+    0.766,
+    0.631,
+    0.63,
+    0.629,
+    0.767,
+    0.749,
+    0.663,
+    0.778
+   ],
+   "Hari tanpa hujan saja": [
+    0.722,
+    0.607,
+    0.589,
+    0.574,
+    0.693,
+    0.672,
+    0.638,
+    0.762
+   ]
+  }
+ },
+ "g1": {
+  "sel": 58,
+  "hari": [
+   {
+    "tanggal": "2026-08-11",
+    "skor": 72.1,
+    "titik_panas": 235
+   },
+   {
+    "tanggal": "2026-08-18",
+    "skor": 71.4,
+    "titik_panas": 338
+   },
+   {
+    "tanggal": "2026-08-10",
+    "skor": 71.3,
+    "titik_panas": 234
+   },
+   {
+    "tanggal": "2026-08-19",
+    "skor": 70.4,
+    "titik_panas": 668
+   },
+   {
+    "tanggal": "2026-08-17",
+    "skor": 70.1,
+    "titik_panas": 292
+   }
+  ]
+ }
+}
