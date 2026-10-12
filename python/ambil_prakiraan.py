@@ -31,8 +31,8 @@ WITA = timezone(timedelta(hours=8))
 HARI_LALU = 92  # batas past_days Open-Meteo, dipakai buat menghitung hari tanpa hujan
 HARI_DEPAN = 8  # H sampai H+7
 TOTAL_HARI = HARI_LALU + HARI_DEPAN
-JUMLAH_TITIK = 52
-BATCH = 13  # titik per permintaan
+JUMLAH_TITIK = 203
+BATCH = 20  # titik per permintaan
 JEDA_ANTAR_BATCH = 2  # detik
 PERCOBAAN = 3
 
@@ -76,6 +76,7 @@ def ambil_batch(lats, lons):
         "forecast_days": HARI_DEPAN,
     }
     jeda = 5
+    isi = None
     for percobaan in range(1, PERCOBAAN + 1):
         try:
             r = requests.get(URL, params=params, timeout=60)
@@ -83,16 +84,29 @@ def ambil_batch(lats, lons):
                 # salah parameter, tidak ada gunanya diulang
                 raise ValueError(f"Open-Meteo menolak permintaan: {r.text[:300]}")
             r.raise_for_status()
-            isi = r.json()
+            # Tangani respons status 200 yang isinya bukan JSON valid
+            try:
+                isi = r.json()
+            except Exception as json_err:
+                raise ValueError(f"Respons HTTP {r.status_code} bukan JSON valid: {r.text[:200]}") from json_err
             break
-        except ValueError:
-            raise
+        except ValueError as e:
+            if "Open-Meteo menolak permintaan" in str(e):
+                raise
+            print(f"  percobaan {percobaan} gagal: {e}")
+            if percobaan == PERCOBAAN:
+                raise
+            time.sleep(jeda)
+            jeda *= 2
         except Exception as e:
             print(f"  percobaan {percobaan} gagal: {e}")
             if percobaan == PERCOBAAN:
                 raise
             time.sleep(jeda)
-            jeda *= 3
+            jeda *= 2
+
+    if isi is None:
+        raise ValueError("Gagal mendapatkan respons valid dari Open-Meteo")
 
     daftar = isi if isinstance(isi, list) else [isi]
     if len(daftar) != len(lats):
@@ -101,13 +115,25 @@ def ambil_batch(lats, lons):
 
 
 def ambil_semua(grid):
-    hasil = []
+    hasil = [None] * len(grid)
+    kegagalan = []
     for mulai in range(0, len(grid), BATCH):
         potong = grid.iloc[mulai:mulai + BATCH]
-        print(f"Ambil titik {mulai} sampai {mulai + len(potong) - 1} ...")
-        hasil.extend(ambil_batch(potong["lat"].tolist(), potong["lon"].tolist()))
+        akhir = mulai + len(potong) - 1
+        print(f"Ambil titik {mulai} sampai {akhir} ...")
+        try:
+            batch_data = ambil_batch(potong["lat"].tolist(), potong["lon"].tolist())
+            for idx_offset, d in enumerate(batch_data):
+                hasil[mulai + idx_offset] = d
+        except Exception as e:
+            pesan = f"Titik {mulai}-{akhir} gagal: {e}"
+            print(f"  PERINGATAN: {pesan}")
+            kegagalan.append(pesan)
         if mulai + BATCH < len(grid):
             time.sleep(JEDA_ANTAR_BATCH)
+
+    if kegagalan:
+        raise RuntimeError(f"{len(kegagalan)} batch gagal diambil dari API: " + "; ".join(kegagalan))
     return hasil
 
 
@@ -219,9 +245,10 @@ def ringkas(data):
 
 def tulis_atomik(data, tujuan):
     # tulis ke file sementara dulu supaya tidak ada file setengah jadi
+    # simpan tanpa indentasi (format ringkas) agar ukuran file tetap kecil untuk 203 titik
     sementara = tujuan.with_suffix(".json.tmp")
     with open(sementara, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+        json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
         f.write("\n")
     os.replace(sementara, tujuan)
 

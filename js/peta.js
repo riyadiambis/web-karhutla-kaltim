@@ -1,7 +1,7 @@
 /* Bagian peta: ambil data, peta Leaflet, tombol tanggal, modal detail. Pemilik: Pengembang A */
 (function () {
   var WARNA = { "Rendah": "#2e9e4f", "Sedang": "#f2c230", "Tinggi": "#e03b2f", "Sangat Tinggi": "#8b1a1a" };
-  var SETENGAH = 0.35, RADIUS = 25000;
+  var SETENGAH = 0.12, BATAS_SETENGAH = 0.125;
   var data, peta, lapisan, batas, idx = 0, pemicu = null;
   function $(id) { return document.getElementById(id); }
 
@@ -43,12 +43,13 @@
     lapisan = L.layerGroup();
     data.titik.slice().sort(function (a, b) { return a.prakiraan[i].skor - b.prakiraan[i].skor; }).forEach(function (t) {
       var p = t.prakiraan[i];
-      var dasar = { stroke: false, fillColor: WARNA[p.kelas], fillOpacity: 0.75 };
-      L.circle([t.lat, t.lon], Object.assign({ radius: RADIUS }, dasar))
+      var kotak = [[t.lat - SETENGAH, t.lon - SETENGAH], [t.lat + SETENGAH, t.lon + SETENGAH]];
+      var dasar = { stroke: false, fillColor: WARNA[p.kelas], fillOpacity: 0.78 };
+      L.rectangle(kotak, dasar)
         .bindTooltip(t.kabupaten + ": skor " + p.skor + " (" + p.kelas + ")", { sticky: true })
         .on("click", function () { bukaModal(t, p); })
-        .on("mouseover", function () { this.setStyle({ stroke: true, color: "#fff", weight: 2, fillOpacity: 0.9 }); this.bringToFront(); })
-        .on("mouseout", function () { this.setStyle({ stroke: false, fillOpacity: 0.75 }); })
+        .on("mouseover", function () { this.setStyle({ stroke: true, color: "#fff", weight: 2, fillOpacity: 0.95 }); this.bringToFront(); })
+        .on("mouseout", function () { this.setStyle({ stroke: false, fillOpacity: 0.78 }); })
         .addTo(lapisan);
     });
     lapisan.addTo(peta);
@@ -63,11 +64,11 @@
       { maxZoom: 12, attribution: "&copy; OpenStreetMap" }).addTo(peta);
     batas = L.latLngBounds([]);
     data.titik.forEach(function (t) {
-      batas.extend([t.lat - SETENGAH, t.lon - SETENGAH]);
-      batas.extend([t.lat + SETENGAH, t.lon + SETENGAH]);
+      batas.extend([t.lat - BATAS_SETENGAH, t.lon - BATAS_SETENGAH]);
+      batas.extend([t.lat + BATAS_SETENGAH, t.lon + BATAS_SETENGAH]);
     });
     pasKan();
-    peta.setMaxBounds(batas.pad(0.7));
+    peta.setMaxBounds(batas.pad(0.5));
     peta.setMinZoom(Math.max(peta.getZoom() - 1, 4));
 
     Tabel.setPembaruan(data.diperbarui);

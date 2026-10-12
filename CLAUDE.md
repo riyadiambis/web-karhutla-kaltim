@@ -1,7 +1,7 @@
 # Panduan untuk AI Coding
 
 Proyek: Web Peringatan Dini Risiko Karhutla Kaltim.
-Web statis yang menampilkan peta risiko karhutla 52 titik grid untuk hari ini sampai 7 hari ke depan.
+Web statis yang menampilkan peta risiko karhutla 203 titik grid (resolusi 0,25 derajat / ~28 km) untuk hari ini sampai 7 hari ke depan.
 
 ## Baca ini dulu
 
@@ -34,7 +34,7 @@ Hanya edit file milik peran yang sedang dikerjakan, supaya tidak bentrok saat me
 - JANGAN ubah struktur JSON. Kalau butuh field baru, minta persetujuan tim dulu.
 - `data/risiko.json` sudah berisi data ASLI dan diperbarui otomatis setiap hari sekitar 05.30 WITA oleh GitHub Actions (commit dari github-actions[bot]).
 - JANGAN edit `data/risiko.json` secara manual. Selalu `git pull --rebase` sebelum mulai kerja dan sebelum push, karena bot commit setiap hari.
-- Nama kabupaten di data sudah berspasi (contoh "Kutai Kartanegara"). Saat ini ada 6 kabupaten: Berau, Kutai Barat, Kutai Kartanegara, Kutai Timur, Paser, Penajam Paser Utara.
+- Nama kabupaten di data sudah berspasi (contoh "Kutai Kartanegara"). Saat ini ada 8 kabupaten/kota: Balikpapan, Berau, Kutai Barat, Kutai Kartanegara, Kutai Timur, Paser, Penajam Paser Utara, Samarinda.
 - Kalau `fetch` gagal, tampilkan pesan ramah ("Data belum bisa dimuat, coba lagi nanti"), jangan biarkan halaman kosong atau error.
 
 Struktur singkat:
@@ -62,7 +62,7 @@ Teks `kelas` dari JSON dipakai apa adanya sebagai acuan. Hitung ulang kelas dari
 
 ## Fitur yang harus ada (wajib)
 
-1. Peta Leaflet dengan 52 grid berwarna sesuai kelas
+1. Peta Leaflet dengan 203 grid berwarna sesuai kelas
 2. Tombol tanggal H sampai H+7 yang mengganti warna peta
 3. Klik grid memunculkan modal: skor, kelas, suhu, kelembapan, hujan, angin, hari tanpa hujan
 4. Ringkasan hari ini: jumlah titik per kelas
@@ -106,4 +106,4 @@ Untuk melihat contoh tampilan data, buka `http://localhost:8000/pratinjau.html`.
 - Jangan mengganti stack atau menambah dependency tanpa izin.
 - Jangan mengubah skema `risiko.json`.
 - Jangan menyentuh `python/` dan `.github/`.
-- Jangan mengubah angka-angka riset (45 aturan fuzzy, ambang hujan 3 mm, AUC 0,773) di teks halaman Tentang.
+- Jangan mengubah angka-angka riset (45 aturan fuzzy, ambang hujan 3 mm, AUC 0,802) di teks halaman Tentang.

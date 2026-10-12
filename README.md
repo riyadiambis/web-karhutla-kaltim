@@ -8,7 +8,7 @@ Tahap 2: pipeline data Python selesai (otomasi harian menunggu uji jalan pertama
 
 ## Fitur Utama
 
-- Peta 52 titik grid berwarna sesuai kelas risiko (Rendah, Sedang, Tinggi, Sangat Tinggi)
+- Peta 203 titik grid berwarna sesuai kelas risiko (Rendah, Sedang, Tinggi, Sangat Tinggi, resolusi 0,25° / ~28 km)
 - Pemilih tanggal H sampai H+7
 - Detail cuaca per titik (suhu, kelembapan, hujan, angin, hari tanpa hujan)
 - Tabel risiko per kabupaten/kota
