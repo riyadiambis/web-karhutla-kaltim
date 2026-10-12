@@ -6,7 +6,7 @@ Status: Tahap 2 (pipeline data selesai, frontend berjalan)
 
 ## 1. Ringkasan Produk
 
-Web statis berbasis HTML yang menampilkan peta risiko karhutla Kalimantan Timur untuk hari ini sampai 7 hari ke depan. Risiko dihitung otomatis dari prakiraan cuaca memakai sistem fuzzy Mamdani yang sudah divalidasi (AUC 0,802 terhadap titik panas NASA FIRMS 2019-2026).
+Web statis berbasis HTML yang menampilkan peta risiko karhutla Kalimantan Timur untuk 11 hari (H-3 s.d. H-1 evaluasi riwayat, Hari ini, dan H+1 s.d. H+7 prakiraan cuaca). Risiko dihitung otomatis dari data cuaca memakai sistem fuzzy Mamdani yang sudah divalidasi (AUC 0,802 terhadap titik panas NASA FIRMS 2019-2026).
 
 **Pengguna sasaran:** masyarakat umum, petani/pekebun, dan petugas lapangan (BPBD, Manggala Agni, perangkat desa).
 
@@ -26,7 +26,7 @@ Web statis berbasis HTML yang menampilkan peta risiko karhutla Kalimantan Timur 
 
 ## 3. Tujuan, Ukuran Keberhasilan, dan Batasan
 
-Versi 1 dianggap berhasil jika mampu menyajikan risiko 8 hari (H sampai H+7) pada 203 titik grid secara otomatis setiap pagi, dengan antarmuka yang ramah pengguna.
+Versi 1 dianggap berhasil jika mampu menyajikan risiko 11 hari (H-3 sampai H+7) pada 203 titik grid secara otomatis setiap pagi, dengan antarmuka yang ramah pengguna.
 
 ### Tujuan Utama
 
@@ -94,7 +94,7 @@ Aplikasi punya dua halaman: Beranda (peta) dan Tentang (metodologi).
 | HEADER: Peringatan Dini Risiko Karhutla Kaltim               |
 | Diperbarui: 5 Okt 2026, 06.00 WITA                           |
 +--------------------------------------------------------------+
-| PILIH TANGGAL: [Hari ini] [Besok] [+2] [+3] [+4] [+5] [+6] [+7] |
+| PILIH TANGGAL: [H-3] [H-2] [H-1] [Hari ini] [Besok] [+2]...  |
 +-------------------------------------+------------------------+
 |                                     | RINGKASAN HARI INI     |
 |   PETA KALTIM                       | Sangat Tinggi: 5 titik |
@@ -115,8 +115,8 @@ Aplikasi punya dua halaman: Beranda (peta) dan Tentang (metodologi).
 
 | Komponen | Deskripsi | Prioritas |
 |---|---|---|
-| Peta risiko | Overlay 203 grid interaktif berwarna di atas wilayah Kaltim | Wajib |
-| Pemilih tanggal | Navigasi tanggal H sampai H+7 untuk mengganti layer peta | Wajib |
+| Peta risiko | Overlay 203 grid interaktif berwarna transparan (35% opasitas) di atas wilayah Kaltim, dilengkapi tombol mode "Peta saja" | Wajib |
+| Pemilih tanggal | Navigasi tanggal H-3 sampai H+7 (11 hari) untuk mengganti layer peta | Wajib |
 | Detail titik grid | Modal pop-up saat grid diklik: skor, suhu, kelembapan, hujan, angin, hari tanpa hujan | Wajib |
 | Ringkasan harian | Jumlah titik grid per kelas risiko | Wajib |
 | Saran tindakan | Teks rekomendasi sesuai kelas risiko tertinggi | Wajib |
@@ -190,7 +190,7 @@ File ini adalah kontrak utama antara backend (Python) dan frontend (HTML/JS). Se
 
 | Aspek | Spesifikasi |
 |---|---|
-| Kinerja | Sangat ringan, payload JSON dibatasi 203 titik x 8 hari |
+| Kinerja | Sangat ringan, payload JSON dibatasi 203 titik x 11 hari (~300 KB) |
 | Aksesibilitas seluler | Layout adaptif, tombol mudah disentuh di layar HP |
 | Inklusivitas UI | Teks kelas risiko ditampilkan berdampingan dengan warna (untuk buta warna) |
 | Keandalan data | Pakai data cache terakhir kalau API atau eksekusi otomatis gagal |

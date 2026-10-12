@@ -1,7 +1,7 @@
 # Panduan untuk AI Coding
 
 Proyek: Web Peringatan Dini Risiko Karhutla Kaltim.
-Web statis yang menampilkan peta risiko karhutla 203 titik grid (resolusi 0,25 derajat / ~28 km) untuk hari ini sampai 7 hari ke depan.
+Web statis yang menampilkan peta risiko karhutla 203 titik grid (resolusi 0,25 derajat / ~28 km) untuk 11 hari (H-3 sampai H+7).
 
 ## Baca ini dulu
 
@@ -63,7 +63,7 @@ Teks `kelas` dari JSON dipakai apa adanya sebagai acuan. Hitung ulang kelas dari
 ## Fitur yang harus ada (wajib)
 
 1. Peta Leaflet dengan 203 grid berwarna sesuai kelas
-2. Tombol tanggal H sampai H+7 yang mengganti warna peta
+2. Tombol tanggal H-3 sampai H+7 yang mengganti warna peta
 3. Klik grid memunculkan modal: skor, kelas, suhu, kelembapan, hujan, angin, hari tanpa hujan
 4. Ringkasan hari ini: jumlah titik per kelas
 5. Kotak rekomendasi aksi sesuai kelas TERTINGGI di hari yang dipilih
