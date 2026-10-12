@@ -2,51 +2,145 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a100d">
 <title>Tentang | Peringatan Dini Risiko Karhutla Kaltim</title>
+<meta name="description" content="Tentang situs peringatan dini karhutla Kaltim dan hasil validasi model terhadap titik panas NASA FIRMS.">
 <link rel="stylesheet" href="css/gaya.css">
 </head>
-<body>
+<body data-data="validasi">
 <header class="kepala">
   <div class="bungkus lebar">
-    <h1>Peringatan Dini Risiko Karhutla Kaltim</h1>
-    <p class="diperbarui">Tentang situs ini</p>
-    <nav class="menu"><a href="index.html">Beranda</a><a href="tentang.html" aria-current="page">Tentang</a></nav>
+    <h1><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z" fill="#f2c230"/></svg>Peringatan Dini Karhutla Kaltim</h1>
+    <nav class="menu"><a href="index.html">Beranda</a><a href="cara-kerja.html">Cara Kerja</a><a href="tentang.html" aria-current="page">Tentang</a></nav>
   </div>
 </header>
 
-<main class="bungkus teks">
-  <h2>Apa yang ditampilkan situs ini?</h2>
-  <p>Peta risiko kebakaran hutan dan lahan (karhutla) di Kalimantan Timur mencakup 11 hari: 3 hari evaluasi riwayat (H-3 sampai H-1, kondisi yang sudah terjadi), hari ini, serta 7 hari ke depan (H+1 sampai H+7, prakiraan cuaca). Wilayah dibagi menjadi 203 titik grid (resolusi 0,25 derajat atau sekitar 28 km, sesuai resolusi asli ERA5), dan tiap titik diberi warna sesuai tingkat risikonya: Rendah, Sedang, Tinggi, atau Sangat Tinggi.</p>
+<div class="artikel">
+  <nav class="toc" aria-label="Daftar isi">
+    <p class="toc-judul">Daftar isi</p>
+    <ol>
+      <li><a href="#apa">Apa yang ditampilkan</a></li>
+      <li><a href="#hitung">Cara menghitung</a></li>
+      <li><a href="#percaya">Seberapa bisa dipercaya?</a></li>
+      <li><a href="#sumber">Sumber data</a></li>
+      <li><a href="#pengembang">Pengembang</a></li>
+    </ol>
+  </nav>
 
-  <h2>Bagaimana risiko dihitung?</h2>
-  <p>Risiko dihitung dari prakiraan cuaca: suhu, kelembapan, hujan, angin, dan berapa hari berturut-turut tidak turun hujan. Cuaca tidak bisa dibagi tegas menjadi "kering" atau "basah". Karena itu dipakai sistem fuzzy Mamdani, yang menilai kondisi secara bertahap, mirip cara petugas berpengalaman menimbang tanda-tanda di lapangan.</p>
-  <p>Sistem ini memakai 45 aturan. Hari dianggap tanpa hujan bila curah hujannya kurang dari 3 mm. Hasilnya berupa skor 0 sampai 100, lalu dikelompokkan menjadi empat kelas risiko.</p>
+  <main class="isi">
+    <section id="apa">
+      <h2>Apa yang ditampilkan situs ini?</h2>
+      <p>Peta risiko kebakaran hutan dan lahan (karhutla) di Kalimantan Timur mencakup 11 hari: 3 hari evaluasi riwayat (H-3 sampai H-1, kondisi yang sudah terjadi), hari ini, serta 7 hari ke depan (H+1 sampai H+7, prakiraan cuaca). Wilayah dibagi menjadi 203 titik grid (resolusi 0,25 derajat atau sekitar 28 km, sesuai resolusi asli ERA5), dan tiap titik diberi warna sesuai tingkat risikonya: Rendah, Sedang, Tinggi, atau Sangat Tinggi.</p>
+    </section>
 
-  <h2>Seberapa bisa dipercaya?</h2>
-  <p>Model diuji melalui validasi retrospektif 2019 sampai 20 September 2026 terhadap 57.105 titik panas NASA FIRMS. Model fuzzy menghasilkan AUC 0,802 (lebih unggul dibanding model if-else tegas dengan AUC 0,748 dan indikator hari tanpa hujan saja dengan AUC 0,701, serta unggul konsisten di 8 dari 8 tahun evaluasi). Korelasi Spearman bulanan mencapai 0,666.</p>
-  <p>Tingkat kemunculan titik panas meningkat tajam seiring naiknya kelas risiko. Persentase hari-grid yang memuat titik panas adalah: Rendah 0,70%, Sedang 2,81%, Tinggi 9,19%, dan Sangat Tinggi 28,93%. Status alarm (gabungan kelas Tinggi dan Sangat Tinggi) muncul pada 19,2% hari-grid, namun berhasil mencakup 60,94% hari-grid berapi dan 72,9% titik panas, dengan presisi 10,55% atau lift 3,17 kali lipat dibandingkan peluang dasar (3,32%).</p>
-  <p><strong>Perlu diingat:</strong> skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran. Nilai H-3 sampai H-1 mencerminkan kondisi yang sudah terjadi untuk evaluasi, sedangkan prakiraan untuk H+4 ke atas merupakan perkiraan kasar yang lebih dinamis.</p>
+    <section id="hitung">
+      <h2>Bagaimana risiko dihitung?</h2>
+      <p>Risiko dihitung dari prakiraan cuaca: suhu, kelembapan, hujan, angin, dan berapa hari berturut-turut tidak turun hujan. Cuaca tidak bisa dibagi tegas menjadi "kering" atau "basah". Karena itu dipakai sistem fuzzy Mamdani, yang menilai kondisi secara bertahap, mirip cara petugas berpengalaman menimbang tanda-tanda di lapangan.</p>
+      <p>Sistem ini memakai 45 aturan. Hari dianggap tanpa hujan bila curah hujannya kurang dari 3 mm. Hasilnya berupa skor 0 sampai 100, lalu dikelompokkan menjadi empat kelas risiko. Penjelasan lengkap beserta contoh hitungan ada di halaman <a href="cara-kerja.html">Cara Kerja</a>.</p>
+    </section>
 
-  <h2>Sumber data</h2>
-  <ul>
-    <li>Prakiraan cuaca: <a href="https://open-meteo.com/">Open-Meteo</a></li>
-    <li>Validasi titik panas: <a href="https://firms.modaps.eosdis.nasa.gov/">NASA FIRMS</a></li>
-    <li>Peta dasar: &copy; OpenStreetMap, ditampilkan dengan Leaflet</li>
-  </ul>
-  <p>Data diperbarui otomatis setiap pagi sekitar pukul 05.30 WITA.</p>
+    <section id="percaya">
+      <h2>Seberapa bisa dipercaya?</h2>
+      <p>Model diuji melalui validasi retrospektif 2019 sampai 20 September 2026 terhadap 57.105 titik panas NASA FIRMS. Model fuzzy menghasilkan AUC 0,802 (lebih unggul dibanding model if-else tegas dengan AUC 0,748 dan indikator hari tanpa hujan saja dengan AUC 0,701, serta unggul konsisten di 8 dari 8 tahun evaluasi). Korelasi Spearman bulanan mencapai 0,666.</p>
+      <p>Tingkat kemunculan titik panas meningkat tajam seiring naiknya kelas risiko. Persentase hari-grid yang memuat titik panas adalah: Rendah 0,70%, Sedang 2,81%, Tinggi 9,19%, dan Sangat Tinggi 28,93%. Status alarm (gabungan kelas Tinggi dan Sangat Tinggi) muncul pada 19,2% hari-grid, namun berhasil mencakup 60,94% hari-grid berapi dan 72,9% titik panas, dengan presisi 10,55% atau lift 3,17 kali lipat dibandingkan peluang dasar (3,32%).</p>
+      <p class="kecil">"Hari-grid" adalah satu titik grid pada satu hari. Grafik di bawah dibuat dari angka hasil notebook riset (<code>data/validasi.json</code>).</p>
 
-  <h2>Pengembang</h2>
-  <ul>
-    <li>Rahmat Riyadi: data, model fuzzy, dan otomasi</li>
-    <li>Fahri: peta interaktif</li>
-    <li>Richo / Husein: antarmuka dan informasi</li>
-  </ul>
-  <p>Kontak resmi: akan ditambahkan setelah ditentukan tim.</p>
-</main>
+      <div class="kartu-grafik">
+        <h3>Titik panas per kelas risiko</h3>
+        <p class="jelas">Makin tinggi kelas risiko, makin sering titik panas muncul.</p>
+        <div class="grafik" data-grafik="e6"></div>
+        <p class="sumber-sel">Persentase hari-grid yang memuat minimal satu titik panas. Sumber: notebook bagian E6.</p>
+      </div>
+
+      <div class="kartu-grafik">
+        <h3>Dibanding cara yang lebih sederhana</h3>
+        <p class="jelas">Fuzzy paling baik membedakan hari yang ada api dari hari yang tidak ada api.</p>
+        <div class="grafik" data-grafik="f2"></div>
+        <p class="sumber-sel">AUC harian dan korelasi Spearman bulanan tiga metode. Sumber: notebook bagian F2.</p>
+      </div>
+
+      <figure class="gambar-riset sempit">
+        <h3>Kurva ROC</h3>
+        <p class="jelas">Hampir di sepanjang kurva, garis fuzzy berada di atas dua cara lain: lebih banyak api tertangkap untuk jumlah alarm palsu yang sama.</p>
+        <button type="button" aria-label="Perbesar gambar kurva ROC"><img src="img/riset/h1-kurva-roc.png" width="889" height="790" loading="lazy" alt="Kurva ROC: Fuzzy Mamdani AUC 0,802, if-else tegas 0,748, hari tanpa hujan saja 0,701, dibanding garis tebakan acak."><span>Perbesar</span></button>
+        <figcaption>Sumbu datar: rasio alarm palsu. Sumbu tegak: rasio api tertangkap. Garis putus-putus diagonal adalah tebakan acak. Sumber: notebook bagian H1.</figcaption>
+      </figure>
+
+      <div class="kartu-grafik">
+        <h3>Hasil alarm vs kenyataan</h3>
+        <p class="jelas">Alarm (kelas Tinggi dan Sangat Tinggi) menangkap sebagian besar hari berapi, dengan harga alarm palsu yang cukup banyak.</p>
+        <div class="grafik" data-grafik="h2"></div>
+        <p class="sumber-sel">Jumlah hari-grid 2019 sampai 2026. Sumber: notebook bagian H2.</p>
+      </div>
+
+      <div class="kartu-grafik">
+        <h3>Porsi hari vs porsi titik panas</h3>
+        <p class="jelas">Kelas Tinggi dan Sangat Tinggi hanya sebagian kecil hari, tetapi menampung sebagian besar titik panas.</p>
+        <div class="grafik" data-grafik="h3"></div>
+        <p class="sumber-sel">Sumber: notebook bagian H3.</p>
+      </div>
+
+      <div class="kartu-grafik">
+        <h3>Stabil dari tahun ke tahun</h3>
+        <p class="jelas">Fuzzy unggul di setiap tahun, baik tahun kering maupun tahun basah.</p>
+        <div class="grafik" data-grafik="h5"></div>
+        <p class="sumber-sel">AUC per tahun. Sumber: notebook bagian H5.</p>
+      </div>
+
+      <details class="lanjut">
+        <summary>Lihat analisis lebih lanjut</summary>
+        <div>
+          <div class="kartu-grafik">
+            <h3>Memilih ambang alarm</h3>
+            <p class="jelas">Ambang rendah menangkap lebih banyak api tetapi lebih sering salah alarm. Ambang 50 dipilih karena api yang terlewat lebih merugikan daripada alarm palsu.</p>
+            <div class="grafik" data-grafik="h4"></div>
+            <p class="sumber-sel">Presisi, recall, dan F1 untuk ambang skor 25 sampai 75. Sumber: notebook bagian H4.</p>
+          </div>
+
+          <figure class="gambar-riset">
+            <h3>Musim kebakaran 2026, hari demi hari</h3>
+            <p class="jelas">Skor risiko bertahan di atas batas kelas Tinggi sejak awal Agustus, sebelum titik panas memuncak pada 19 Agustus.</p>
+            <button type="button" aria-label="Perbesar gambar deret harian Juli sampai September 2026"><img src="img/riset/g3-deret-harian-jul-sep-2026.png" width="1600" height="474" loading="lazy" alt="Grafik rata-rata skor risiko harian dan jumlah titik panas harian Kalimantan Timur, Juli sampai 20 September 2026."><span>Perbesar</span></button>
+            <figcaption>Garis biru: rata-rata skor risiko harian se-Kaltim. Batang merah: jumlah titik panas per hari. Garis merah putus-putus: batas kelas Tinggi (skor 50). Sumber: notebook bagian G3.</figcaption>
+          </figure>
+        </div>
+      </details>
+
+      <p><strong>Perlu diingat:</strong> skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran. Nilai H-3 sampai H-1 mencerminkan kondisi yang sudah terjadi untuk evaluasi, sedangkan prakiraan untuk H+4 ke atas merupakan perkiraan kasar yang lebih dinamis.</p>
+    </section>
+
+    <section id="sumber">
+      <h2>Sumber data</h2>
+      <ul>
+        <li>Prakiraan cuaca: <a href="https://open-meteo.com/">Open-Meteo</a></li>
+        <li>Validasi titik panas: <a href="https://firms.modaps.eosdis.nasa.gov/">NASA FIRMS</a></li>
+        <li>Peta dasar: &copy; OpenStreetMap, ditampilkan dengan Leaflet</li>
+      </ul>
+      <p>Data diperbarui otomatis setiap pagi sekitar pukul 05.30 WITA.</p>
+    </section>
+
+    <section id="pengembang">
+      <h2>Pengembang</h2>
+      <ul>
+        <li>Rahmat Riyadi: data, model fuzzy, dan otomasi</li>
+        <li>Fahri: peta interaktif</li>
+        <li>Richo / Husein: antarmuka dan informasi</li>
+      </ul>
+      <p>Kontak resmi: akan ditambahkan setelah ditentukan tim.</p>
+    </section>
+  </main>
+</div>
 
 <footer class="kaki">
   <div class="bungkus lebar"><p><strong>Penting:</strong> skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran.</p></div>
 </footer>
+
+<dialog id="lightbox" class="lightbox" aria-label="Gambar diperbesar">
+  <div class="lb-atas"><p></p><button type="button" class="lb-tutup" aria-label="Tutup">&times;</button></div>
+  <div class="lb-gulir"><img alt=""></div>
+</dialog>
+
+<script src="js/grafik.js"></script>
 </body>
 </html>
