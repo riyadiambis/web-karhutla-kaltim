@@ -14,7 +14,8 @@ Web statis yang menyajikan sistem peringatan dini **risiko** kebakaran hutan dan
 - **Mode "Peta Saja":** Tombol kontrol di pojok peta untuk menyembunyikan atau menampilkan lapisan grid kapan saja. Pilihan pengguna disimpan otomatis di peramban via `localStorage`.
 - **Detail Cuaca Tiap Grid:** Klik atau sentuh kotak grid untuk menyorot area dan membuka modal berisi skor risiko (0–100), kelas risiko, suhu maksimum, kelembapan minimum, curah hujan, kecepatan angin, dan deret hari tanpa hujan.
 - **Ringkasan Wilayah & Tabel Kabupaten/Kota:** Menampilkan distribusi titik per kelas risiko, rekomendasi tindakan preventif sesuai kelas risiko tertinggi se-provinsi, serta tabel rekapitulasi rerata skor dan kelas puncak untuk setiap kabupaten/kota dengan fitur pencarian interaktif.
-- **Halaman Penjelasan Ilmiah (Tentang):** Dokumentasi metodologi fuzzy Mamdani, fungsi keanggotaan, 45 aturan inferensi, matriks validasi empiris, dan batasan operasional.
+- **Halaman Cara Kerja:** Alur sistem, lima variabel cuaca, grafik fungsi keanggotaan, tabel 45 aturan, inferensi Mamdani, dua contoh hitungan langkah demi langkah, dan peta hari aman vs berisiko 2026.
+- **Halaman Tentang:** Ringkasan situs dan grafik hasil validasi (titik panas per kelas, AUC tiga metode, kurva ROC, matriks kebingungan, porsi titik panas, AUC per tahun, analisis ambang alarm, dan deret harian 2026). Grafik dibuat ulang dari angka notebook di `data/validasi.json`.
 
 ---
 
@@ -23,9 +24,9 @@ Web statis yang menyajikan sistem peringatan dini **risiko** kebakaran hutan dan
 1. **Pengambilan Data Cuaca:** Skrip Python mengambil data cuaca harian dari API Open-Meteo untuk 203 koordinat grid Kaltim (suhu maksimum, kelembapan minimum, curah hujan harian, dan kecepatan angin maksimum).
 2. **Perhitungan Hari Tanpa Hujan:** Deret hari tanpa hujan dihitung berkesinambungan per titik dari riwayat 92 hari ke belakang sampai 8 hari ke depan menggunakan ambang presipitasi 3 mm (hujan < 3 mm menambah akumulasi hari kering, hujan $\ge$ 3 mm mereset hitungan ke 0).
 3. **Inferensi Fuzzy Mamdani Bertingkat:**
-   - **Tahap 1:** Memadukan *Hari Tanpa Hujan* dan *Kelembapan Udara* menghasilkan **Indeks Kekeringan** (9 aturan).
-   - **Tahap 2:** Memadukan *Suhu Udara* dan *Kecepatan Angin* menghasilkan **Indeks Cuaca Api** (12 aturan).
-   - **Tahap 3:** Memadukan *Indeks Kekeringan* dan *Indeks Cuaca Api* menghasilkan **Skor Risiko Karhutla** final skala 0–100 (24 aturan, defuzzifikasi centroid). Total 45 aturan terintegrasi.
+   - **Tingkat 1a:** Memadukan *Curah Hujan* dan *Hari Tanpa Hujan* menghasilkan **Indeks Kekeringan** (9 aturan).
+   - **Tingkat 1b:** Memadukan *Suhu*, *Kelembapan*, dan *Kecepatan Angin* menghasilkan **Indeks Cuaca Api** (27 aturan).
+   - **Tingkat 2:** Memadukan *Indeks Kekeringan* dan *Indeks Cuaca Api* menghasilkan **Skor Risiko Karhutla** final skala 0–100 (9 aturan, implikasi MIN, agregasi MAX, defuzzifikasi centroid). Total 45 aturan. Penjelasan lengkap ada di `cara-kerja.html`.
 4. **Penyimpanan Data Ringkas:** Hasil kalkulasi disimpan ke file statis `data/risiko.json` tanpa indentasi (format ringkas ~299 KB) untuk menjamin pemuatan cepat di peramban.
 5. **Penyajian di Peta:** Antarmuka web statis (Leaflet.js + Vanilla JS) membaca `data/risiko.json` secara asinkron dan merender grid risiko di peramban tanpa memerlukan server backend dinamis.
 
@@ -37,7 +38,7 @@ Validasi kuantitatif dilakukan dengan membandingkan skor risiko terhadap riwayat
 
 - **Kemampuan Diskriminasi Model:** Mencapai **AUC-ROC 0,802** pada resolusi 0,25 derajat (meningkat signifikan dari versi 0,5 derajat yang bernilai 0,773).
 - **Konsistensi Tahunan:** Model fuzzy unggul konsisten atas *baseline* pada seluruh **8 dari 8 tahun evaluasi**.
-- **Tangkapan Titik Panas:** Sebanyak **72,9% titik panas** FIRMS historis berhasil terdeteksi jatuh pada hari-hari ketika model mengeluarkan status alarm risiko (kelas Sedang, Tinggi, atau Sangat Tinggi).
+- **Tangkapan Titik Panas:** Sebanyak **72,9% titik panas** FIRMS historis berhasil terdeteksi jatuh pada hari-hari ketika model mengeluarkan status alarm risiko (kelas Tinggi atau Sangat Tinggi).
 - *Catatan Metodologis:* Hasil validasi ini mencerminkan korelasi kondisi atmosferik terhadap kemunculan titik panas, dan harus diinterpretasikan secara bijak sebagai indikator potensi bahaya lingkungan, bukan kepastian terbakarnya suatu titik.
 
 ---
@@ -47,19 +48,26 @@ Validasi kuantitatif dilakukan dengan membandingkan skor risiko terhadap riwayat
 ```text
 web-karhutla-kaltim/
 ├── index.html              # Halaman utama aplikasi (peta risiko, kontrol, ringkasan)
-├── tentang.html            # Halaman metodologi fuzzy, validasi, dan latar belakang riset
+├── cara-kerja.html         # Halaman metode fuzzy: alur, fungsi keanggotaan, 45 aturan, contoh hitungan
+├── tentang.html            # Halaman latar belakang dan grafik hasil validasi riset
 ├── pratinjau.html          # Halaman acuan data lokal untuk verifikasi cepat
 ├── css/
 │   └── gaya.css            # Desain antarmuka, variabel warna risiko, dan responsivitas
 ├── js/
 │   ├── peta.js             # Logika peta Leaflet, interaksi grid, tombol tanggal, dan modal
-│   └── tabel.js            # Rekapitulasi kabupaten/kota, filter pencarian, dan rekomendasi
+│   ├── tabel.js            # Rekapitulasi kabupaten/kota, filter pencarian, dan rekomendasi
+│   └── grafik.js           # Grafik SVG riset, animasi, lightbox, dan daftar isi (Cara Kerja, Tentang)
 ├── data/
 │   ├── grid_kaltim.csv     # Daftar 203 titik koordinat (resolusi 0,25°) se-Kaltim
-│   └── risiko.json         # Output data risiko 11 hari (H-3 s.d. H+7) untuk visualisasi
+│   ├── risiko.json         # Output data risiko 11 hari (H-3 s.d. H+7) untuk visualisasi
+│   ├── validasi.json       # Angka grafik validasi, disalin dari output notebook
+│   ├── cara_kerja.json     # Batas fungsi keanggotaan dan tabel 45 aturan dari notebook
+│   └── contoh_hitung.json  # Dua contoh hitungan fuzzy (dicek terhadap riset/uji_referensi.csv)
+├── img/riset/              # Gambar notebook yang datanya tidak ada di repo (ROC, peta 2026, deret harian)
 ├── python/
 │   ├── fuzzy_karhutla.py   # Mesin inferensi fuzzy Mamdani 45 aturan (standar riset)
 │   ├── ambil_prakiraan.py  # Pipeline pengambilan API Open-Meteo & penulisan risiko.json
+│   ├── ekstrak_riset.py    # Salin angka & gambar notebook ke data/ dan img/riset/ (butuh Pillow)
 │   └── uji_konsistensi.py  # Uji otomatis kesesuaian numerik Python vs notebook riset
 ├── riset/
 │   ├── fuzzy-mamdani-karhutla-kaltim.ipynb  # Notebook riset dasar validasi 0,25 derajat
@@ -68,7 +76,7 @@ web-karhutla-kaltim/
 ├── docs/
 │   └── PRD.md              # Spesifikasi produk lengkap (Product Requirements Document)
 └── .github/workflows/
-    └── ambil_data.yml      # Workflow otomasi pembaruan data harian GitHub Actions
+    └── perbarui.yml        # Workflow otomasi pembaruan data harian GitHub Actions
 ```
 
 ---
