@@ -282,7 +282,7 @@ Hosting cadangan: mini-PC server lokal milik Rahmat, kalau suatu saat butuh kont
 - **Lisensi API:** pemakaian Open-Meteo harus sesuai ketentuan kuota non-komersial.
 - **Hari tanpa hujan:** dihitung dari riwayat cuaca ditambah prakiraan, dengan ambang hujan 3 mm.
 - **Konsistensi parameter:** 45 aturan inferensi dan batas variabel harus identik dengan studi awal.
-- **Akurasi jangka panjang:** prakiraan H+5 sampai H+7 menurun secara alami, jadi harus dijelaskan di UI.
+- **Akurasi jangka panjang:** prakiraan H+4 sampai H+7 menurun secara alami, jadi harus dijelaskan di UI.
 - **Pengembangan akademis:** web ini jadi bahan Paper 2 (penerapan sistem dan uji usabilitas).
 
 ### Keputusan yang Perlu Difinalkan

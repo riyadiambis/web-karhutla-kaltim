@@ -48,6 +48,11 @@ button{touch-action:manipulation}
 .tanggal button.lewat:hover{opacity:.95;color:var(--ink)}
 .tanggal button.lewat[aria-pressed="true"]{background:#3a4b42;border-color:#657b70;color:#fff;opacity:1}
 .tanggal button.lewat[aria-pressed="true"] small{color:#c5d4cd}
+.tanggal button.tgl-hari-ini{background:#132a1e;border-color:#2a7547;color:#9be2b6;font-weight:800}
+.tanggal button.tgl-hari-ini small{color:#5ea67c}
+.tanggal button.tgl-hari-ini:hover{background:#1a3a29;border-color:#389a5e;color:#bdf5d3}
+.tanggal button.tgl-hari-ini[aria-pressed="true"]{background:#23914a;border-color:#3dd677;color:#ffffff;box-shadow:0 0 12px rgba(35,145,74,.45)}
+.tanggal button.tgl-hari-ini[aria-pressed="true"] small{color:#e4f8ed}
 .catatan{margin:8px 0 0;font-size:.9rem;background:#3a3112;color:#f6e7a6;border-left:4px solid var(--sedang);padding:8px 12px;border-radius:0 8px 8px 0}
 #peta{position:relative;height:min(60dvh,560px);min-height:340px;border-radius:var(--r);border:1px solid var(--garis);background:#0b120f;z-index:0}
 .kontrol-peta-saja{margin:10px 0 0 10px}
@@ -120,8 +125,10 @@ button{touch-action:manipulation}
   .kolom-kaki{grid-template-columns:repeat(3,1fr);gap:32px}
 }
 @media (min-width:700px){
-  .tanggal{display:grid;grid-template-columns:repeat(8,1fr);overflow:visible}
-  .tanggal button{flex:none}
+  .tag-lewat{display:none}
+  .tanggal{display:flex;gap:4px;overflow-x:auto;scroll-snap-type:none;flex-wrap:nowrap}
+  .tanggal button{flex:1 1 0;min-width:54px;min-height:50px;padding:4px 2px;font-size:.86rem;line-height:1.15}
+  .tanggal button small{font-size:.74rem}
 }
 
 /* Desktop: sidebar menempel di samping peta */
