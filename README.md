@@ -1,6 +1,6 @@
 # Web Peringatan Dini Risiko Karhutla Kaltim
 
-Web statis yang menampilkan peta risiko kebakaran hutan dan lahan (karhutla) Kalimantan Timur untuk hari ini sampai 7 hari ke depan. Risiko dihitung otomatis dari prakiraan cuaca memakai sistem fuzzy Mamdani.
+Web statis yang menampilkan peta risiko kebakaran hutan dan lahan (karhutla) Kalimantan Timur untuk 11 hari (H-3 s.d. H-1 evaluasi riwayat, Hari ini, dan H+1 s.d. H+7 prakiraan cuaca). Risiko dihitung otomatis dari data cuaca memakai sistem fuzzy Mamdani.
 
 ## Status
 
@@ -8,8 +8,9 @@ Tahap 2: pipeline data Python selesai (otomasi harian menunggu uji jalan pertama
 
 ## Fitur Utama
 
-- Peta 52 titik grid berwarna sesuai kelas risiko (Rendah, Sedang, Tinggi, Sangat Tinggi)
-- Pemilih tanggal H sampai H+7
+- Peta 203 titik grid berwarna transparan sesuai kelas risiko (Rendah, Sedang, Tinggi, Sangat Tinggi, resolusi 0,25° / ~28 km)
+- Tombol "Peta saja" untuk menyembunyikan/menampilkan grid (tersimpan di localStorage)
+- Pemilih tanggal 11 hari (H-3 sampai H+7, dengan penanda riwayat lewat dan catatan perkiraan kasar pada H+4 s.d. H+7)
 - Detail cuaca per titik (suhu, kelembapan, hujan, angin, hari tanpa hujan)
 - Tabel risiko per kabupaten/kota
 - Rekomendasi tindakan preventif sesuai kelas risiko

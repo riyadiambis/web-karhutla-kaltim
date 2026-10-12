@@ -6,13 +6,13 @@ Status: Tahap 2 (pipeline data selesai, frontend berjalan)
 
 ## 1. Ringkasan Produk
 
-Web statis berbasis HTML yang menampilkan peta risiko karhutla Kalimantan Timur untuk hari ini sampai 7 hari ke depan. Risiko dihitung otomatis dari prakiraan cuaca memakai sistem fuzzy Mamdani yang sudah divalidasi (AUC 0,773 terhadap titik panas NASA FIRMS 2019-2026).
+Web statis berbasis HTML yang menampilkan peta risiko karhutla Kalimantan Timur untuk 11 hari (H-3 s.d. H-1 evaluasi riwayat, Hari ini, dan H+1 s.d. H+7 prakiraan cuaca). Risiko dihitung otomatis dari data cuaca memakai sistem fuzzy Mamdani yang sudah divalidasi (AUC 0,802 terhadap titik panas NASA FIRMS 2019-2026).
 
 **Pengguna sasaran:** masyarakat umum, petani/pekebun, dan petugas lapangan (BPBD, Manggala Agni, perangkat desa).
 
 **Pertanyaan utama:** "Seberapa berbahaya aktivitas pembakaran atau potensi api di lokasi saya dalam 7 hari ke depan?"
 
-**Fitur utama:** peta 52 titik grid berwarna sesuai kelas risiko (Rendah, Sedang, Tinggi, Sangat Tinggi), daftar risiko per kabupaten/kota, dan rekomendasi tindakan preventif.
+**Fitur utama:** peta 203 titik grid berwarna sesuai kelas risiko (Rendah, Sedang, Tinggi, Sangat Tinggi, resolusi 0,25° / ~28 km), daftar risiko per kabupaten/kota, dan rekomendasi tindakan preventif.
 
 **Prinsip arsitektur V1:** sederhana, ringan, HTML statis, tanpa login, tanpa server berbayar.
 
@@ -21,12 +21,12 @@ Web statis berbasis HTML yang menampilkan peta risiko karhutla Kalimantan Timur 
 - Karhutla di Kaltim berulang setiap musim kemarau, tapi informasi risiko harian yang lokal belum mudah diakses publik.
 - Kondisi 2026: BMKG mencatat El Nino sangat kuat sampai awal 2027, sehingga periode ini jadi puncak titik panas Kaltim dalam catatan NASA FIRMS 2019-2026.
 - Masalah: peringatan biasanya baru keluar setelah api muncul, padahal indikator cuaca berbahaya sudah terbentuk beberapa hari sebelumnya.
-- Dasar solusi: model fuzzy Mamdani bertingkat terbukti valid terhadap 57.105 titik panas. Pada kelas Sangat Tinggi, titik panas terdeteksi di 57,22% hari-grid (dibanding 2,88% pada kelas Rendah).
+- Dasar solusi: model fuzzy Mamdani bertingkat terbukti valid terhadap 57.105 titik panas (validasi retrospektif 2019-2026, AUC 0,802). Pada kelas Sangat Tinggi, titik panas terdeteksi di 28,93% hari-grid (dibanding 0,70% pada kelas Rendah).
 - Peluang: menggabungkan model fuzzy dengan data prakiraan cuaca untuk memberi peringatan dini sebelum kebakaran terjadi.
 
 ## 3. Tujuan, Ukuran Keberhasilan, dan Batasan
 
-Versi 1 dianggap berhasil jika mampu menyajikan risiko 8 hari (H sampai H+7) pada 52 titik grid secara otomatis setiap pagi, dengan antarmuka yang ramah pengguna.
+Versi 1 dianggap berhasil jika mampu menyajikan risiko 11 hari (H-3 sampai H+7) pada 203 titik grid secara otomatis setiap pagi, dengan antarmuka yang ramah pengguna.
 
 ### Tujuan Utama
 
@@ -94,11 +94,11 @@ Aplikasi punya dua halaman: Beranda (peta) dan Tentang (metodologi).
 | HEADER: Peringatan Dini Risiko Karhutla Kaltim               |
 | Diperbarui: 5 Okt 2026, 06.00 WITA                           |
 +--------------------------------------------------------------+
-| PILIH TANGGAL: [Hari ini] [Besok] [+2] [+3] [+4] [+5] [+6] [+7] |
+| PILIH TANGGAL: [H-3] [H-2] [H-1] [Hari ini] [Besok] [+2]...  |
 +-------------------------------------+------------------------+
 |                                     | RINGKASAN HARI INI     |
 |   PETA KALTIM                       | Sangat Tinggi: 5 titik |
-|   52 grid berwarna                  | Tinggi: 18 titik       |
+|   203 grid berwarna                 | Tinggi: 18 titik       |
 |   (klik -> modal detail cuaca)      | Sedang: 20 titik       |
 |                                     | Rendah: 9 titik        |
 |   Legenda: Hijau, Kuning,           +------------------------+
@@ -115,8 +115,8 @@ Aplikasi punya dua halaman: Beranda (peta) dan Tentang (metodologi).
 
 | Komponen | Deskripsi | Prioritas |
 |---|---|---|
-| Peta risiko | Overlay 52 grid interaktif berwarna di atas wilayah Kaltim | Wajib |
-| Pemilih tanggal | Navigasi tanggal H sampai H+7 untuk mengganti layer peta | Wajib |
+| Peta risiko | Overlay 203 grid interaktif berwarna transparan (35% opasitas) di atas wilayah Kaltim, dilengkapi tombol mode "Peta saja" | Wajib |
+| Pemilih tanggal | Navigasi tanggal H-3 sampai H+7 (11 hari) untuk mengganti layer peta | Wajib |
 | Detail titik grid | Modal pop-up saat grid diklik: skor, suhu, kelembapan, hujan, angin, hari tanpa hujan | Wajib |
 | Ringkasan harian | Jumlah titik grid per kelas risiko | Wajib |
 | Saran tindakan | Teks rekomendasi sesuai kelas risiko tertinggi | Wajib |
@@ -138,7 +138,7 @@ Aplikasi punya dua halaman: Beranda (peta) dan Tentang (metodologi).
 
 - Penjelasan fuzzy Mamdani secara intuitif dan non-teknis
 - Atribusi sumber data (Open-Meteo dan NASA FIRMS)
-- Ringkasan validasi ilmiah model (AUC 0,773)
+- Ringkasan validasi ilmiah model (AUC 0,802)
 - Informasi pengembang dan kontak resmi
 
 ## 7. Spesifikasi Data (`data/risiko.json`)
@@ -190,7 +190,7 @@ File ini adalah kontrak utama antara backend (Python) dan frontend (HTML/JS). Se
 
 | Aspek | Spesifikasi |
 |---|---|
-| Kinerja | Sangat ringan, payload JSON dibatasi 52 titik x 8 hari |
+| Kinerja | Sangat ringan, payload JSON dibatasi 203 titik x 11 hari (~300 KB) |
 | Aksesibilitas seluler | Layout adaptif, tombol mudah disentuh di layar HP |
 | Inklusivitas UI | Teks kelas risiko ditampilkan berdampingan dengan warna (untuk buta warna) |
 | Keandalan data | Pakai data cache terakhir kalau API atau eksekusi otomatis gagal |
@@ -204,7 +204,7 @@ File ini adalah kontrak utama antara backend (Python) dan frontend (HTML/JS). Se
 | Peran | Penanggung Jawab | Tanggung Jawab | Deliverables |
 |---|---|---|---|
 | Python / data dan fuzzy | Rahmat Riyadi | Migrasi modul fuzzy, otomasi ambil data Open-Meteo, hitung hari tanpa hujan, buat JSON harian | `fuzzy_karhutla.py`, `ambil_prakiraan.py`, `risiko.json` |
-| Frontend / peta interaktif | Fahri (Pengembang A) | Peta Leaflet, pewarnaan 52 grid, kontrol tanggal, modal detail cuaca | `index.html` (bagian peta), `js/peta.js` |
+| Frontend / peta interaktif | Fahri (Pengembang A) | Peta Leaflet, pewarnaan 203 grid, kontrol tanggal, modal detail cuaca | `index.html` (bagian peta), `js/peta.js` |
 | Frontend / UI dan informasi | Pengembang B (Richo atau Husein, belum final) | Header, ringkasan risiko, tabel wilayah, CSS, halaman Tentang | `index.html` (bagian info), `tentang.html`, `css/gaya.css`, `js/tabel.js` |
 
 ### Aturan Kolaborasi
@@ -218,7 +218,7 @@ File ini adalah kontrak utama antara backend (Python) dan frontend (HTML/JS). Se
 | Komponen | Teknologi | Alasan |
 |---|---|---|
 | Frontend UI | HTML5, CSS3, Vanilla JS | Sederhana, cepat, tanpa framework |
-| Peta interaktif | Leaflet.js | Ringan, open-source, cukup untuk 52 grid |
+| Peta interaktif | Leaflet.js | Ringan, open-source, cukup untuk 203 grid |
 | Data cuaca | Open-Meteo Forecast API | Gratis untuk non-komersial, variabelnya sesuai riset |
 | Pemrosesan backend | Python (pandas, numpy, scikit-fuzzy) | Satu lingkungan dengan notebook riset |
 | Otomasi | GitHub Actions | Menjalankan Python tiap hari dan commit JSON baru |
@@ -241,7 +241,7 @@ web-karhutla-kaltim/
 │   └── tabel.js            (Pengembang B (Richo atau Husein, belum final))
 ├── data/
 │   ├── risiko.json         (output harian)
-│   └── grid_kaltim.csv     (koordinat 52 titik)
+│   └── grid_kaltim.csv     (koordinat 203 titik)
 ├── docs/
 │   └── PRD.md
 ├── python/
@@ -292,4 +292,4 @@ Hosting cadangan: mini-PC server lokal milik Rahmat, kalau suatu saat butuh kont
 3. Rencana dan target responden kuesioner SUS
 4. Perlu tidaknya resolusi tingkat kecamatan di versi berikutnya
 5. Prosedur koordinasi dan lisensi data dengan BPBD setempat
-6. Kota Samarinda, Balikpapan, Bontang, dan Kabupaten Mahakam Ulu belum muncul di tabel karena tidak ada titik grid yang jatuh di wilayahnya. Tentukan: dicatat sebagai keterbatasan V1, atau ditambah fitur "titik grid terdekat".
+6. Kota Bontang dan Kabupaten Mahakam Ulu belum muncul di tabel karena tidak ada titik grid yang jatuh di wilayahnya. Tentukan: dicatat sebagai keterbatasan V1, atau ditambah fitur "titik grid terdekat".

@@ -43,8 +43,18 @@ button{touch-action:manipulation}
 .tanggal button small{display:block;font-weight:400;font-size:.8rem;color:var(--redam)}
 .tanggal button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .tanggal button[aria-pressed="true"] small{color:#4d5f58}
+.tanggal button.lewat{background:#141d18;border-color:#223028;color:#788a82;opacity:.8}
+.tanggal button.lewat small{color:#55665f}
+.tanggal button.lewat:hover{opacity:.95;color:var(--ink)}
+.tanggal button.lewat[aria-pressed="true"]{background:#3a4b42;border-color:#657b70;color:#fff;opacity:1}
+.tanggal button.lewat[aria-pressed="true"] small{color:#c5d4cd}
 .catatan{margin:8px 0 0;font-size:.9rem;background:#3a3112;color:#f6e7a6;border-left:4px solid var(--sedang);padding:8px 12px;border-radius:0 8px 8px 0}
-#peta{height:min(60dvh,560px);min-height:340px;border-radius:var(--r);border:1px solid var(--garis);background:#0b120f;z-index:0}
+#peta{position:relative;height:min(60dvh,560px);min-height:340px;border-radius:var(--r);border:1px solid var(--garis);background:#0b120f;z-index:0}
+.kontrol-peta-saja{margin:10px 0 0 10px}
+.btn-peta-saja{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:8px 14px;background:var(--s2);color:var(--ink);border:1px solid var(--garis);border-radius:10px;font:inherit;font-size:.86rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.45);transition:background .15s,color .15s,border-color .15s}
+.btn-peta-saja:hover{background:var(--garis);color:#fff}
+.btn-peta-saja[aria-pressed="true"]{background:#1f3328;border-color:#38654c;color:#7ae2ab}
+.btn-peta-saja svg{flex-shrink:0}
 .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.95) contrast(.9) saturate(.7)}
 .leaflet-tooltip{font:600 .88rem system-ui,sans-serif;color:var(--ink);background:var(--s2);border:1px solid var(--garis);border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.5)}
 .leaflet-bar a{background:var(--s2);color:var(--ink);border-color:var(--garis)}

@@ -29,10 +29,13 @@ URL = "https://api.open-meteo.com/v1/forecast"
 ZONA = "Asia/Makassar"  # WITA
 WITA = timezone(timedelta(hours=8))
 HARI_LALU = 92  # batas past_days Open-Meteo, dipakai buat menghitung hari tanpa hujan
-HARI_DEPAN = 8  # H sampai H+7
+HARI_TAMPIL_LALU = 3  # H-3 sampai H-1 (kondisi yang sudah terjadi)
+HARI_DEPAN = 8  # H sampai H+7 (prakiraan)
+JUMLAH_HARI_TAMPIL = HARI_TAMPIL_LALU + HARI_DEPAN  # 11 hari total (H-3 sampai H+7)
 TOTAL_HARI = HARI_LALU + HARI_DEPAN
-JUMLAH_TITIK = 52
-BATCH = 13  # titik per permintaan
+AWAL_TAMPIL = HARI_LALU - HARI_TAMPIL_LALU  # indeks 89
+JUMLAH_TITIK = 203
+BATCH = 20  # titik per permintaan
 JEDA_ANTAR_BATCH = 2  # detik
 PERCOBAAN = 3
 
@@ -76,6 +79,7 @@ def ambil_batch(lats, lons):
         "forecast_days": HARI_DEPAN,
     }
     jeda = 5
+    isi = None
     for percobaan in range(1, PERCOBAAN + 1):
         try:
             r = requests.get(URL, params=params, timeout=60)
@@ -83,16 +87,29 @@ def ambil_batch(lats, lons):
                 # salah parameter, tidak ada gunanya diulang
                 raise ValueError(f"Open-Meteo menolak permintaan: {r.text[:300]}")
             r.raise_for_status()
-            isi = r.json()
+            # Tangani respons status 200 yang isinya bukan JSON valid
+            try:
+                isi = r.json()
+            except Exception as json_err:
+                raise ValueError(f"Respons HTTP {r.status_code} bukan JSON valid: {r.text[:200]}") from json_err
             break
-        except ValueError:
-            raise
+        except ValueError as e:
+            if "Open-Meteo menolak permintaan" in str(e):
+                raise
+            print(f"  percobaan {percobaan} gagal: {e}")
+            if percobaan == PERCOBAAN:
+                raise
+            time.sleep(jeda)
+            jeda *= 2
         except Exception as e:
             print(f"  percobaan {percobaan} gagal: {e}")
             if percobaan == PERCOBAAN:
                 raise
             time.sleep(jeda)
-            jeda *= 3
+            jeda *= 2
+
+    if isi is None:
+        raise ValueError("Gagal mendapatkan respons valid dari Open-Meteo")
 
     daftar = isi if isinstance(isi, list) else [isi]
     if len(daftar) != len(lats):
@@ -101,18 +118,30 @@ def ambil_batch(lats, lons):
 
 
 def ambil_semua(grid):
-    hasil = []
+    hasil = [None] * len(grid)
+    kegagalan = []
     for mulai in range(0, len(grid), BATCH):
         potong = grid.iloc[mulai:mulai + BATCH]
-        print(f"Ambil titik {mulai} sampai {mulai + len(potong) - 1} ...")
-        hasil.extend(ambil_batch(potong["lat"].tolist(), potong["lon"].tolist()))
+        akhir = mulai + len(potong) - 1
+        print(f"Ambil titik {mulai} sampai {akhir} ...")
+        try:
+            batch_data = ambil_batch(potong["lat"].tolist(), potong["lon"].tolist())
+            for idx_offset, d in enumerate(batch_data):
+                hasil[mulai + idx_offset] = d
+        except Exception as e:
+            pesan = f"Titik {mulai}-{akhir} gagal: {e}"
+            print(f"  PERINGATAN: {pesan}")
+            kegagalan.append(pesan)
         if mulai + BATCH < len(grid):
             time.sleep(JEDA_ANTAR_BATCH)
+
+    if kegagalan:
+        raise RuntimeError(f"{len(kegagalan)} batch gagal diambil dari API: " + "; ".join(kegagalan))
     return hasil
 
 
 def deret_titik(daily):
-    """Ubah 'daily' satu titik jadi DataFrame 8 hari (H sampai H+7) lengkap dengan hari tanpa hujan."""
+    """Ubah 'daily' satu titik jadi DataFrame 11 hari (H-3 sampai H+7) lengkap dengan hari tanpa hujan."""
     tanggal = daily["time"]
     if len(tanggal) != TOTAL_HARI:
         raise ValueError(f"harus {TOTAL_HARI} hari, dapat {len(tanggal)}")
@@ -125,14 +154,14 @@ def deret_titik(daily):
     if not (selisih == pd.Timedelta(days=1)).all():
         raise ValueError("tanggal dari API tidak berurutan harian")
 
-    # hujan yang kosong di hari lalu dianggap 0 (kering), hari prakiraan tidak boleh kosong
-    df.loc[: HARI_LALU - 1, "hujan"] = df.loc[: HARI_LALU - 1, "hujan"].fillna(0.0)
-    depan = df.iloc[HARI_LALU:]
-    if depan[list(DAILY.values())].isna().any().any():
-        raise ValueError("ada nilai kosong di hari prakiraan")
+    # hujan yang kosong di hari lalu paling awal dianggap 0 (kering)
+    df.loc[: AWAL_TAMPIL - 1, "hujan"] = df.loc[: AWAL_TAMPIL - 1, "hujan"].fillna(0.0)
+    tampil = df.iloc[AWAL_TAMPIL:]
+    if tampil[list(DAILY.values())].isna().any().any():
+        raise ValueError("ada nilai kosong di hari yang ditampilkan (H-3 sampai H+7)")
 
     df["hari_tanpa_hujan"] = hitung_hari_tanpa_hujan(df["hujan"].tolist())
-    return df.iloc[HARI_LALU:].reset_index(drop=True)
+    return df.iloc[AWAL_TAMPIL:].reset_index(drop=True)
 
 
 def susun_tabel(grid, hasil_api):
@@ -183,11 +212,11 @@ def buat_json(grid, tabel):
 def validasi(data, jumlah_titik):
     if len(data["titik"]) != jumlah_titik:
         raise ValueError(f"jumlah titik {len(data['titik'])}, harusnya {jumlah_titik}")
-    if len(data["tanggal"]) != HARI_DEPAN:
-        raise ValueError(f"jumlah tanggal {len(data['tanggal'])}, harusnya {HARI_DEPAN}")
+    if len(data["tanggal"]) != JUMLAH_HARI_TAMPIL:
+        raise ValueError(f"jumlah tanggal {len(data['tanggal'])}, harusnya {JUMLAH_HARI_TAMPIL}")
     for t in data["titik"]:
-        if len(t["prakiraan"]) != HARI_DEPAN:
-            raise ValueError(f"titik {t['id']} punya {len(t['prakiraan'])} hari, harusnya {HARI_DEPAN}")
+        if len(t["prakiraan"]) != JUMLAH_HARI_TAMPIL:
+            raise ValueError(f"titik {t['id']} punya {len(t['prakiraan'])} hari, harusnya {JUMLAH_HARI_TAMPIL}")
         for p in t["prakiraan"]:
             for kunci, nilai in p.items():
                 if nilai is None or (isinstance(nilai, float) and nilai != nilai):
@@ -204,24 +233,26 @@ def validasi(data, jumlah_titik):
 
 def ringkas(data):
     print(f"Diperbarui: {data['diperbarui']}")
-    print(f"Tanggal: {data['tanggal'][0]} sampai {data['tanggal'][-1]}")
-    for idx in (0, HARI_DEPAN - 1):
+    print(f"Tanggal: {data['tanggal'][0]} (H-3) sampai {data['tanggal'][-1]} (H+7) [total {len(data['tanggal'])} hari]")
+    idx_hari_ini = HARI_TAMPIL_LALU
+    for idx, ket in ((0, "H-3"), (idx_hari_ini, "Hari ini"), (JUMLAH_HARI_TAMPIL - 1, "H+7")):
         hitung = {}
         for t in data["titik"]:
             kelas = t["prakiraan"][idx]["kelas"]
             hitung[kelas] = hitung.get(kelas, 0) + 1
         urut = ", ".join(f"{k}: {hitung.get(k, 0)}" for k in ["Rendah", "Sedang", "Tinggi", "Sangat Tinggi"])
-        print(f"Jumlah titik per kelas, {data['tanggal'][idx]}: {urut}")
-    print("Contoh 3 titik, hari pertama:")
+        print(f"Jumlah titik per kelas, {data['tanggal'][idx]} ({ket}): {urut}")
+    print("Contoh 3 titik, Hari ini:")
     for t in data["titik"][:3]:
-        print(f"  {t['id']} {t['kabupaten']}: {t['prakiraan'][0]}")
+        print(f"  {t['id']} {t['kabupaten']}: {t['prakiraan'][idx_hari_ini]}")
 
 
 def tulis_atomik(data, tujuan):
     # tulis ke file sementara dulu supaya tidak ada file setengah jadi
+    # simpan tanpa indentasi (format ringkas) agar ukuran file tetap kecil untuk 203 titik
     sementara = tujuan.with_suffix(".json.tmp")
     with open(sementara, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+        json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
         f.write("\n")
     os.replace(sementara, tujuan)
 

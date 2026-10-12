@@ -17,15 +17,16 @@
 
 <main class="bungkus teks">
   <h2>Apa yang ditampilkan situs ini?</h2>
-  <p>Peta risiko kebakaran hutan dan lahan (karhutla) di Kalimantan Timur untuk hari ini sampai 7 hari ke depan. Wilayah dibagi menjadi 52 titik grid, dan tiap titik diberi warna sesuai tingkat risikonya: Rendah, Sedang, Tinggi, atau Sangat Tinggi.</p>
+  <p>Peta risiko kebakaran hutan dan lahan (karhutla) di Kalimantan Timur mencakup 11 hari: 3 hari evaluasi riwayat (H-3 sampai H-1, kondisi yang sudah terjadi), hari ini, serta 7 hari ke depan (H+1 sampai H+7, prakiraan cuaca). Wilayah dibagi menjadi 203 titik grid (resolusi 0,25 derajat atau sekitar 28 km, sesuai resolusi asli ERA5), dan tiap titik diberi warna sesuai tingkat risikonya: Rendah, Sedang, Tinggi, atau Sangat Tinggi.</p>
 
   <h2>Bagaimana risiko dihitung?</h2>
   <p>Risiko dihitung dari prakiraan cuaca: suhu, kelembapan, hujan, angin, dan berapa hari berturut-turut tidak turun hujan. Cuaca tidak bisa dibagi tegas menjadi "kering" atau "basah". Karena itu dipakai sistem fuzzy Mamdani, yang menilai kondisi secara bertahap, mirip cara petugas berpengalaman menimbang tanda-tanda di lapangan.</p>
   <p>Sistem ini memakai 45 aturan. Hari dianggap tanpa hujan bila curah hujannya kurang dari 3 mm. Hasilnya berupa skor 0 sampai 100, lalu dikelompokkan menjadi empat kelas risiko.</p>
 
   <h2>Seberapa bisa dipercaya?</h2>
-  <p>Model diuji dengan 57.105 titik panas NASA FIRMS pada 2019-2026 dan menghasilkan AUC 0,773. Pada kelas Sangat Tinggi, titik panas terdeteksi di 57,22% hari-grid, sedangkan pada kelas Rendah hanya 2,88%.</p>
-  <p><strong>Perlu diingat:</strong> skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran. Prakiraan untuk 5 hari ke atas lebih mudah meleset.</p>
+  <p>Model diuji melalui validasi retrospektif 2019 sampai 20 September 2026 terhadap 57.105 titik panas NASA FIRMS. Model fuzzy menghasilkan AUC 0,802 (lebih unggul dibanding model if-else tegas dengan AUC 0,748 dan indikator hari tanpa hujan saja dengan AUC 0,701, serta unggul konsisten di 8 dari 8 tahun evaluasi). Korelasi Spearman bulanan mencapai 0,666.</p>
+  <p>Tingkat kemunculan titik panas meningkat tajam seiring naiknya kelas risiko. Persentase hari-grid yang memuat titik panas adalah: Rendah 0,70%, Sedang 2,81%, Tinggi 9,19%, dan Sangat Tinggi 28,93%. Status alarm (gabungan kelas Tinggi dan Sangat Tinggi) muncul pada 19,2% hari-grid, namun berhasil mencakup 60,94% hari-grid berapi dan 72,9% titik panas, dengan presisi 10,55% atau lift 3,17 kali lipat dibandingkan peluang dasar (3,32%).</p>
+  <p><strong>Perlu diingat:</strong> skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran. Nilai H-3 sampai H-1 mencerminkan kondisi yang sudah terjadi untuk evaluasi, sedangkan prakiraan untuk H+4 ke atas merupakan perkiraan kasar yang lebih dinamis.</p>
 
   <h2>Sumber data</h2>
   <ul>

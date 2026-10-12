@@ -41,7 +41,7 @@
 <script>
 const WARNA = { "Rendah": "#2e9e4f", "Sedang": "#f2c230", "Tinggi": "#e03b2f", "Sangat Tinggi": "#8b1a1a" };
 const URUT_KELAS = ["Rendah", "Sedang", "Tinggi", "Sangat Tinggi"];
-const SETENGAH_GRID = 0.25;
+const SETENGAH_GRID = 0.12;
 let data = null;
 let peta = null;
 let lapisan = null;
@@ -125,13 +125,15 @@ function mulai() {
     `Diperbarui: <b>${data.diperbarui}</b> | ${data.titik.length} titik | ${data.tanggal.length} hari`;
   document.getElementById("legenda").innerHTML = URUT_KELAS.map(k => badge(k)).join(" ");
 
-  const label = ["Hari ini", "Besok", "+2", "+3", "+4", "+5", "+6", "+7"];
-  document.getElementById("tanggal").innerHTML = data.tanggal.map((tgl, i) =>
-    `<button title="${tgl}">${label[i] || tgl}<br><small>${tgl}</small></button>`
-  ).join("");
+  const idxHariIni = data.tanggal.length >= 11 ? 3 : 0;
+  document.getElementById("tanggal").innerHTML = data.tanggal.map((tgl, i) => {
+    const delta = i - idxHariIni;
+    const teks = (delta === 0) ? "Hari ini" : (delta === 1) ? "Besok" : (delta < 0) ? "H" + delta : "+" + delta;
+    return `<button title="${tgl}">${teks}<br><small>${tgl}</small></button>`;
+  }).join("");
   document.querySelectorAll("#tanggal button").forEach((b, i) => b.addEventListener("click", () => gambar(i)));
 
-  gambar(0);
+  gambar(idxHariIni);
 }
 
 if (location.protocol === "file:") {

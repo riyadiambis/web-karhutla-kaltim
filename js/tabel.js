@@ -53,7 +53,11 @@
   function render(data, idx) {
     var h = hitung(data, idx);
     $("hero").setAttribute("data-kelas", KODE[h.tertinggi]);
-    $("hero-tgl").textContent = "Risiko tertinggi se-Kaltim, " + tanggalPanjang(data.tanggal[idx]);
+    var dStr = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Makassar" });
+    var posToday = data.tanggal.indexOf(dStr);
+    if (posToday === -1) posToday = data.tanggal.length >= 11 ? 3 : 0;
+    var statusWaktu = idx < posToday ? " (kondisi lewat)" : "";
+    $("hero-tgl").textContent = "Risiko tertinggi se-Kaltim, " + tanggalPanjang(data.tanggal[idx]) + statusWaktu;
     $("rek-kelas").textContent = h.tertinggi;
     $("rek-teks").textContent = SARAN[h.tertinggi];
     $("bar").innerHTML = URUT.map(function (k) {
