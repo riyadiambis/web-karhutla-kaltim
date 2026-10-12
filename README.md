@@ -36,7 +36,7 @@ Web statis yang menyajikan sistem peringatan dini **risiko** kebakaran hutan dan
 
 Validasi kuantitatif dilakukan dengan membandingkan skor risiko terhadap riwayat titik panas (*hotspot*) NASA FIRMS (sensor MODIS & VIIRS) di seluruh Kalimantan Timur periode 2019–2026:
 
-- **Kemampuan Diskriminasi Model:** Mencapai **AUC-ROC 0,802** pada resolusi 0,25 derajat (meningkat signifikan dari versi 0,5 derajat yang bernilai 0,773).
+- **Kemampuan Diskriminasi Model:** Mencapai **AUC-ROC 0,802** pada resolusi 0,25 derajat (203 titik).
 - **Konsistensi Tahunan:** Model fuzzy unggul konsisten atas *baseline* pada seluruh **8 dari 8 tahun evaluasi**.
 - **Tangkapan Titik Panas:** Sebanyak **72,9% titik panas** FIRMS historis berhasil terdeteksi jatuh pada hari-hari ketika model mengeluarkan status alarm risiko (kelas Tinggi atau Sangat Tinggi).
 - *Catatan Metodologis:* Hasil validasi ini mencerminkan korelasi kondisi atmosferik terhadap kemunculan titik panas, dan harus diinterpretasikan secara bijak sebagai indikator potensi bahaya lingkungan, bukan kepastian terbakarnya suatu titik.
