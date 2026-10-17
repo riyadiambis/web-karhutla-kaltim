@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B2A42">
+<title>Lima Data Cuaca | Peringatan Dini Risiko Karhutla Kaltim</title>
+<meta name="description" content="Lima parameter cuaca yang digunakan sistem untuk menilai potensi risiko karhutla di Kalimantan Timur.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/gaya.css">
+<link rel="stylesheet" href="css/artikel.css">
+</head>
+<body>
+<!-- 1. Header & Navigasi Utama -->
+<header class="kepala-beranda">
+  <p class="strip-info">Sistem riset Informatika Universitas Mulawarman. Bukan pengganti peringatan resmi BMKG atau BPBD.</p>
+  <div class="nav-beranda">
+    <div class="bungkus baris-nav">
+      <a class="merek-beranda" href="index.html" aria-label="Karhutla Kaltim, Beranda">
+        <span class="logo-beranda" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#F2C94C">
+            <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.61 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+          </svg>
+        </span>
+        <span class="merek-teks">
+          <b>Karhutla Kaltim</b>
+          <small class="sub-desktop">SISTEM PERINGATAN DINI</small>
+          <small class="sub-mobile">Cara Kerja</small>
+        </span>
+      </a>
+      <nav class="menu-beranda" aria-label="Menu utama">
+        <a href="index.html">Beranda</a>
+        <a href="peta-risiko.html">Peta Risiko</a>
+        <a href="cara-kerja.html" class="aktif" aria-current="page">Cara Kerja</a>
+        <a href="tentang.html">Tentang</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- 2. Sub-Bar Breadcrumbs & Link Kembali -->
+<div class="sub-bar">
+  <div class="bungkus baris-sub-bar">
+    <nav class="breadcrumb" aria-label="Navigasi remah roti">
+      <a href="cara-kerja.html">Cara Kerja</a>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      <span class="aktif">Lima Data Cuaca</span>
+    </nav>
+    <a class="link-kembali" href="cara-kerja.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>Kembali ke Cara Kerja</span>
+    </a>
+  </div>
+</div>
+
+<!-- 3. Konten Utama Workspace (2 Kolom di Desktop) -->
+<div class="bungkus-detail">
+  <div class="layout-detail">
+    <!-- Kolom Kiri: Sidebar Desktop -->
+    <aside class="sidebar-detail" aria-label="Navigasi dokumen">
+      <div class="kotak-sidebar">
+        <div class="sidebar-kepala">
+          <span class="sub-label">Navigasi Teknis</span>
+          <span class="nomor-bab">Bab 1 dari 5</span>
+        </div>
+        <h3 class="sidebar-judul">Daftar Halaman Detail</h3>
+        <ul class="nav-detail-daftar" role="list">
+          <li>
+            <a href="detail-lima-data-cuaca.html" class="aktif" aria-current="page">
+              <div class="item-kiri">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+                <span>Lima data cuaca</span>
+              </div>
+              <span class="item-nomor">01</span>
+            </a>
+          </li>
+          <li>
+            <a href="detail-cara-menilai-tingkat.html">
+              <div class="item-kiri">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+                <span>Cara menilai tingkat</span>
+              </div>
+              <span class="item-nomor">02</span>
+            </a>
+          </li>
+          <li>
+            <a href="detail-45-aturan.html">
+              <div class="item-kiri">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>45 aturan penilaian</span>
+              </div>
+              <span class="item-nomor">03</span>
+            </a>
+          </li>
+          <li>
+            <a href="detail-contoh-hitungan.html">
+              <div class="item-kiri">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/></svg>
+                <span>Contoh hitungan lengkap</span>
+              </div>
+              <span class="item-nomor">04</span>
+            </a>
+          </li>
+          <li>
+            <a href="detail-hasil-uji-satelit.html">
+              <div class="item-kiri">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></svg>
+                <span>Hasil uji dengan data satelit</span>
+              </div>
+              <span class="item-nomor">05</span>
+            </a>
+          </li>
+        </ul>
+        <div class="sidebar-kaki">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>Sistem inferensi berbasis Fuzzy Mamdani.</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Kolom Kanan: Isi Dokumen Teknis -->
+    <main class="konten-detail">
+      <!-- Menu Dropdown HP (tanpa JS) -->
+      <details class="detail-menu-mobile">
+        <summary>Halaman detail lain</summary>
+        <ul class="nav-detail-daftar" role="list">
+          <li><a href="detail-lima-data-cuaca.html" class="aktif">01. Lima data cuaca</a></li>
+          <li><a href="detail-cara-menilai-tingkat.html">02. Cara menilai tingkat</a></li>
+          <li><a href="detail-45-aturan.html">03. 45 aturan penilaian</a></li>
+          <li><a href="detail-contoh-hitungan.html">04. Contoh hitungan lengkap</a></li>
+          <li><a href="detail-hasil-uji-satelit.html">05. Hasil uji dengan data satelit</a></li>
+        </ul>
+      </details>
+
+      <!-- Judul & Kategori -->
+      <header class="header-detail">
+        <div class="badge-kategori">
+          <span class="titik"></span>
+          <span>Parameter Masukan</span>
+        </div>
+        <h1>Lima Data Cuaca yang Dipakai</h1>
+        <p>Penjelasan lima variabel cuaca harian yang dibaca sistem beserta satuan dan alasan pemilihannya.</p>
+      </header>
+
+      <!-- Kotak Ringkasnya -->
+      <section class="kotak-ringkas">
+        <span class="badge-ringkas">Ringkasnya</span>
+        <p class="teks-ringkas-besar">Sistem membaca lima data cuaca harian. Suhu maksimum dan kelembapan minimum dipakai karena mewakili kondisi terkering dalam sehari.</p>
+      </section>
+
+      <!-- Tabel 5 Data Cuaca -->
+      <section class="kartu-dok">
+        <div class="kartu-dok-kepala">
+          <div>
+            <h2 class="kartu-dok-judul">Tabel Variabel Cuaca</h2>
+            <p class="kartu-dok-sub">Variabel harian yang dievaluasi untuk setiap 203 titik grid di Kalimantan Timur.</p>
+          </div>
+          <span class="kartu-dok-badge">5 Variabel</span>
+        </div>
+        <div class="tabel-gulir">
+          <table class="tabel">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Satuan</th>
+                <th>Kenapa dipakai</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Suhu maksimum harian</b></td>
+                <td>&deg;C</td>
+                <td>Suhu tertinggi dalam sehari, saat daun, ranting, dan serasah paling kering dan paling mudah terbakar.</td>
+              </tr>
+              <tr>
+                <td><b>Kelembapan udara minimum harian</b></td>
+                <td>%</td>
+                <td>Kelembapan terendah dalam sehari, biasanya siang hari. Bersama suhu maksimum, ini mewakili kondisi terkering dalam sehari.</td>
+              </tr>
+              <tr>
+                <td><b>Curah hujan harian</b></td>
+                <td>mm</td>
+                <td>Hujan membasahi bahan bakar. Makin sedikit hujan, makin berbahaya.</td>
+              </tr>
+              <tr>
+                <td><b>Kecepatan angin maksimum</b></td>
+                <td>km/jam</td>
+                <td>Angin membantu api menyebar lebih cepat dan memasok udara.</td>
+              </tr>
+              <tr>
+                <td><b>Hari tanpa hujan</b></td>
+                <td>hari</td>
+                <td>Jumlah hari berturut-turut dengan hujan kurang dari 3 mm. Ambang 3 mm dipakai karena data cuaca model (ERA5) cenderung mencatat gerimis berlebihan di daerah tropis.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Penjelasan Ambang 3 mm & Sumber Data -->
+      <section class="kartu-dok">
+        <div class="kartu-dok-kepala">
+          <h2 class="kartu-dok-judul">Sumber Data &amp; Ambang Presipitasi</h2>
+        </div>
+        <p>Riset memakai data ERA5 2019 sampai 2026. Sistem harian memakai prakiraan Open-Meteo dengan variabel yang sama.</p>
+        <p>Ambang 3 mm dipakai karena data cuaca model global (ERA5) cenderung mencatat gerimis berlebihan di daerah tropis. Hujan di bawah 3 mm dianggap belum membasahi lapisan permukaan secara efektif untuk memadamkan atau mencegah pembakaran.</p>
+      </section>
+
+      <!-- Istilah Singkat Terkait Data Cuaca -->
+      <section class="kartu-dok">
+        <div class="kartu-dok-kepala">
+          <h2 class="kartu-dok-judul">Istilah Singkat Terkait Data</h2>
+        </div>
+        <dl class="kamus">
+          <dt>ERA5</dt>
+          <dd>Data cuaca hasil olahan model global yang dipakai untuk riset 2019 sampai 2026.</dd>
+          <dt>Titik panas</dt>
+          <dd>Titik yang terdeteksi satelit sebagai suhu permukaan sangat tinggi, biasanya tanda ada api.</dd>
+        </dl>
+      </section>
+
+      <!-- Navigasi Bawah (Sebelumnya & Berikutnya) -->
+      <nav class="nav-halaman" aria-label="Navigasi halaman detail">
+        <a class="kartu-nav-hal" href="cara-kerja.html">
+          <div class="knh-arah">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>Sebelumnya</span>
+          </div>
+          <div class="knh-judul">Cara Kerja</div>
+          <p class="knh-ket">Kembali ke ringkasan alur pemrosesan.</p>
+        </a>
+        <a class="kartu-nav-hal kanan" href="detail-cara-menilai-tingkat.html">
+          <div class="knh-arah">
+            <span>Berikutnya</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="knh-judul">Cara Menilai Tingkat</div>
+          <p class="knh-ket">Fuzzifikasi, batas persentil, dan kurva keanggotaan.</p>
+        </a>
+      </nav>
+    </main>
+  </div>
+</div>
+
+<!-- 4. Footer Standar Tiga Kolom -->
+<footer class="kaki-utama">
+  <div class="bungkus">
+    <div class="grid-kaki">
+      <div class="kolom-kaki">
+        <h4>TENTANG SITUS</h4>
+        <p>Sistem Peringatan Dini Karhutla Kaltim dikembangkan untuk pemantauan potensi kebakaran hutan dan lahan berbasis estimasi cuaca terpadu di wilayah Kalimantan Timur.</p>
+      </div>
+      <div class="kolom-kaki">
+        <h4>SUMBER DATA</h4>
+        <p>Prakiraan cuaca harian dari Open-Meteo. Hasil sistem diuji dengan data titik panas NASA FIRMS 2019 sampai 2026.</p>
+      </div>
+      <div class="kolom-kaki">
+        <h4>PENTING</h4>
+        <p>Skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian kebakaran. Untuk keadaan darurat, hubungi BPBD setempat.</p>
+      </div>
+    </div>
+    <div class="bawah-kaki">
+      <p>Samarinda, Kalimantan Timur • Informatika Universitas Mulawarman</p>
+      <p>&copy; 2026 Sistem Peringatan Dini Karhutla Kaltim</p>
+    </div>
+  </div>
+</footer>
+
+<!-- 5. Menu Tab Bawah (Khusus Layar HP) -->
+<nav class="tab-bawah" aria-label="Menu utama HP">
+  <ul>
+    <li><a href="index.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Beranda</span></a></li>
+    <li><a href="peta-risiko.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z"/></svg><span>Peta Risiko</span></a></li>
+    <li><a href="cara-kerja.html" class="aktif" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v3h12V9M12 12v3"/></svg><span>Cara Kerja</span></a></li>
+    <li><a href="tentang.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Tentang</span></a></li>
+  </ul>
+</nav>
+
+<script src="js/grafik.js"></script>
+</body>
+</html>
