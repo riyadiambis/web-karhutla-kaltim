@@ -13,11 +13,12 @@
 <link rel="stylesheet" href="css/gaya.css">
 <link rel="stylesheet" href="css/artikel.css">
 <script>
-  /* Pengalihan tautan hash lama ke halaman detail yang sesuai */
+  /* Pengalihan tautan hash lama */
   (function () {
     var hash = window.location.hash;
     var petaHash = {
-      "#percaya": "detail-hasil-uji-satelit.html"
+      "#percaya": "detail-hasil-uji-satelit.html",
+      "#evaluasi": "detail-hasil-uji-satelit.html"
     };
     if (hash && petaHash[hash]) {
       window.location.replace(petaHash[hash]);
@@ -64,7 +65,7 @@
       Seberapa bisa dipercaya?
     </h1>
     <p style="margin: 0; font-size: 1.05rem; color: var(--redam); line-height: 1.5;">
-      Kami menguji sistem ini dengan <b style="font-family: var(--font-mono); color: var(--primary);">57.105</b> titik api dari satelit NASA selama 2019 sampai 2026.
+      Kami menguji sistem ini dengan <b style="font-family: var(--font-mono); color: var(--primary);">57.105</b> titik panas dari satelit NASA selama 2019 sampai 2026.
     </p>
     <div class="ht-chips">
       <div class="chip-fakta">
@@ -90,15 +91,15 @@
         <h2 class="kartu-dok-judul" style="margin-top: 4px;">Makin merah, makin sering muncul api</h2>
         <p class="kartu-dok-sub">Frekuensi harian deteksi titik panas NASA FIRMS pada setiap kelas risiko model cuaca.</p>
       </div>
-      <span class="kartu-dok-badge">57.105 Titik Api</span>
+      <span class="kartu-dok-badge">57.105 Titik Panas</span>
     </div>
 
     <!-- Grafik SVG Dinamis e6 dari validasi.json -->
     <div class="grafik" data-grafik="e6"></div>
 
     <div style="background: var(--s-container); border-left: 3px solid var(--tautan); border-radius: var(--r); padding: 12px 16px; margin-top: 16px; font-size: 0.88rem; line-height: 1.45;">
-      <b style="color: var(--primary); display: block; margin-bottom: 2px;">Di kelas Sangat Tinggi, sekitar 29 dari 100 hari ditemukan titik api.</b>
-      <span style="color: var(--redam);">Peluang munculnya titik api di kelas Sangat Tinggi sekitar 41 kali lipat dibanding kelas Rendah (28,93% berbanding 0,70%).</span>
+      <b style="color: var(--primary); display: block; margin-bottom: 2px;">Di kelas Sangat Tinggi, sekitar 29 dari 100 hari ditemukan titik panas.</b>
+      <span style="color: var(--redam);">Peluang munculnya titik panas di kelas Sangat Tinggi sekitar 41 kali lipat dibanding kelas Rendah (28,93% berbanding 0,70%).</span>
     </div>
   </section>
 
@@ -150,7 +151,7 @@
   </section>
 
   <!-- SECTION 4: YANG PERLU DIINGAT (3 Keterbatasan Operasional Sesuai Desain) -->
-  <section class="kartu-diingat">
+  <section id="batasan" class="kartu-diingat">
     <div class="kd-kepala">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--tautan)" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       <div>
@@ -186,7 +187,7 @@
   </section>
 
   <!-- SECTION 5: TIM PENGEMBANG (Sesuai Koreksi 2) -->
-  <section class="kartu-dok">
+  <section id="pengembang" class="kartu-dok">
     <div class="kartu-dok-kepala">
       <div>
         <span class="sub-label">Personil Penelitian</span>
@@ -234,22 +235,6 @@
       Data mentah, skrip model komputasi, dan modul evaluasi disediakan secara terbuka untuk diteliti ulang atau dikembangkan lebih lanjut.
     </p>
     <div class="grid-peneliti-links">
-      <a class="btn-peneliti" href="[URL NOTEBOOK KAGGLE]" target="_blank" rel="noopener noreferrer">
-        <div class="bp-kiri">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-          <span>Notebook riset (Kaggle)</span>
-        </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-      </a>
-
-      <a class="btn-peneliti" href="[URL DATASET KAGGLE]" target="_blank" rel="noopener noreferrer">
-        <div class="bp-kiri">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          <span>Dataset cuaca (Kaggle)</span>
-        </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-      </a>
-
       <a class="btn-peneliti" href="https://github.com/riyadiambis/web-karhutla-kaltim" target="_blank" rel="noopener noreferrer">
         <div class="bp-kiri">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
@@ -269,7 +254,7 @@
         <h4>TENTANG SITUS</h4>
         <p>Sistem Peringatan Dini Karhutla Kaltim dikembangkan untuk pemantauan potensi kebakaran hutan dan lahan berbasis estimasi cuaca terpadu di wilayah Kalimantan Timur.</p>
       </div>
-      <div class="kolom-kaki">
+      <div id="sumber" class="kolom-kaki">
         <h4>SUMBER DATA</h4>
         <p>Prakiraan cuaca harian dari Open-Meteo. Hasil sistem diuji dengan data titik panas NASA FIRMS 2019 sampai 2026.</p>
       </div>

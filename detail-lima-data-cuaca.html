@@ -152,7 +152,7 @@
       </section>
 
       <!-- Tabel 5 Data Cuaca -->
-      <section class="kartu-dok">
+      <section id="variabel" class="kartu-dok">
         <div class="kartu-dok-kepala">
           <div>
             <h2 class="kartu-dok-judul">Tabel Variabel Cuaca</h2>
@@ -198,23 +198,23 @@
             </tbody>
           </table>
         </div>
+        <p class="kecil" style="margin-top: 14px;">Riset memakai data ERA5 2019 sampai 2026. Sistem harian memakai prakiraan Open-Meteo dengan variabel yang sama.</p>
       </section>
 
-      <!-- Penjelasan Ambang 3 mm & Sumber Data -->
-      <section class="kartu-dok">
+      <!-- Istilah Singkat -->
+      <section id="istilah" class="kartu-dok">
         <div class="kartu-dok-kepala">
-          <h2 class="kartu-dok-judul">Sumber Data &amp; Ambang Presipitasi</h2>
-        </div>
-        <p>Riset memakai data ERA5 2019 sampai 2026. Sistem harian memakai prakiraan Open-Meteo dengan variabel yang sama.</p>
-        <p>Ambang 3 mm dipakai karena data cuaca model global (ERA5) cenderung mencatat gerimis berlebihan di daerah tropis. Hujan di bawah 3 mm dianggap belum membasahi lapisan permukaan secara efektif untuk memadamkan atau mencegah pembakaran.</p>
-      </section>
-
-      <!-- Istilah Singkat Terkait Data Cuaca -->
-      <section class="kartu-dok">
-        <div class="kartu-dok-kepala">
-          <h2 class="kartu-dok-judul">Istilah Singkat Terkait Data</h2>
+          <h2 class="kartu-dok-judul">Istilah Singkat</h2>
         </div>
         <dl class="kamus">
+          <dt>Fuzzy</dt>
+          <dd>Cara menilai yang mengenal "agak" dan "sedikit", bukan hanya ya atau tidak.</dd>
+          <dt>Himpunan</dt>
+          <dd>Satu tingkat penilaian, misalnya suhu "rendah", "sedang", atau "tinggi".</dd>
+          <dt>Derajat keanggotaan</dt>
+          <dd>Seberapa kuat sebuah angka masuk ke satu tingkat, dari 0 (tidak sama sekali) sampai 1 (penuh).</dd>
+          <dt>Persentil (P10, P50, P90)</dt>
+          <dd>Nilai pembatas dari data harian: 10%, 50%, dan 90% hari nilainya lebih kecil dari batas itu.</dd>
           <dt>ERA5</dt>
           <dd>Data cuaca hasil olahan model global yang dipakai untuk riset 2019 sampai 2026.</dd>
           <dt>Titik panas</dt>
