@@ -1930,6 +1930,11 @@ button {
   background: #E6EDF2;
 }
 
+/* Khusus peta-risiko.html: redam warna tile OSM supaya kotak risiko lebih menonjol */
+.hal-peta .leaflet-tile-pane {
+  filter: grayscale(0.65) brightness(1.08) contrast(0.95);
+}
+
 .panel-kiri {
   position: absolute;
   top: 20px;
@@ -1978,11 +1983,13 @@ button {
 
 /* Tombol tanggal (#tanggal diisi js/peta.js) */
 .hal-peta .tanggal {
+  position: relative;
   display: flex;
   flex-wrap: nowrap;
   gap: 6px;
   padding: 0 0 4px;
   overflow-x: auto;
+  scroll-behavior: smooth;
   scroll-snap-type: none;
 }
 

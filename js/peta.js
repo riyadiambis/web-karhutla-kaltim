@@ -17,8 +17,9 @@
     "Tinggi": "Dilarang membakar lahan. Siapkan pasokan air dan sarana pemadam.",
     "Sangat Tinggi": "Dilarang total membakar. Laporkan kemunculan asap/api ke petugas."
   };
-  // Pengaturan tile per halaman: dibaca dari atribut data-tile-* di <body>, bila tidak ada dipakai OpenStreetMap.
-  var TILE_ASAL = { url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png", atribusi: "&copy; OpenStreetMap" };
+  // Pengaturan tile peta dasar (OpenStreetMap, tanpa API key).
+  var TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var TILE_ATRIBUSI = "&copy; OpenStreetMap contributors";
   var dipilihId = null, titikId = {};
   var tampil = { "Rendah": true, "Sedang": true, "Tinggi": true, "Sangat Tinggi": true };
 
@@ -101,8 +102,9 @@
   function panelHtml(d) {
     var p = d.p, skor = fmt(p.skor);
     function ubin(ikon, label, nilai, satuan) {
+      var spasi = (satuan === "%" || !satuan) ? "" : " ";
       return '<div class="ubin-cuaca"><span class="ub-label">' + ikon + "<span>" + label + '</span></span><span class="ub-nilai"><b>' + nilai + "</b>" +
-        (satuan ? '<small class="satuan"> ' + satuan + "</small>" : "") + "</span></div>";
+        (satuan ? '<small class="satuan">' + spasi + satuan + "</small>" : "") + "</span></div>";
     }
     return '<div class="detail-kepala">' +
         '<div class="dk-teks"><span class="label-kecil">Detail titik terpilih</span><h2 id="detail-kab" class="dk-nama">' + namaKab(d.titik.kabupaten) + "</h2></div>" +
@@ -116,7 +118,7 @@
         '<p class="label-kecil label-param">Parameter cuaca permukaan</p>' +
         '<div class="grid-cuaca">' +
           ubin(IKON.suhu, "Suhu Maks", fmt(p.suhu), "&deg;C") +
-          ubin(IKON.lembap, "Kelembapan Min", fmt(p.kelembapan), "%") +
+          ubin(IKON.lembap, "Kelembapan Min", fmt(p.kelembapan, 0), "%") +
           ubin(IKON.hujan, "Curah Hujan", fmt(p.hujan), "mm") +
           ubin(IKON.angin, "Angin Maks", fmt(p.angin), "km/jam") +
         "</div>" +
@@ -180,13 +182,33 @@
     return pos !== -1 ? pos : (data.tanggal.length >= 11 ? 3 : 0);
   }
 
+  function tengahkanTombolTanggal(tombol) {
+    var w = $("tanggal");
+    if (!w || !tombol) return;
+    var bRect = tombol.getBoundingClientRect();
+    var wRect = w.getBoundingClientRect();
+    var offsetRelatif = bRect.left - wRect.left + w.scrollLeft;
+    var target = offsetRelatif - (w.clientWidth - bRect.width) / 2;
+    if (w.scrollTo) {
+      w.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+    } else {
+      w.scrollLeft = Math.max(0, target);
+    }
+  }
+
   function gambar(i) {
     idx = i;
     var idxHariIni = cariIndeksHariIni();
+    var tombolAktif = null;
     document.querySelectorAll("#tanggal button").forEach(function (b, n) {
-      b.setAttribute("aria-pressed", n === i ? "true" : "false");
-      if (n === i) { var w = $("tanggal"); w.scrollLeft = b.offsetLeft - (w.clientWidth - b.offsetWidth) / 2; }
+      var aktif = n === i;
+      b.setAttribute("aria-pressed", aktif ? "true" : "false");
+      if (aktif) tombolAktif = b;
     });
+    if (tombolAktif) {
+      tengahkanTombolTanggal(tombolAktif);
+      setTimeout(function () { tengahkanTombolTanggal(tombolAktif); }, 80);
+    }
 
     // Label perkiraan kasar untuk H+4 sampai H+7
     var bedaHari = i - idxHariIni;
@@ -281,10 +303,7 @@
     }, 0);
 
     if (window.ResizeObserver) new ResizeObserver(function () { sesuaikan(); }).observe($("peta"));
-    var cfg = document.body.dataset;
-    var opsiTile = { maxZoom: 13, attribution: cfg.tileAtribusi || TILE_ASAL.atribusi };
-    if (cfg.tileSub) opsiTile.subdomains = cfg.tileSub;
-    L.tileLayer(cfg.tileUrl || TILE_ASAL.url, opsiTile).addTo(peta);
+    L.tileLayer(TILE_URL, { maxZoom: 13, attribution: TILE_ATRIBUSI }).addTo(peta);
     batas = L.latLngBounds([]);
     data.titik.forEach(function (t) {
       batas.extend([t.lat - BATAS_SETENGAH, t.lon - BATAS_SETENGAH]);
