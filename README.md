@@ -14,8 +14,9 @@ Web statis yang menyajikan sistem peringatan dini **risiko** kebakaran hutan dan
 - **Mode "Peta Saja":** Tombol kontrol di pojok peta untuk menyembunyikan atau menampilkan lapisan grid kapan saja. Pilihan pengguna disimpan otomatis di peramban via `localStorage`.
 - **Detail Cuaca Tiap Grid:** Klik atau sentuh kotak grid untuk menyorot area dan membuka modal berisi skor risiko (0–100), kelas risiko, suhu maksimum, kelembapan minimum, curah hujan, kecepatan angin, dan deret hari tanpa hujan.
 - **Ringkasan Wilayah & Tabel Kabupaten/Kota:** Menampilkan distribusi titik per kelas risiko, rekomendasi tindakan preventif sesuai kelas risiko tertinggi se-provinsi, serta tabel rekapitulasi rerata skor dan kelas puncak untuk setiap kabupaten/kota dengan fitur pencarian interaktif.
-- **Halaman Cara Kerja:** Alur sistem, lima variabel cuaca, grafik fungsi keanggotaan, tabel 45 aturan, inferensi Mamdani, dua contoh hitungan langkah demi langkah, dan peta hari aman vs berisiko 2026.
-- **Halaman Tentang:** Ringkasan situs dan grafik hasil validasi (titik panas per kelas, AUC tiga metode, kurva ROC, matriks kebingungan, porsi titik panas, AUC per tahun, analisis ambang alarm, dan deret harian 2026). Grafik dibuat ulang dari angka notebook di `data/validasi.json`.
+- **Halaman Peta Risiko (`peta-risiko.html`):** Peta layar penuh dengan kontrol pilih tanggal, filter kelas bahaya (Rendah, Sedang, Tinggi, Sangat Tinggi), mode peta saja, dan panel detail cuaca tiap titik beserta tombol bagikan ke WhatsApp.
+- **Halaman Cara Kerja (`cara-kerja.html`) & 5 Halaman Detail Teknis:** Ringkasan alur 4 langkah, skala indeks bahaya 0 sampai 100, perbandingan batas kaku vs fuzzy bertahap, serta tautan ke 5 halaman detail teknis (`detail-lima-data-cuaca.html`, `detail-cara-menilai-tingkat.html`, `detail-45-aturan.html`, `detail-contoh-hitungan.html`, `detail-hasil-uji-satelit.html`).
+- **Halaman Tentang (`tentang.html`):** Ringkasan hasil uji terhadap 57.105 titik panas satelit NASA FIRMS (2019 sampai 2026), grafik titik panas per kelas, metrik utama, keterbatasan operasional, tim pengembang, dan tautan repositori.
 
 ---
 
@@ -47,36 +48,45 @@ Validasi kuantitatif dilakukan dengan membandingkan skor risiko terhadap riwayat
 
 ```text
 web-karhutla-kaltim/
-├── index.html              # Halaman utama aplikasi (peta risiko, kontrol, ringkasan)
-├── cara-kerja.html         # Halaman metode fuzzy: alur, fungsi keanggotaan, 45 aturan, contoh hitungan
-├── tentang.html            # Halaman latar belakang dan grafik hasil validasi riset
-├── pratinjau.html          # Halaman acuan data lokal untuk verifikasi cepat
+├── index.html                        # Beranda (peta utama, status tertinggi, ringkasan, tren 7 hari, anjuran)
+├── peta-risiko.html                  # Peta risiko layar penuh dengan filter kelas bahaya dan panel detail
+├── cara-kerja.html                   # Ringkasan alur kerja metode fuzzy dan navigasi ke 5 halaman detail
+├── tentang.html                      # Ringkasan kredibilitas validasi, keterbatasan, dan tim pengembang
+├── detail-lima-data-cuaca.html       # Detail teknis 1: lima variabel cuaca harian dan istilah singkat
+├── detail-cara-menilai-tingkat.html  # Detail teknis 2: fungsi keanggotaan, batas persentil, inferensi Mamdani
+├── detail-45-aturan.html             # Detail teknis 3: hierarki dua tingkat dan tabel 45 aturan JIKA-MAKA
+├── detail-contoh-hitungan.html       # Detail teknis 4: dua contoh hitungan langkah demi langkah
+├── detail-hasil-uji-satelit.html     # Detail teknis 5: grafik dan metrik lengkap uji titik panas NASA FIRMS
+├── pratinjau.html                    # Halaman acuan data lokal untuk verifikasi cepat
 ├── css/
-│   └── gaya.css            # Desain antarmuka, variabel warna risiko, dan responsivitas
+│   ├── gaya.css                      # Desain antarmuka utama, peta, beranda, dan responsivitas
+│   └── artikel.css                   # Gaya khusus halaman Cara Kerja, Tentang, dan 5 halaman detail teknis
 ├── js/
-│   ├── peta.js             # Logika peta Leaflet, interaksi grid, tombol tanggal, dan modal
-│   ├── tabel.js            # Rekapitulasi kabupaten/kota, filter pencarian, dan rekomendasi
-│   └── grafik.js           # Grafik SVG riset, animasi, lightbox, dan daftar isi (Cara Kerja, Tentang)
+│   ├── peta.js                       # Logika peta Leaflet, interaksi grid, tombol tanggal, filter, dan panel detail
+│   ├── tabel.js                      # Status utama, distribusi kelas, grafik tren 7 hari, rekap wilayah, dan anjuran
+│   └── grafik.js                     # Grafik SVG riset, tabel aturan/contoh, animasi, dan lightbox
 ├── data/
-│   ├── grid_kaltim.csv     # Daftar 203 titik koordinat (resolusi 0,25°) se-Kaltim
-│   ├── risiko.json         # Output data risiko 11 hari (H-3 s.d. H+7) untuk visualisasi
-│   ├── validasi.json       # Angka grafik validasi, disalin dari output notebook
-│   ├── cara_kerja.json     # Batas fungsi keanggotaan dan tabel 45 aturan dari notebook
-│   └── contoh_hitung.json  # Dua contoh hitungan fuzzy (dicek terhadap riset/uji_referensi.csv)
-├── img/riset/              # Gambar notebook yang datanya tidak ada di repo (ROC, peta 2026, deret harian)
+│   ├── grid_kaltim.csv               # Daftar 203 titik koordinat (resolusi 0,25°) se-Kaltim
+│   ├── risiko.json                   # Output data risiko 11 hari (H-3 s.d. H+7) untuk visualisasi
+│   ├── validasi.json                 # Angka grafik validasi, disalin dari output notebook
+│   ├── cara_kerja.json               # Batas fungsi keanggotaan dan tabel 45 aturan dari notebook
+│   └── contoh_hitung.json            # Dua contoh hitungan fuzzy (dicek terhadap riset/uji_referensi.csv)
+├── img/riset/                        # Gambar notebook yang datanya tidak ada di repo (ROC, peta 2026, deret harian)
 ├── python/
-│   ├── fuzzy_karhutla.py   # Mesin inferensi fuzzy Mamdani 45 aturan (standar riset)
-│   ├── ambil_prakiraan.py  # Pipeline pengambilan API Open-Meteo & penulisan risiko.json
-│   ├── ekstrak_riset.py    # Salin angka & gambar notebook ke data/ dan img/riset/ (butuh Pillow)
-│   └── uji_konsistensi.py  # Uji otomatis kesesuaian numerik Python vs notebook riset
+│   ├── fuzzy_karhutla.py             # Mesin inferensi fuzzy Mamdani 45 aturan (standar riset)
+│   ├── ambil_prakiraan.py            # Pipeline pengambilan API Open-Meteo & penulisan risiko.json
+│   ├── ekstrak_riset.py              # Salin angka & gambar notebook ke data/ dan img/riset/ (butuh Pillow)
+│   └── uji_konsistensi.py            # Uji otomatis kesesuaian numerik Python vs notebook riset
 ├── riset/
 │   ├── fuzzy-mamdani-karhutla-kaltim.ipynb  # Notebook riset dasar validasi 0,25 derajat
-│   ├── uji_referensi.csv   # Data acuan uji regresi fuzzy
-│   └── uji_urutan.csv      # Data acuan uji urutan hari tanpa hujan
+│   ├── uji_referensi.csv             # Data acuan uji regresi fuzzy
+│   └── uji_urutan.csv                # Data acuan uji urutan hari tanpa hujan
 ├── docs/
-│   └── PRD.md              # Spesifikasi produk lengkap (Product Requirements Document)
+│   ├── PRD.md                        # Spesifikasi produk lengkap (Product Requirements Document)
+│   ├── AUDIT-REDESIGN.md             # Dokumen audit teknis dan pemetaan redesign antarmuka
+│   └── desain/                       # Gambar acuan rancangan antarmuka Google Stitch (screen.png)
 └── .github/workflows/
-    └── perbarui.yml        # Workflow otomasi pembaruan data harian GitHub Actions
+    └── perbarui.yml                  # Workflow otomasi pembaruan data harian GitHub Actions
 ```
 
 ---

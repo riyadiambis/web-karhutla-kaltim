@@ -1,5 +1,5 @@
 /* Grafik riset untuk halaman Tentang, Cara Kerja, dan detail teknis: SVG buatan sendiri tanpa library,
-   animasi sekali saat masuk layar, lightbox gambar, dan daftar isi aktif.
+   animasi sekali saat masuk layar, dan lightbox gambar.
    Angka dibaca dari data/validasi.json, data/cara_kerja.json, dan data/contoh_hitung.json. */
 (function () {
   "use strict";
@@ -417,7 +417,7 @@
     "contoh-2": function () { return isiContoh(1); }
   };
 
-  /* ---------- Gambar, animasi, lightbox, daftar isi ---------- */
+  /* ---------- Gambar, animasi, dan lightbox ---------- */
 
   function animasi(el) {
     // belum digambar (misalnya di dalam details yang baru dibuka): tunda sampai gambarSemua selesai
@@ -501,23 +501,6 @@
     });
   }
 
-  function siapkanDaftarIsi() {
-    var tautan = document.querySelectorAll(".toc a[href^='#']");
-    if (!tautan.length) return;
-    var bagian = Array.prototype.map.call(tautan, function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
-    var tunggu = false;
-    function tandai() {
-      tunggu = false;
-      var aktif = 0;
-      if (window.scrollY > 10) {
-        bagian.forEach(function (s, i) { if (s && s.getBoundingClientRect().top < window.innerHeight * 0.3) aktif = i; });
-      }
-      tautan.forEach(function (a, i) { if (i === aktif) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
-    }
-    window.addEventListener("scroll", function () { if (!tunggu) { tunggu = true; requestAnimationFrame(tandai); } }, { passive: true });
-    tandai();
-  }
-
   function galat(pesan) {
     document.querySelectorAll("[data-grafik],[data-isi]").forEach(function (el) {
       el.innerHTML = '<p class="kecil">' + esc(pesan) + "</p>";
@@ -529,7 +512,6 @@
   }
 
   siapkanLightbox();
-  siapkanDaftarIsi();
 
   // body data-data="validasi cara_kerja contoh_hitung" menentukan berkas yang dibutuhkan halaman
   var perlu = (document.body.getAttribute("data-data") || "").split(/\s+/).filter(Boolean);

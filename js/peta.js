@@ -1,9 +1,9 @@
-/* Bagian peta: ambil data, peta Leaflet, tombol tanggal, modal detail, dan mode peta saja. Pemilik: Pengembang A */
+/* Bagian peta: ambil data, peta Leaflet, tombol tanggal, panel detail, dan mode peta saja. Pemilik: Pengembang A */
 (function () {
   var WARNA = { "Rendah": "#2e9e4f", "Sedang": "#f2c230", "Tinggi": "#e03b2f", "Sangat Tinggi": "#8b1a1a" };
   var SETENGAH = 0.12, BATAS_SETENGAH = 0.125;
   var KUNCI_PETA_SAJA = "karhutla_mode_peta_saja";
-  var data, peta, lapisan, batas, idx = 3, pemicu = null, kotakAktif = null;
+  var data, peta, lapisan, batas, idx = 3, kotakAktif = null;
   var modePetaSaja = false;
   try { modePetaSaja = localStorage.getItem(KUNCI_PETA_SAJA) === "true"; } catch (e) {}
 
