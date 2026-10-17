@@ -133,11 +133,67 @@
       "</div>";
   }
 
+  var waktuKlikKotak = 0;
+
+  function hitungTinggiRingkas() {
+    var d = $("detail");
+    if (!d) return 62;
+    var kepala = d.querySelector(".detail-kepala");
+    if (!kepala) return 62;
+    var dRect = d.getBoundingClientRect();
+    var kRect = kepala.getBoundingClientRect();
+    var h = Math.ceil(kRect.bottom - dRect.top);
+    return h > 36 ? h : 62;
+  }
+
+  function perbaruiUkuranSheet() {
+    if (!modePetaRisiko) return;
+    var layar = document.querySelector(".layar-peta");
+    if (!layar) return;
+    var tr = hitungTinggiRingkas();
+    layar.style.setProperty("--tinggi-ringkas", tr + "px");
+    var pk = document.querySelector(".panel-kiri");
+    var d = $("detail");
+    var buka = d && d.getAttribute("data-ringkas") === "tidak";
+    if (pk) {
+      var kt = document.querySelector(".kartu-tanggal");
+      var tpk = (buka && kt)
+        ? Math.ceil(pk.offsetTop + kt.offsetTop + kt.offsetHeight)
+        : Math.ceil(pk.offsetTop + pk.offsetHeight);
+      if (tpk > 20) layar.style.setProperty("--tinggi-panel-kiri", tpk + "px");
+    }
+  }
+
   function aturSheet(buka) {
     var d = $("detail");
-    if (d) d.setAttribute("data-ringkas", buka ? "tidak" : "ya");
+    if (!d) return;
+    d.classList.remove("sedang-geser");
+    d.style.transform = "";
+    d.setAttribute("data-ringkas", buka ? "tidak" : "ya");
+    var layar = document.querySelector(".layar-peta");
+    if (layar) layar.classList.toggle("sheet-detail", !!buka);
     var st = $("sheet-toggle");
-    if (st) st.setAttribute("aria-expanded", buka ? "true" : "false");
+    if (st) {
+      st.setAttribute("aria-expanded", buka ? "true" : "false");
+      st.setAttribute("aria-label", buka
+        ? "Sembunyikan detail titik terpilih, ketuk atau geser ke bawah"
+        : "Tampilkan detail titik terpilih, ketuk atau geser ke atas");
+    }
+    perbaruiUkuranSheet();
+  }
+
+  function geserKeTitik(t) {
+    if (!peta || !modePetaRisiko || !window.matchMedia("(max-width: 767px)").matches) return;
+    var elPeta = $("peta"), elDetail = $("detail"), kt = document.querySelector(".kartu-tanggal");
+    if (!elPeta || !elDetail) return;
+    var mapH = elPeta.clientHeight;
+    var sheetH = Math.min(elDetail.offsetHeight || Math.round(mapH * 0.55), Math.round(mapH * 0.6));
+    var topH = kt ? (kt.offsetHeight + 12) : 54;
+    var offsetY = Math.round((sheetH - topH) / 2);
+    var zoom = peta.getZoom();
+    var pt = peta.project([t.lat, t.lon], zoom);
+    var target = peta.unproject(pt.add([0, offsetY]), zoom);
+    peta.panTo(target, { animate: true, duration: 0.35 });
   }
 
   function tampilkanPanel(t, i, bukaSheet) {
@@ -146,7 +202,11 @@
     if (elDetail) elDetail.setAttribute("data-kelas", d.kode);
     var elIsi = $("detail-isi");
     if (elIsi) elIsi.innerHTML = panelHtml(d);
-    if (bukaSheet && $("sheet-toggle")) aturSheet(true);
+    if (bukaSheet && $("sheet-toggle")) {
+      aturSheet(true);
+    } else {
+      perbaruiUkuranSheet();
+    }
   }
 
   // Tombol tanggal (desktop: teks hari + angka, HP: satu baris ringkas)
@@ -225,13 +285,16 @@
 
       var rect = L.rectangle(kotak, dasar)
         .bindTooltip(namaWilayah(t.kabupaten) + ": skor " + p.skor + " (" + p.kelas + ")", { sticky: true })
-        .on("click", function () {
+        .on("click", function (e) {
+          waktuKlikKotak = Date.now();
+          if (e && e.originalEvent) L.DomEvent.stopPropagation(e.originalEvent);
           if (kotakAktif && kotakAktif !== this) { kotakAktif.setStyle(kotakAktif._dasar); }
           kotakAktif = this;
           this.setStyle(aktif);
           this.bringToFront();
           dipilihId = t.id;
           tampilkanPanel(t, i, true);
+          geserKeTitik(t);
         })
         .on("mouseover", function () {
           if (kotakAktif !== this) {
@@ -258,6 +321,7 @@
 
     if (!modePetaSaja) lapisan.addTo(peta);
     if ($("hero")) Tabel.render(data, i);
+    perbaruiUkuranSheet();
   }
 
   function perbaruiInteraksiBeranda() {
@@ -299,6 +363,16 @@
     };
     if (modePetaRisiko) kontrolPeta.addTo(peta);
 
+    // Ketuk area peta yang kosong (bukan kotak) di HP menurunkan bottom sheet ke keadaan Ringkas
+    if (modePetaRisiko) {
+      peta.on("click", function () {
+        if (Date.now() - waktuKlikKotak < 120) return;
+        if (window.matchMedia("(max-width: 767px)").matches) {
+          aturSheet(false);
+        }
+      });
+    }
+
     setTimeout(function () {
       var btn = $("btn-peta-saja");
       if (btn) {
@@ -318,10 +392,12 @@
       batas.extend([t.lat + BATAS_SETENGAH, t.lon + BATAS_SETENGAH]);
     });
 
-    // Batasi geser peta dengan maxBounds = batas grid diperlebar sekitar 1 derajat
+    // Batasi geser peta dengan maxBounds; di HP peta-risiko diberi ruang vertikal cukup untuk offset sheet
+    var marginV = (modePetaRisiko && window.innerWidth < 768) ? 8.0 : 1.0;
+    var marginH = (modePetaRisiko && window.innerWidth < 768) ? 3.0 : 1.0;
     var batasGeser = L.latLngBounds(
-      [batas.getSouth() - 1.0, batas.getWest() - 1.0],
-      [batas.getNorth() + 1.0, batas.getEast() + 1.0]
+      [batas.getSouth() - marginV, batas.getWest() - marginH],
+      [batas.getNorth() + marginV, batas.getEast() + marginH]
     );
     peta.setMaxBounds(batasGeser);
 
@@ -346,21 +422,30 @@
     if (!peta || !batas) return;
     peta.invalidateSize();
     peta.setMinZoom(0);
-    peta.fitBounds(batas, { padding: [14, 14] });
-    var minZ = peta.getBoundsZoom(batas, false, [14, 14]);
-    peta.setMinZoom(minZ);
+    if (modePetaRisiko && window.innerWidth < 768) {
+      var minZMob = peta.getBoundsZoom(batas, false, [10, 96]);
+      peta.setMinZoom(minZMob);
+      peta.fitBounds(batas, { paddingTopLeft: [10, 114], paddingBottomRight: [10, 96] });
+    } else {
+      peta.fitBounds(batas, { padding: [14, 14] });
+      var minZ = peta.getBoundsZoom(batas, false, [14, 14]);
+      peta.setMinZoom(minZ);
+    }
+    perbaruiUkuranSheet();
   }
 
   function sesuaikan() {
     if (!peta || !batas) return;
     peta.invalidateSize();
     peta.setMinZoom(0);
-    var minZ = peta.getBoundsZoom(batas, false, [14, 14]);
+    var pad = (modePetaRisiko && window.innerWidth < 768) ? [10, 96] : [14, 14];
+    var minZ = peta.getBoundsZoom(batas, false, pad);
     peta.setMinZoom(minZ);
     if (peta.getZoom() < minZ) {
       peta.setZoom(minZ);
     }
     perbaruiInteraksiBeranda();
+    perbaruiUkuranSheet();
   }
 
   window.addEventListener("load", pasKan);
@@ -377,12 +462,122 @@
     });
   });
 
-  // Bottom sheet (HP di peta-risiko): ketuk handle atau bagian kepala untuk membuka/menutup
-  if ($("sheet-toggle")) {
-    $("sheet-toggle").addEventListener("click", function () { aturSheet($("detail").getAttribute("data-ringkas") === "ya"); });
+  // Bottom sheet (HP di peta-risiko): ketuk atau geser handle / bagian atas sheet untuk berpindah keadaan
+  if ($("sheet-toggle") && $("detail")) {
+    var elSheet = $("detail");
+    var abaikanKlikSheet = 0;
+    var sesiGeser = null;
+
+    function mulaiGeser(clientY, dariBadan) {
+      if (!window.matchMedia("(max-width: 767px)").matches) return;
+      var tr = hitungTinggiRingkas();
+      var maxOffset = Math.max(0, elSheet.offsetHeight - tr);
+      var sedangRingkas = elSheet.getAttribute("data-ringkas") === "ya";
+      sesiGeser = {
+        startY: clientY,
+        lastY: clientY,
+        lastTime: Date.now(),
+        velY: 0,
+        maxOffset: maxOffset,
+        sedangRingkas: sedangRingkas,
+        startOffset: sedangRingkas ? maxOffset : 0,
+        currentOffset: sedangRingkas ? maxOffset : 0,
+        dariBadan: !!dariBadan,
+        aktif: false
+      };
+    }
+
+    function gerakGeser(clientY, ev) {
+      if (!sesiGeser) return;
+      var dy = clientY - sesiGeser.startY;
+      if (!sesiGeser.aktif) {
+        if (sesiGeser.dariBadan) {
+          var badan = elSheet.querySelector(".detail-badan");
+          if (sesiGeser.sedangRingkas || (badan && badan.scrollTop > 0) || dy < 8) {
+            if (dy < -8) sesiGeser = null;
+            return;
+          }
+        }
+        if (Math.abs(dy) < 5) return;
+        sesiGeser.aktif = true;
+        elSheet.classList.add("sedang-geser");
+      }
+      if (ev && ev.cancelable) ev.preventDefault();
+      var now = Date.now();
+      var dt = now - sesiGeser.lastTime;
+      if (dt > 0) {
+        sesiGeser.velY = (clientY - sesiGeser.lastY) / dt;
+        sesiGeser.lastY = clientY;
+        sesiGeser.lastTime = now;
+      }
+      sesiGeser.currentOffset = Math.min(sesiGeser.maxOffset, Math.max(0, sesiGeser.startOffset + dy));
+      elSheet.style.transform = "translateY(" + sesiGeser.currentOffset + "px)";
+    }
+
+    function akhirGeser() {
+      if (!sesiGeser) return;
+      var s = sesiGeser;
+      sesiGeser = null;
+      if (!s.aktif) return;
+      abaikanKlikSheet = Date.now();
+      var buka;
+      var ambang = Math.min(36, s.maxOffset * 0.25);
+      if (s.velY < -0.3) {
+        buka = true;
+      } else if (s.velY > 0.3) {
+        buka = false;
+      } else if (s.sedangRingkas) {
+        buka = (s.startOffset - s.currentOffset) > ambang;
+      } else {
+        buka = s.currentOffset <= ambang;
+      }
+      aturSheet(buka);
+    }
+
+    elSheet.addEventListener("pointerdown", function (e) {
+      if (e.button && e.button !== 0) return;
+      if (e.target.closest("a, button:not(#sheet-toggle)")) return;
+      var diAtas = !!e.target.closest("#sheet-toggle, .detail-kepala");
+      var diBadan = !!e.target.closest(".detail-badan");
+      if (!diAtas && !diBadan) return;
+      mulaiGeser(e.clientY, !diAtas && diBadan);
+    });
+
+    window.addEventListener("pointermove", function (e) {
+      if (!sesiGeser) return;
+      gerakGeser(e.clientY, e);
+    });
+
+    window.addEventListener("pointerup", akhirGeser);
+    window.addEventListener("pointercancel", akhirGeser);
+
+    // Cadangan touch events non-passive untuk mencegah efek pegas halaman di Safari iOS
+    elSheet.addEventListener("touchstart", function (e) {
+      if (sesiGeser || !e.touches || !e.touches.length) return;
+      if (e.target.closest("a, button:not(#sheet-toggle)")) return;
+      var diAtas = !!e.target.closest("#sheet-toggle, .detail-kepala");
+      var diBadan = !!e.target.closest(".detail-badan");
+      if (!diAtas && !diBadan) return;
+      mulaiGeser(e.touches[0].clientY, !diAtas && diBadan);
+    }, { passive: true });
+
+    elSheet.addEventListener("touchmove", function (e) {
+      if (!sesiGeser || !e.touches || !e.touches.length) return;
+      gerakGeser(e.touches[0].clientY, e);
+    }, { passive: false });
+
+    elSheet.addEventListener("touchend", akhirGeser);
+    elSheet.addEventListener("touchcancel", akhirGeser);
+
+    $("sheet-toggle").addEventListener("click", function () {
+      if (Date.now() - abaikanKlikSheet < 280) return;
+      aturSheet(elSheet.getAttribute("data-ringkas") === "ya");
+    });
+
     $("detail-isi").addEventListener("click", function (e) {
+      if (Date.now() - abaikanKlikSheet < 280) return;
       if (e.target.closest(".detail-kepala") && window.matchMedia("(max-width: 767px)").matches) {
-        aturSheet($("detail").getAttribute("data-ringkas") === "ya");
+        aturSheet(elSheet.getAttribute("data-ringkas") === "ya");
       }
     });
   }
