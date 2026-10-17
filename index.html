@@ -153,35 +153,24 @@
         <p class="keterangan-kartu">dari 203 kotak pantauan. Bontang dan Mahakam Ulu belum punya titik sendiri.</p>
       </div>
 
-      <!-- Kartu 2: Wilayah risiko tertinggi -->
+      <!-- Kartu 2: Tren 7 hari ke depan -->
+      <div class="kartu kartu-tren-7hari">
+        <div class="kt7-kepala">
+          <h3 class="jdl-kartu-sm">7 hari ke depan</h3>
+          <p class="sub-kartu-sm">Kotak berkelas Tinggi dan Sangat Tinggi</p>
+        </div>
+        <div id="grafik-tren" class="grafik-tren" role="img" aria-label="Grafik tren risiko 7 hari ke depan"></div>
+        <div id="ringkasan-tren" class="ringkasan-tren"></div>
+        <p class="catatan-kasar-tren">* H+4 dan seterusnya masih perkiraan kasar.</p>
+      </div>
+
+      <!-- Kartu 3: Wilayah risiko tertinggi -->
       <div class="kartu kartu-wilayah-top">
         <div class="kwt-kepala">
           <h3 class="jdl-kartu-sm">Wilayah risiko tertinggi</h3>
-          <p class="sub-kartu-sm">Diurutkan dari rerata skor risiko tertinggi</p>
+          <p class="sub-kartu-sm">Diurutkan dari rerata skor semua kotak di wilayah itu</p>
         </div>
         <ul id="isi-tabel" class="daftar-kab-top"></ul>
-        <p id="kosong" class="kosong" hidden>Tidak ada kabupaten yang cocok.</p>
-        <button type="button" id="btn-semua-kab" class="btn-semua-kab">
-          <span>Lihat semua kabupaten/kota (8 wilayah)</span> <span aria-hidden="true">&rarr;</span>
-        </button>
-      </div>
-
-      <!-- Kartu 3: Cari kabupaten/kota -->
-      <div class="kartu kartu-cari-wilayah">
-        <div class="kcw-kepala">
-          <h3 class="jdl-kartu-sm">Cari kabupaten / kota</h3>
-          <p class="sub-kartu-sm">Saring tingkat risiko di kabupaten atau kota Anda</p>
-        </div>
-        <div class="wadah-input-cari">
-          <label for="cari" class="sr">Cari kabupaten atau kota</label>
-          <svg class="ikon-kaca" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="21" y1="21" y2="16.65"></line></svg>
-          <input id="cari" type="search" placeholder="Contoh: Berau, Balikpapan, Paser..." autocomplete="off">
-        </div>
-        <p class="keterangan-kartu">Ketik nama kabupaten atau kota untuk menyaring daftar wilayah di samping.</p>
-        <div class="catatan-update-bawah">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-          <span>Prakiraan diperbarui otomatis setiap pagi.</span>
-        </div>
       </div>
     </section>
 
@@ -191,74 +180,8 @@
         <h2 id="jdl-anjuran" class="jdl-seksi">Apa yang Perlu Dilakukan?</h2>
         <p class="sub-seksi">Panduan tindakan cepat warga, relawan, dan satuan tugas lapangan</p>
       </div>
-      <div class="grid-kartu-anjuran">
-        <!-- Rendah -->
-        <div class="kartu-anjuran-item anjuran-rendah">
-          <div class="garis-warna-atas" style="background-color: #3A9D5D;"></div>
-          <div class="ai-konten">
-            <div class="ai-header">
-              <div class="ai-ikon" style="background-color: #E6F4EA; color: #3A9D5D;">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              </div>
-              <div>
-                <h3 class="ai-nama">Rendah</h3>
-                <span class="ai-rentang">0 - 25</span>
-              </div>
-            </div>
-            <p class="ai-teks">Kondisi aman. Tetap waspada saat membakar sampah harian di pekarangan.</p>
-          </div>
-        </div>
-
-        <!-- Sedang -->
-        <div class="kartu-anjuran-item anjuran-sedang">
-          <div class="garis-warna-atas" style="background-color: #F2C94C;"></div>
-          <div class="ai-konten">
-            <div class="ai-header">
-              <div class="ai-ikon" style="background-color: #FFF6D6; color: #8C6B00;">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 2 22 22 22"></polygon><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
-              </div>
-              <div>
-                <h3 class="ai-nama">Sedang</h3>
-                <span class="ai-rentang">25 - 50</span>
-              </div>
-            </div>
-            <p class="ai-teks">Hindari pembakaran lahan. Pastikan sisa api unggun atau sampah padam sepenuhnya.</p>
-          </div>
-        </div>
-
-        <!-- Tinggi -->
-        <div class="kartu-anjuran-item anjuran-tinggi">
-          <div class="garis-warna-atas" style="background-color: #E46A2E;"></div>
-          <div class="ai-konten">
-            <div class="ai-header">
-              <div class="ai-ikon" style="background-color: #FDEBDD; color: #E46A2E;">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path></svg>
-              </div>
-              <div>
-                <h3 class="ai-nama">Tinggi</h3>
-                <span class="ai-rentang">50 - 75</span>
-              </div>
-            </div>
-            <p class="ai-teks">Dilarang membakar lahan. Siapkan pasokan air, ember, dan sarana pemadam darurat.</p>
-          </div>
-        </div>
-
-        <!-- Sangat Tinggi -->
-        <div class="kartu-anjuran-item anjuran-sangat">
-          <div class="garis-warna-atas" style="background-color: #9B1C1C;"></div>
-          <div class="ai-konten">
-            <div class="ai-header">
-              <div class="ai-ikon" style="background-color: #FFE3E0; color: #9B1C1C;">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-              </div>
-              <div>
-                <h3 class="ai-nama">Sangat Tinggi</h3>
-                <span class="ai-rentang">75 - 100</span>
-              </div>
-            </div>
-            <p class="ai-teks">Dilarang total membakar. Laporkan kemunculan asap atau titik api ke posko relawan/BPBD.</p>
-          </div>
-        </div>
+      <div id="daftar-anjuran" class="grid-kartu-anjuran">
+        <!-- Diisi otomatis oleh JavaScript dari konstanta SARAN -->
       </div>
     </section>
 

@@ -3461,74 +3461,166 @@ button {
   border-radius: 2px;
 }
 
-.btn-semua-kab {
+/* Kartu 2: Tren 7 Hari ke Depan */
+.kartu-tren-7hari {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-  width: 100%;
-  padding: 12px 0 0;
-  margin-top: 10px;
-  border: 0;
-  border-top: 1px solid var(--s2);
-  background: none;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--primary);
-  cursor: pointer;
-  transition: color 0.15s;
+  flex-direction: column;
 }
 
-.btn-semua-kab:hover {
-  color: var(--tautan);
-}
-
-.wadah-input-cari {
-  position: relative;
-  width: 100%;
+.kt7-kepala {
   margin-bottom: 12px;
 }
 
-.ikon-kaca {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94A3B8;
-  pointer-events: none;
-}
-
-.wadah-input-cari input {
-  width: 100%;
-  height: 42px;
-  padding: 0 14px 0 38px;
+.grafik-tren {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 4px;
+  height: 168px;
+  padding: 10px 4px 6px;
+  background: var(--s-low);
   border: 1px solid var(--garis);
   border-radius: var(--r);
-  font-size: 13px;
-  color: var(--ink);
-  background: #FFFFFF;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  margin-bottom: 12px;
 }
 
-.wadah-input-cari input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(11, 42, 66, 0.12);
-}
-
-.catatan-update-bawah {
-  margin-top: 14px;
-  padding-top: 10px;
-  border-top: 1px solid var(--s2);
+.btn-batang {
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 4px 2px 3px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
+  user-select: none;
+}
+
+.btn-batang:hover {
+  background: rgba(11, 42, 66, 0.05);
+}
+
+.btn-batang.aktif {
+  border-color: var(--primary);
+  background: rgba(11, 42, 66, 0.08);
+}
+
+.btn-batang.kasar {
+  opacity: 0.65;
+}
+
+.btn-batang.kasar:hover,
+.btn-batang.kasar.aktif {
+  opacity: 1;
+}
+
+.angka-batang {
+  font-family: var(--font-mono);
   font-size: 11px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.btn-batang.aktif .angka-batang {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.batang-relatif {
+  width: 100%;
+  flex: 1 1 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 64px;
+  margin-bottom: 6px;
+}
+
+.batang-tumpuk {
+  width: 16px;
+  border-radius: 3px 3px 1px 1px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: height 0.2s ease;
+}
+
+.batang-tumpuk.batang-nol {
+  background: var(--garis);
+  border-radius: 1px;
+}
+
+.seg-sangat {
+  background-color: #9B1C1C;
+  width: 100%;
+  min-height: 2px;
+}
+
+.seg-tinggi {
+  background-color: #E46A2E;
+  width: 100%;
+  min-height: 2px;
+}
+
+.label-hari-tgl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1.1;
+}
+
+.lh-hari {
+  font-size: 10px;
+  font-weight: 700;
   color: var(--redam);
 }
 
-.catatan-update-bawah svg {
-  color: #3A9D5D;
+.lh-tgl {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.btn-batang.aktif .lh-hari,
+.btn-batang.aktif .lh-tgl {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.ringkasan-tren {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--s-low);
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--garis);
+  margin-bottom: 8px;
+}
+
+.ringkasan-tren p {
+  margin: 0;
+}
+
+.ringkasan-tren strong {
+  color: var(--primary);
+}
+
+.catatan-kasar-tren {
+  margin: 0;
+  font-size: 11px;
+  color: var(--redam);
+  font-style: italic;
 }
 
 /* 6. Bagian Apa yang Perlu Dilakukan? */
@@ -3894,6 +3986,15 @@ button {
     gap: 14px;
     margin-bottom: 14px;
     order: 5;
+  }
+  .kartu-ringkas-stat {
+    order: 1;
+  }
+  .kartu-tren-7hari {
+    order: 2;
+  }
+  .kartu-wilayah-top {
+    order: 3;
   }
   .bagian-anjuran {
     order: 6;
