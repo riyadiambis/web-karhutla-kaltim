@@ -7,9 +7,11 @@
   var modePetaSaja = false;
   try { modePetaSaja = localStorage.getItem(KUNCI_PETA_SAJA) === "true"; } catch (e) {}
 
-  // Halaman Peta Risiko ditandai adanya panel #detail. Di Beranda semua perilaku lama tetap.
+  // Halaman Peta Risiko ditandai adanya class .hal-peta pada body.
+  var modePetaRisiko = document.body.classList.contains("hal-peta");
   var modePanel = !!document.getElementById("detail");
-  if (modePanel) modePetaSaja = false;
+  // Di Beranda, mode peta saja tidak digunakan (selalu tampilkan grid)
+  if (!modePetaRisiko) modePetaSaja = false;
   var KODE = { "Rendah": "rendah", "Sedang": "sedang", "Tinggi": "tinggi", "Sangat Tinggi": "sangat" };
   var SARAN = {
     "Rendah": "Kondisi aman. Tetap waspada saat membakar sampah harian.",
@@ -28,7 +30,7 @@
   function galat(pesan) {
     $("galat").textContent = pesan;
     $("galat").hidden = false;
-    $("diperbarui").textContent = "Diperbarui: belum tersedia";
+    if ($("diperbarui")) $("diperbarui").textContent = "Diperbarui: belum tersedia";
   }
 
   function ikonPetaSaja(aktif) {
@@ -65,7 +67,7 @@
     return Number(n).toLocaleString("id-ID", { minimumFractionDigits: d, maximumFractionDigits: d });
   }
 
-  // Logika data detail satu titik pada satu tanggal. Tampilan (modal atau panel) dibuat terpisah.
+  // Logika data detail satu titik pada satu tanggal.
   function ambilDetail(t, i) {
     var p = t.prakiraan[i];
     return { titik: t, p: p, kelas: p.kelas, kode: KODE[p.kelas], saran: SARAN[p.kelas] };
@@ -77,13 +79,15 @@
     return terbaik;
   }
 
-  function namaKab(kab) {
-    return (kab === "Balikpapan" || kab === "Samarinda" ? "Kota " : "Kabupaten ") + kab;
+  function namaWilayah(kab) {
+    if (!kab) return "";
+    var kota = ["Balikpapan", "Samarinda", "Bontang"];
+    return (kota.indexOf(kab) !== -1 ? "Kota " : "Kabupaten ") + kab;
   }
 
   function linkWA(d) {
     var url = location.href.split(/[?#]/)[0];
-    var teks = "Risiko karhutla " + Tabel.tanggalPanjang(d.p.tanggal) + " di " + d.titik.kabupaten + ": " + d.kelas +
+    var teks = "Risiko karhutla " + Tabel.tanggalPanjang(d.p.tanggal) + " di " + namaWilayah(d.titik.kabupaten) + ": " + d.kelas +
       ", skor " + fmt(d.p.skor) + " dari 100. Anjuran: " + d.saran.replace(/\.$/, "") + ". Cek peta: " + url;
     return "https://wa.me/?text=" + encodeURIComponent(teks);
   }
@@ -98,7 +102,7 @@
     wa: '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.456 5.711 1.457h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.411z"/></svg>'
   };
 
-  // Tampilan panel Peta Risiko (desktop: panel kanan, HP: bottom sheet).
+  // Tampilan panel detail (desktop: panel melayang/kanan, HP: kartu/sheet).
   function panelHtml(d) {
     var p = d.p, skor = fmt(p.skor);
     function ubin(ikon, label, nilai, satuan) {
@@ -107,7 +111,7 @@
         (satuan ? '<small class="satuan">' + spasi + satuan + "</small>" : "") + "</span></div>";
     }
     return '<div class="detail-kepala">' +
-        '<div class="dk-teks"><span class="label-kecil">Detail titik terpilih</span><h2 id="detail-kab" class="dk-nama">' + namaKab(d.titik.kabupaten) + "</h2></div>" +
+        '<div class="dk-teks"><span class="label-kecil">Detail titik terpilih</span><h2 id="detail-kab" class="dk-nama">' + namaWilayah(d.titik.kabupaten) + "</h2></div>" +
         '<div class="dk-kanan"><span class="lencana-kelas">' + IKON.awas + d.kelas + "</span>" +
         '<span class="skor-mini"><b>' + skor + "</b><small> / 100</small></span></div>" +
       "</div>" +
@@ -129,51 +133,35 @@
   }
 
   function aturSheet(buka) {
-    $("detail").setAttribute("data-ringkas", buka ? "tidak" : "ya");
-    $("sheet-toggle").setAttribute("aria-expanded", buka ? "true" : "false");
+    var d = $("detail");
+    if (d) d.setAttribute("data-ringkas", buka ? "tidak" : "ya");
+    var st = $("sheet-toggle");
+    if (st) st.setAttribute("aria-expanded", buka ? "true" : "false");
   }
 
   function tampilkanPanel(t, i, bukaSheet) {
     var d = ambilDetail(t, i);
-    $("detail").setAttribute("data-kelas", d.kode);
-    $("detail-isi").innerHTML = panelHtml(d);
-    if (bukaSheet) aturSheet(true);
+    var elDetail = $("detail");
+    if (elDetail) elDetail.setAttribute("data-kelas", d.kode);
+    var elIsi = $("detail-isi");
+    if (elIsi) elIsi.innerHTML = panelHtml(d);
+    if (bukaSheet && $("sheet-toggle")) aturSheet(true);
   }
 
-  // Tombol tanggal untuk halaman Peta Risiko (desktop: hari + angka, HP: satu baris)
+  // Tombol tanggal (desktop: teks hari + angka, HP: satu baris ringkas)
   function tombolPanel(tgl, delta) {
     var o = new Date(tgl + "T00:00:00");
     var hari = o.toLocaleDateString("id-ID", { weekday: "short" });
-    var pendek = o.toLocaleDateString("id-ID", { day: "numeric", month: "short" });
+    var tglAngka = o.getDate();
     var ini = delta === 0;
-    return '<button type="button" aria-pressed="false"' + (ini ? ' class="ini"' : "") + ">" +
-      '<span class="t-a">' + (ini ? "Hari ini" : hari) + '</span><span class="t-b">' + (ini ? pendek : o.getDate()) + "</span>" +
-      '<span class="t-m">' + (ini ? "Hari ini, " : "") + hari + " " + o.getDate() + "</span></button>";
-  }
-
-  function bukaModal(t, p) {
-    $("modal-badan").innerHTML =
-      '<h2 id="modal-judul">Titik ' + t.id + ", " + t.kabupaten + "</h2>" +
-      "<div>" + Tabel.tanggalPanjang(p.tanggal) + "</div>" +
-      '<div class="skor">' + p.skor + "</div>" + Tabel.badge(p.kelas) +
-      '<dl class="data">' +
-      "<dt>Suhu tertinggi</dt><dd>" + p.suhu + " &deg;C</dd>" +
-      "<dt>Kelembapan terendah</dt><dd>" + p.kelembapan + " %</dd>" +
-      "<dt>Curah hujan</dt><dd>" + p.hujan + " mm</dd>" +
-      "<dt>Angin tertinggi</dt><dd>" + p.angin + " km/jam</dd>" +
-      "<dt>Hari berturut tanpa hujan</dt><dd>" + p.hari_tanpa_hujan + " hari</dd></dl>";
-    pemicu = document.activeElement;
-    $("modal").hidden = false;
-    document.querySelector(".modal-isi").focus();
-  }
-
-  function tutupModal() {
-    $("modal").hidden = true;
-    if (kotakAktif) {
-      kotakAktif.setStyle(kotakAktif._dasar);
-      kotakAktif = null;
-    }
-    if (pemicu && pemicu.focus) pemicu.focus();
+    var teks = (delta === 0) ? "Hari ini" : (delta === 1) ? "Besok" : (delta === -1) ? "Kemarin" : (delta < 0) ? "H" + delta : "+" + delta;
+    var kelas = [];
+    if (ini) kelas.push("ini");
+    if (delta < 0) kelas.push("lewat");
+    var attr = kelas.length ? ' class="' + kelas.join(" ") + '"' : "";
+    return '<button type="button" aria-pressed="false"' + attr + ">" +
+      '<span class="t-a">' + teks + '</span><span class="t-b">' + hari + " " + tglAngka + "</span>" +
+      '<span class="t-m">' + (ini ? "Hari ini, " : "") + hari + " " + tglAngka + "</span></button>";
   }
 
   function cariIndeksHariIni() {
@@ -212,11 +200,13 @@
 
     // Label perkiraan kasar untuk H+4 sampai H+7
     var bedaHari = i - idxHariIni;
-    if (bedaHari >= 4) {
-      $("catatan").textContent = "Perkiraan kasar, bisa berubah.";
-      $("catatan").hidden = false;
-    } else {
-      $("catatan").hidden = true;
+    if ($("catatan")) {
+      if (bedaHari >= 4) {
+        $("catatan").textContent = "Perkiraan kasar, bisa berubah.";
+        $("catatan").hidden = false;
+      } else {
+        $("catatan").hidden = true;
+      }
     }
 
     if (lapisan) lapisan.remove();
@@ -227,23 +217,20 @@
 
     data.titik.slice().sort(function (a, b) { return a.prakiraan[i].skor - b.prakiraan[i].skor; }).forEach(function (t) {
       var p = t.prakiraan[i];
-      if (modePanel && !tampil[p.kelas]) return;
+      if (modePetaRisiko && !tampil[p.kelas]) return;
       var kotak = [[t.lat - SETENGAH, t.lon - SETENGAH], [t.lat + SETENGAH, t.lon + SETENGAH]];
-      var dasar = modePanel
-        ? { stroke: true, color: "#ffffff", weight: 1, opacity: 0.9, fillColor: WARNA[p.kelas], fillOpacity: 0.65 }
-        : { stroke: true, color: "#ffffff", weight: 0.6, opacity: 0.45, fillColor: WARNA[p.kelas], fillOpacity: 0.35 };
-      var aktif = modePanel
-        ? { stroke: true, color: "#0B2A42", weight: 3, opacity: 1, fillOpacity: 0.85 }
-        : { stroke: true, color: "#ffffff", weight: 2.2, opacity: 1, fillOpacity: 0.85 };
+      var dasar = { stroke: true, color: "#ffffff", weight: 1, opacity: 0.9, fillColor: WARNA[p.kelas], fillOpacity: 0.65 };
+      var aktif = { stroke: true, color: "#0B2A42", weight: 3, opacity: 1, fillOpacity: 0.85 };
 
       var rect = L.rectangle(kotak, dasar)
-        .bindTooltip(t.kabupaten + ": skor " + p.skor + " (" + p.kelas + ")", { sticky: true })
+        .bindTooltip(namaWilayah(t.kabupaten) + ": skor " + p.skor + " (" + p.kelas + ")", { sticky: true })
         .on("click", function () {
           if (kotakAktif && kotakAktif !== this) { kotakAktif.setStyle(kotakAktif._dasar); }
           kotakAktif = this;
           this.setStyle(aktif);
           this.bringToFront();
-          if (modePanel) { dipilihId = t.id; tampilkanPanel(t, i, true); } else { bukaModal(t, p); }
+          dipilihId = t.id;
+          tampilkanPanel(t, i, true);
         })
         .on("mouseover", function () {
           if (kotakAktif !== this) {
@@ -272,13 +259,32 @@
     if ($("hero")) Tabel.render(data, i);
   }
 
+  function perbaruiInteraksiBeranda() {
+    if (!peta || modePetaRisiko) return;
+    if (L.Browser.touch || window.innerWidth < 768) {
+      peta.dragging.disable();
+    } else {
+      peta.dragging.enable();
+    }
+  }
+
   function mulai() {
     data.titik.forEach(function (t) { titikId[t.id] = t; });
-    peta = L.map("peta", { zoomControl: false, attributionControl: !modePanel, maxZoom: 13, maxBoundsViscosity: 1.0 });
-    L.control.zoom({ position: modePanel ? "bottomright" : "topright" }).addTo(peta);
-    if (modePanel) L.control.attribution({ position: "bottomleft" }).addTo(peta);
+    var opsiPeta = {
+      zoomControl: false,
+      attributionControl: !modePetaRisiko,
+      maxZoom: 13,
+      maxBoundsViscosity: 1.0
+    };
+    if (!modePetaRisiko) {
+      opsiPeta.scrollWheelZoom = false;
+      opsiPeta.dragging = !L.Browser.touch && window.innerWidth >= 768;
+    }
+    peta = L.map("peta", opsiPeta);
+    L.control.zoom({ position: modePetaRisiko ? "bottomright" : (window.innerWidth < 768 ? "topright" : "bottomright") }).addTo(peta);
+    if (modePetaRisiko) L.control.attribution({ position: "bottomleft" }).addTo(peta);
 
-    // Tombol kontrol mode Peta Saja di pojok kiri atas peta
+    // Tombol kontrol mode Peta Saja di pojok kiri atas peta (khusus peta-risiko)
     var kontrolPeta = L.control({ position: "topleft" });
     kontrolPeta.onAdd = function () {
       var wadah = L.DomUtil.create("div", "kontrol-peta-saja");
@@ -289,7 +295,7 @@
       L.DomEvent.disableScrollPropagation(wadah);
       return wadah;
     };
-    if (!modePanel) kontrolPeta.addTo(peta);
+    if (modePetaRisiko) kontrolPeta.addTo(peta);
 
     setTimeout(function () {
       var btn = $("btn-peta-saja");
@@ -323,16 +329,7 @@
 
     var idxHariIni = cariIndeksHariIni();
     $("tanggal").innerHTML = data.tanggal.map(function (tgl, i) {
-      if (modePanel) return tombolPanel(tgl, i - idxHariIni);
-      var d = new Date(tgl + "T00:00:00").toLocaleDateString("id-ID", { day: "numeric", month: "short" });
-      var delta = i - idxHariIni;
-      var teks = (delta === 0) ? "Hari ini" : (delta === 1) ? "Besok" : (delta === -1) ? "Kemarin" : (delta < 0) ? "H" + delta : "+" + delta;
-      var kelasTombol = [];
-      if (delta < 0) kelasTombol.push("lewat");
-      if (delta === 0) kelasTombol.push("tgl-hari-ini");
-      var kelasAttr = kelasTombol.length ? ' class="' + kelasTombol.join(" ") + '"' : "";
-      var sub = d + (delta < 0 ? '<span class="tag-lewat"> &bull; Lewat</span>' : "");
-      return '<button type="button" aria-pressed="false"' + kelasAttr + '>' + teks + "<small>" + sub + "</small></button>";
+      return tombolPanel(tgl, i - idxHariIni);
     }).join("");
 
     document.querySelectorAll("#tanggal button").forEach(function (b, i) {
@@ -361,15 +358,12 @@
     if (peta.getZoom() < minZ) {
       peta.setZoom(minZ);
     }
+    perbaruiInteraksiBeranda();
   }
 
   window.addEventListener("load", pasKan);
   window.addEventListener("resize", sesuaikan);
   window.addEventListener("orientationchange", function () { setTimeout(pasKan, 250); });
-
-  if ($("tutup")) $("tutup").addEventListener("click", tutupModal);
-  if ($("modal")) $("modal").addEventListener("click", function (e) { if (e.target === this) tutupModal(); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("modal") && !$("modal").hidden) tutupModal(); });
 
   // Filter kelas (Peta Risiko): berlaku juga saat tanggal diganti karena gambar() membaca status "tampil".
   document.querySelectorAll("#filter-kelas input[data-kelas]").forEach(function (cb) {
@@ -381,7 +375,7 @@
     });
   });
 
-  // Bottom sheet (HP): ketuk handle atau bagian kepala untuk membuka/menutup
+  // Bottom sheet (HP di peta-risiko): ketuk handle atau bagian kepala untuk membuka/menutup
   if ($("sheet-toggle")) {
     $("sheet-toggle").addEventListener("click", function () { aturSheet($("detail").getAttribute("data-ringkas") === "ya"); });
     $("detail-isi").addEventListener("click", function (e) {

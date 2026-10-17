@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0a100d">
-<title>Peringatan Dini Risiko Karhutla Kaltim</title>
-<meta name="description" content="Peta risiko kebakaran hutan dan lahan Kalimantan Timur untuk 11 hari (H-3 sampai H+7).">
+<meta name="theme-color" content="#0B2A42">
+<title>Beranda | Peringatan Dini Risiko Karhutla Kaltim</title>
+<meta name="description" content="Sistem peringatan dini risiko kebakaran hutan dan lahan Kalimantan Timur untuk 11 hari berbasis estimasi cuaca terpadu.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,69 +13,310 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="css/gaya.css">
 </head>
-<body>
-<header class="kepala">
-  <div class="bungkus lebar">
-    <h1><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z" fill="#f2c230"/></svg>Peringatan Dini Karhutla Kaltim</h1>
-    <nav class="menu"><a href="index.html" aria-current="page">Beranda</a><a href="peta-risiko.html">Peta Risiko</a><a href="cara-kerja.html">Cara Kerja</a><a href="tentang.html">Tentang</a></nav>
+<body class="hal-beranda ada-tab-bawah">
+
+<!-- 1. Header & Navigasi Utama -->
+<header class="kepala-beranda">
+  <p class="strip-info">Sistem riset Informatika Universitas Mulawarman. Bukan pengganti peringatan resmi BMKG atau BPBD.</p>
+  <div class="nav-beranda">
+    <div class="bungkus baris-nav">
+      <a class="merek-beranda" href="index.html" aria-label="Karhutla Kaltim, Beranda">
+        <span class="logo-beranda" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#F2C94C">
+            <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.61 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+          </svg>
+        </span>
+        <span class="merek-teks">
+          <b>Karhutla Kaltim</b>
+          <small class="sub-desktop">SISTEM PERINGATAN DINI</small>
+          <small class="sub-mobile">Beranda</small>
+        </span>
+      </a>
+      <nav class="menu-beranda" aria-label="Menu utama">
+        <a href="index.html" aria-current="page">Beranda</a>
+        <a href="peta-risiko.html">Peta Risiko</a>
+        <a href="cara-kerja.html">Cara Kerja</a>
+        <a href="tentang.html">Tentang</a>
+      </nav>
+    </div>
   </div>
 </header>
 
-<main class="dash">
-  <!-- BAGIAN INFO (Pengembang B) -->
-  <section id="hero" class="hero" data-kelas="" aria-labelledby="jdl-rek">
-    <p id="hero-tgl" class="hero-tgl">Memuat data...</p>
-    <h2 id="jdl-rek" class="hero-judul"><span class="sr">Risiko tertinggi: </span><span id="rek-kelas">&nbsp;</span></h2>
-    <p id="rek-teks" class="hero-teks"></p>
-    <p id="diperbarui" class="diperbarui">Diperbarui: memuat...</p>
-  </section>
-
-  <!-- BAGIAN PETA (Pengembang A) -->
-  <div class="kolom-peta">
+<main class="konten-beranda">
+  <div class="bungkus">
+    <h1 class="sr">Sistem Peringatan Dini Risiko Karhutla Kalimantan Timur</h1>
     <p id="galat" class="galat" role="alert" hidden></p>
-    <section id="tanggal-bungkus" aria-labelledby="jdl-tanggal">
-      <h2 id="jdl-tanggal" class="sr">Pilih tanggal</h2>
-      <div id="tanggal" class="tanggal" role="group" aria-label="Pilih tanggal prakiraan"></div>
-      <p id="catatan" class="catatan" hidden>Perkiraan kasar, bisa berubah.</p>
+
+    <!-- 2. Jalur Rentang Pantauan (Date Navigation Bar) -->
+    <section class="kartu-strip-tanggal" aria-labelledby="jdl-tanggal">
+      <div class="label-strip-tanggal">
+        <div class="ikon-kalender" aria-hidden="true">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+        </div>
+        <div>
+          <span class="sub-strip">Rentang Pantauan</span>
+          <h2 id="jdl-tanggal" class="jdl-strip">Estimasi Risiko Harian Kaltim</h2>
+        </div>
+      </div>
+      <div class="baris-tombol-tanggal">
+        <div id="tanggal" class="tanggal" role="group" aria-label="Pilih tanggal prakiraan"></div>
+        <p id="catatan" class="catatan-tgl" hidden>Perkiraan kasar, bisa berubah.</p>
+      </div>
     </section>
-    <div id="peta" role="application" aria-label="Peta risiko karhutla Kalimantan Timur"></div>
+
+    <!-- 3. Wadah Peta Hero: Peta Leaflet + Kartu Status Melayang (Kiri) + Panel Detail (Kanan) -->
+    <div class="seksi-peta-beranda">
+      <div class="wadah-peta-beranda">
+        <div id="peta" role="application" aria-label="Peta risiko karhutla Kalimantan Timur"></div>
+
+        <!-- Kartu Status Utama (#hero) -->
+        <section id="hero" class="kartu-hero-beranda" data-kelas="" aria-labelledby="jdl-hero">
+          <div class="hero-konten">
+            <div class="hero-baris-tgl">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect height="18" rx="2" width="18" x="3" y="4"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+              <span id="hero-tgl" class="teks-hero-tgl">Memuat data...</span>
+            </div>
+            <p class="hero-label-sub">Risiko tertinggi di Kaltim</p>
+            <div class="hero-baris-skor">
+              <h2 id="jdl-hero" class="hero-kelas"><span class="sr">Risiko tertinggi: </span><span id="rek-kelas">&nbsp;</span></h2>
+              <span id="hero-skor" class="hero-skor-chip">Memuat...</span>
+            </div>
+            <p id="hero-kab" class="hero-kab-teks"></p>
+            <div class="kotak-anjuran-hero">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+              <p><strong id="rek-label">PERINGATAN:</strong> <span id="rek-teks"></span></p>
+            </div>
+          </div>
+          <div class="hero-footer">
+            <div class="hero-update">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span id="diperbarui" class="diperbarui">Diperbarui: memuat...</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Panel Detail Titik Terpilih (#detail) -->
+        <aside id="detail" class="panel-detail panel-detail-beranda" data-kelas="" aria-label="Detail titik terpilih" aria-live="polite">
+          <span class="aksen-kelas" aria-hidden="true"></span>
+          <div id="detail-isi" class="detail-isi"><p class="petunjuk-panel">Memuat data...</p></div>
+        </aside>
+
+        <!-- Kontrol Melayang Bawah Peta (Desktop) -->
+        <div class="kontrol-bawah-peta">
+          <div class="legenda-kontrol-peta">
+            <div class="chip-legenda-grup">
+              <span class="chip-legenda"><i style="background-color: #3A9D5D;"></i> Rendah</span>
+              <span class="chip-legenda"><i style="background-color: #F2C94C;"></i> Sedang</span>
+              <span class="chip-legenda"><i style="background-color: #E46A2E;"></i> Tinggi</span>
+              <span class="chip-legenda"><i style="background-color: #9B1C1C;"></i> Sangat Tinggi</span>
+            </div>
+            <span class="pemisah-kontrol"></span>
+            <span class="petunjuk-klik-peta">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 15l5 5m-5-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z"></path></svg>
+              Ketuk kotak untuk melihat cuaca di titik itu.
+            </span>
+          </div>
+          <div class="aksi-kontrol-peta">
+            <a class="btn-peta-penuh" href="peta-risiko.html">
+              <span>Buka peta penuh</span>
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kontrol & Legenda Khusus Layar HP di Bawah Peta -->
+      <div class="baris-kontrol-mobile">
+        <div class="legenda-mobile-grid">
+          <div class="item-leg-mob"><i style="background-color: #3A9D5D;"></i><span>Rendah (0-25)</span></div>
+          <div class="item-leg-mob"><i style="background-color: #F2C94C;"></i><span>Sedang (25-50)</span></div>
+          <div class="item-leg-mob"><i style="background-color: #E46A2E;"></i><span>Tinggi (50-75)</span></div>
+          <div class="item-leg-mob"><i style="background-color: #9B1C1C;"></i><span>Sgt Tinggi (&gt;75)</span></div>
+        </div>
+        <a class="btn-peta-penuh-mobile" href="peta-risiko.html">
+          <span>Buka peta penuh</span>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4. Baris 3 Kartu Ringkasan (Equal Columns) -->
+    <section class="baris-ringkasan-beranda" aria-label="Ringkasan pemantauan">
+      <!-- Kartu 1: Jumlah wilayah per kelas -->
+      <div class="kartu kartu-ringkas-stat">
+        <div class="krs-kepala">
+          <h3 class="jdl-kartu-sm">Jumlah wilayah per kelas</h3>
+          <span class="tag-pantauan">203 Kotak Pantauan</span>
+        </div>
+        <div id="bar" class="bar-distribusi" role="img" aria-label="Perbandingan jumlah titik per kelas"></div>
+        <ul id="ringkasan" class="grid-stat-kelas"></ul>
+        <p class="keterangan-kartu">dari 203 kotak pantauan. Bontang dan Mahakam Ulu belum punya titik sendiri.</p>
+      </div>
+
+      <!-- Kartu 2: Wilayah risiko tertinggi -->
+      <div class="kartu kartu-wilayah-top">
+        <div class="kwt-kepala">
+          <h3 class="jdl-kartu-sm">Wilayah risiko tertinggi</h3>
+          <p class="sub-kartu-sm">Diurutkan dari rerata skor risiko tertinggi</p>
+        </div>
+        <ul id="isi-tabel" class="daftar-kab-top"></ul>
+        <p id="kosong" class="kosong" hidden>Tidak ada kabupaten yang cocok.</p>
+        <button type="button" id="btn-semua-kab" class="btn-semua-kab">
+          <span>Lihat semua kabupaten/kota (8 wilayah)</span> <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+
+      <!-- Kartu 3: Cari kabupaten/kota -->
+      <div class="kartu kartu-cari-wilayah">
+        <div class="kcw-kepala">
+          <h3 class="jdl-kartu-sm">Cari kabupaten / kota</h3>
+          <p class="sub-kartu-sm">Saring tingkat risiko di kabupaten atau kota Anda</p>
+        </div>
+        <div class="wadah-input-cari">
+          <label for="cari" class="sr">Cari kabupaten atau kota</label>
+          <svg class="ikon-kaca" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="21" y1="21" y2="16.65"></line></svg>
+          <input id="cari" type="search" placeholder="Contoh: Berau, Balikpapan, Paser..." autocomplete="off">
+        </div>
+        <p class="keterangan-kartu">Ketik nama kabupaten atau kota untuk menyaring daftar wilayah di samping.</p>
+        <div class="catatan-update-bawah">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          <span>Prakiraan diperbarui otomatis setiap pagi.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Bagian Apa yang Perlu Dilakukan? (4 Kotak Panduan Aksi) -->
+    <section class="bagian-anjuran" aria-labelledby="jdl-anjuran">
+      <div class="anjuran-kepala">
+        <h2 id="jdl-anjuran" class="jdl-seksi">Apa yang Perlu Dilakukan?</h2>
+        <p class="sub-seksi">Panduan tindakan cepat warga, relawan, dan satuan tugas lapangan</p>
+      </div>
+      <div class="grid-kartu-anjuran">
+        <!-- Rendah -->
+        <div class="kartu-anjuran-item anjuran-rendah">
+          <div class="garis-warna-atas" style="background-color: #3A9D5D;"></div>
+          <div class="ai-konten">
+            <div class="ai-header">
+              <div class="ai-ikon" style="background-color: #E6F4EA; color: #3A9D5D;">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <div>
+                <h3 class="ai-nama">Rendah</h3>
+                <span class="ai-rentang">0 - 25</span>
+              </div>
+            </div>
+            <p class="ai-teks">Kondisi aman. Tetap waspada saat membakar sampah harian di pekarangan.</p>
+          </div>
+        </div>
+
+        <!-- Sedang -->
+        <div class="kartu-anjuran-item anjuran-sedang">
+          <div class="garis-warna-atas" style="background-color: #F2C94C;"></div>
+          <div class="ai-konten">
+            <div class="ai-header">
+              <div class="ai-ikon" style="background-color: #FFF6D6; color: #8C6B00;">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 2 22 22 22"></polygon><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>
+              </div>
+              <div>
+                <h3 class="ai-nama">Sedang</h3>
+                <span class="ai-rentang">25 - 50</span>
+              </div>
+            </div>
+            <p class="ai-teks">Hindari pembakaran lahan. Pastikan sisa api unggun atau sampah padam sepenuhnya.</p>
+          </div>
+        </div>
+
+        <!-- Tinggi -->
+        <div class="kartu-anjuran-item anjuran-tinggi">
+          <div class="garis-warna-atas" style="background-color: #E46A2E;"></div>
+          <div class="ai-konten">
+            <div class="ai-header">
+              <div class="ai-ikon" style="background-color: #FDEBDD; color: #E46A2E;">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path></svg>
+              </div>
+              <div>
+                <h3 class="ai-nama">Tinggi</h3>
+                <span class="ai-rentang">50 - 75</span>
+              </div>
+            </div>
+            <p class="ai-teks">Dilarang membakar lahan. Siapkan pasokan air, ember, dan sarana pemadam darurat.</p>
+          </div>
+        </div>
+
+        <!-- Sangat Tinggi -->
+        <div class="kartu-anjuran-item anjuran-sangat">
+          <div class="garis-warna-atas" style="background-color: #9B1C1C;"></div>
+          <div class="ai-konten">
+            <div class="ai-header">
+              <div class="ai-ikon" style="background-color: #FFE3E0; color: #9B1C1C;">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+              </div>
+              <div>
+                <h3 class="ai-nama">Sangat Tinggi</h3>
+                <span class="ai-rentang">75 - 100</span>
+              </div>
+            </div>
+            <p class="ai-teks">Dilarang total membakar. Laporkan kemunculan asap atau titik api ke posko relawan/BPBD.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Kartu Lebar Tautan Metodologi -->
+    <a class="kartu-metodologi" href="cara-kerja.html">
+      <div class="km-kiri">
+        <div class="km-ikon" aria-hidden="true">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect height="18" rx="2" width="16" x="4" y="3"></rect><line x1="8" x2="16" y1="7" y2="7"></line><line x1="8" x2="16" y1="11" y2="11"></line><line x1="8" x2="12" y1="15" y2="15"></line></svg>
+        </div>
+        <div class="km-teks">
+          <h3 class="km-judul">Bagaimana skor ini dihitung?</h3>
+          <p class="km-sub">Pelajari cara sistem terpadu menilai faktor cuaca, kekeringan, dan kecepatan angin</p>
+        </div>
+      </div>
+      <div class="km-kanan">
+        <span>Buka Metodologi</span>
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </div>
+    </a>
   </div>
-
-  <section class="kartu ringkas" aria-labelledby="jdl-ringkas">
-    <h2 id="jdl-ringkas">Jumlah titik per kelas</h2>
-    <div id="bar" class="bar" role="img" aria-label="Perbandingan jumlah titik per kelas"></div>
-    <ul id="ringkasan" class="ringkasan"></ul>
-    <p class="petunjuk">Ketuk kotak berwarna di peta untuk melihat cuaca di titik itu.</p>
-  </section>
-
-  <section class="kartu kab-panel" aria-labelledby="jdl-tabel">
-    <h2 id="jdl-tabel">Risiko per kabupaten/kota</h2>
-    <label class="cari" for="cari">Cari kabupaten
-      <input id="cari" type="search" placeholder="Contoh: Berau" autocomplete="off">
-    </label>
-    <ul id="isi-tabel" class="daftar-kab"></ul>
-    <p id="kosong" class="kosong" hidden>Tidak ada kabupaten yang cocok.</p>
-    <p class="kecil">Diurutkan dari rerata skor tertinggi. Bontang dan Mahakam Ulu belum tampil karena belum ada titik grid di wilayah itu.</p>
-  </section>
 </main>
 
-<footer class="kaki">
-  <div class="bungkus lebar kolom-kaki">
-    <div><h2>Peringatan Dini Karhutla Kaltim</h2><p>Risiko kebakaran hutan dan lahan Kalimantan Timur untuk 11 hari (H-3 s.d. H-1 evaluasi riwayat, Hari ini, dan H+1 s.d. H+7 prakiraan cuaca) pada 203 titik grid (resolusi 0,25&deg; / ~28 km).</p></div>
-    <div><h2>Sumber data</h2><p>Prakiraan cuaca: <a href="https://open-meteo.com/">Open-Meteo</a></p><p>Validasi titik panas: <a href="https://firms.modaps.eosdis.nasa.gov/">NASA FIRMS</a></p></div>
-    <div><h2>Penting</h2><p>Skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran.</p></div>
+<!-- 7. Footer Halaman -->
+<footer class="kaki-beranda">
+  <div class="bungkus">
+    <div class="grid-kaki">
+      <div class="kol-kaki">
+        <h4>TENTANG SITUS</h4>
+        <p>Sistem Peringatan Dini Karhutla Kaltim dikembangkan untuk pemantauan potensi kebakaran hutan dan lahan berbasis estimasi cuaca terpadu di wilayah Kalimantan Timur.</p>
+      </div>
+      <div class="kol-kaki">
+        <h4>SUMBER DATA</h4>
+        <p>Prakiraan cuaca harian dari <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>. Validasi dan pengujian sistem dengan data titik panas <a href="https://firms.modaps.eosdis.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA FIRMS</a>.</p>
+      </div>
+      <div class="kol-kaki">
+        <h4>PENTING</h4>
+        <p>Skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian kebakaran. Untuk keadaan darurat, hubungi BPBD setempat.</p>
+      </div>
+    </div>
+    <div class="bawah-kaki">
+      <p>Samarinda, Kalimantan Timur • Informatika Universitas Mulawarman</p>
+      <p>&copy; 2026 Sistem Peringatan Dini Karhutla Kaltim</p>
+    </div>
   </div>
 </footer>
 
-<div id="modal" class="modal" hidden>
-  <div class="modal-isi" role="dialog" aria-modal="true" aria-labelledby="modal-judul" tabindex="-1">
-    <button type="button" class="tutup" id="tutup" aria-label="Tutup">&times;</button>
-    <div id="modal-badan"></div>
-  </div>
-</div>
+<!-- 8. Menu Tab Bawah (Khusus Layar HP) -->
+<nav class="tab-bawah" aria-label="Menu utama HP">
+  <ul>
+    <li><a href="index.html" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Beranda</span></a></li>
+    <li><a href="peta-risiko.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z"/></svg><span>Peta Risiko</span></a></li>
+    <li><a href="cara-kerja.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v3h12V9M12 12v3"/></svg><span>Cara Kerja</span></a></li>
+    <li><a href="tentang.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Tentang</span></a></li>
+  </ul>
+</nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="js/tabel.js"></script>
-<script src="js/peta.js"></script>
+<script src="js/tabel.js?v=3"></script>
+<script src="js/peta.js?v=3"></script>
 </body>
 </html>
