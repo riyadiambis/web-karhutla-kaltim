@@ -3,12 +3,12 @@
    Angka dibaca dari data/validasi.json, data/cara_kerja.json, dan data/contoh_hitung.json. */
 (function () {
   "use strict";
-  var KELAS = { "Rendah": "#2e9e4f", "Sedang": "#f2c230", "Tinggi": "#e03b2f", "Sangat Tinggi": "#8b1a1a" };
-  var BAHAYA = ["#2e9e4f", "#f2c230", "#e03b2f"]; // warna himpunan menurut skor bahaya 0, 1, 2
+  var KELAS = { "Rendah": "#3A9D5D", "Sedang": "#F2C94C", "Tinggi": "#E46A2E", "Sangat Tinggi": "#9B1C1C" };
+  var BAHAYA = ["#3A9D5D", "#F2C94C", "#E46A2E"]; // warna himpunan menurut skor bahaya 0, 1, 2
   var METODE = {
-    "Fuzzy Mamdani": { warna: "#f2c230", garis: "", tebal: 3 },
-    "If-else tegas": { warna: "#7fd0e3", garis: "7 5", tebal: 2.2 },
-    "Hari tanpa hujan saja": { warna: "#b9c6c0", garis: "2 4", tebal: 2.2 }
+    "Fuzzy Mamdani": { warna: "#0B2A42", garis: "", tebal: 3 },
+    "If-else tegas": { warna: "#2E6192", garis: "7 5", tebal: 2.2 },
+    "Hari tanpa hujan saja": { warna: "#73777E", garis: "2 4", tebal: 2.2 }
   };
   var NAMA_VAR = { suhu: "Suhu maksimum", kelembapan: "Kelembapan minimum", hujan: "Curah hujan", angin: "Angin maksimum", hari_tanpa_hujan: "Hari tanpa hujan" };
   var PENDEK = { suhu: "suhu", kelembapan: "kelembapan", hujan: "hujan", angin: "angin", hari_tanpa_hujan: "hari tanpa hujan", indeks_kekeringan: "kekeringan", indeks_cuaca_api: "cuaca api" };
@@ -107,9 +107,9 @@
     });
     isi += teks(m.l, h - 6, "AUC 0,5 = setara tebakan acak, 1 = sempurna");
     d.forEach(function (k, i) {
-      var y0 = m.t + i * baris, gaya = METODE[k.metode] || { warna: "#9fb0a8" };
+      var y0 = m.t + i * baris, gaya = METODE[k.metode] || { warna: "#5F6E7B" };
       isi += '<text x="' + m.l + '" y="' + (y0 + 16) + '" class="label">' + esc(k.metode) +
-        '<tspan dx="8" style="font-weight:400;fill:#9fb0a8;font-size:12px">' + (w < 420 ? "Spearman " : "Spearman bulanan ") + fmt(k.spearman_bulanan, 3) + "</tspan></text>";
+        '<tspan dx="8" style="font-weight:400;fill:#5F6E7B;font-size:12px">' + (w < 420 ? "Spearman " : "Spearman bulanan ") + fmt(k.spearman_bulanan, 3) + "</tspan></text>";
       isi += '<rect class="batang h" style="transition-delay:' + i * 140 + 'ms" x="' + bulat(x(0.5)) + '" y="' + (y0 + 26) + '" width="' + bulat(x(k.auc) - x(0.5)) +
         '" height="22" rx="4" fill="' + gaya.warna + '"/>';
       isi += teks(x(k.auc) + 6, y0 + 42, fmt(k.auc, 3), ' class="nilai muncul"');
@@ -126,10 +126,10 @@
     isi += labelLipat(lk - 10, atas + ch / 2 - (sempit ? 2 : -4), "Tidak ada api", sempit ? 0 : 200, ' class="label" text-anchor="end"');
     isi += teks(lk - 10, atas + ch * 1.5 + 4, "Ada api", ' class="label" text-anchor="end"');
     [
-      ["Benar aman", v.tn, "#1d4a30", 0, 0],
-      ["Alarm palsu", v.fp, "#6b5413", 1, 0],
-      ["Api terlewat", v.fn, "#7a1f1a", 0, 1],
-      ["Api tertangkap", v.tp, "#23813f", 1, 1]
+      ["Benar aman", v.tn, "#236B3B", 0, 0],
+      ["Alarm palsu", v.fp, "#8C6B13", 1, 0],
+      ["Api terlewat", v.fn, "#8B231D", 0, 1],
+      ["Api tertangkap", v.tp, "#1B5E89", 1, 1]
     ].forEach(function (s, i) {
       var x = lk + s[3] * cw, y = atas + s[4] * ch;
       isi += '<g class="muncul" style="transition-delay:' + i * 160 + 'ms"><rect x="' + bulat(x + 3) + '" y="' + bulat(y + 3) + '" width="' + bulat(cw - 6) + '" height="' + bulat(ch - 6) + '" rx="10" fill="' + s[2] + '"/>' +
@@ -148,7 +148,7 @@
   // H3: porsi hari-grid vs porsi titik panas per kelas
   function grafikH3(w) {
     var d = data.validasi.h3.kelas, m = { l: 4, r: 58, t: 4, b: 30 }, baris = 70, h = m.t + d.length * baris + m.b;
-    var x = skala(0, 60, m.l, w - m.r), isi = "", ABU = "#5d6f68";
+    var x = skala(0, 60, m.l, w - m.r), isi = "", ABU = "#73777E";
     [0, 20, 40, 60].forEach(function (v) {
       isi += garis(x(v), m.t, x(v), h - m.b + 4, v ? "kisi" : "sumbu") + teks(x(v), h - m.b + 20, fmt(v) + "%", ' text-anchor="' + (v ? "middle" : "start") + '"');
     });
@@ -157,10 +157,10 @@
       isi += teks(m.l, y0 + 15, esc(k.kelas), ' class="label"');
       [[k.persen_hari_grid, ABU, 24], [k.persen_titik_panas, KELAS[k.kelas], 44]].forEach(function (b, j) {
         isi += '<rect class="batang h" style="transition-delay:' + (i * 140 + j * 80) + 'ms" x="' + bulat(x(0)) + '" y="' + (y0 + b[2]) + '" width="' + bulat(x(b[0]) - x(0)) + '" height="16" rx="3" fill="' + b[1] + '"/>';
-        isi += teks(x(b[0]) + 6, y0 + b[2] + 13, fmt(b[0], 2) + "%", ' class="nilai muncul"' + (j ? "" : ' style="font-weight:400;fill:#9fb0a8"'));
+        isi += teks(x(b[0]) + 6, y0 + b[2] + 13, fmt(b[0], 2) + "%", ' class="nilai muncul"' + (j ? "" : ' style="font-weight:400;fill:#5F6E7B"'));
       });
     });
-    return legenda([[contohKotak(ABU), "Porsi seluruh hari-grid"], [contohKotak("#e03b2f"), "Porsi titik panas (warna kelas)"]]) +
+    return legenda([[contohKotak(ABU), "Porsi seluruh hari-grid"], [contohKotak("#E46A2E"), "Porsi titik panas (warna kelas)"]]) +
       svg(w, h, isi, "Porsi hari-grid dan titik panas per kelas: " + d.map(function (k) { return k.kelas + " " + fmt(k.persen_hari_grid, 2) + "% hari, " + fmt(k.persen_titik_panas, 2) + "% titik panas"; }).join("; "));
   }
 
@@ -202,9 +202,9 @@
       fmtY: function (v) { return fmt(v) + "%"; }, fmtNilai: function (v) { return fmt(v, 2) + "%"; },
       tanda: { x: d.ambang_dipakai, teks: "Ambang dipakai (" + d.ambang_dipakai + ")" },
       seri: [
-        { nama: "Recall (api tertangkap)", warna: "#5fd08a", nilai: kolom("recall"), tebal: 3 },
-        { nama: "Presisi (alarm benar)", warna: "#7fd0e3", nilai: kolom("presisi"), garis: "7 5" },
-        { nama: "F1 (keseimbangan)", warna: "#f2c230", nilai: kolom("f1"), garis: "2 4" }
+        { nama: "Recall (api tertangkap)", warna: "#2E7D32", nilai: kolom("recall"), tebal: 3 },
+        { nama: "Presisi (alarm benar)", warna: "#0E4A7A", nilai: kolom("presisi"), garis: "7 5" },
+        { nama: "F1 (keseimbangan)", warna: "#D97706", nilai: kolom("f1"), garis: "2 4" }
       ],
       label: "Presisi, recall, dan F1 untuk ambang 25 sampai 75"
     });
@@ -262,7 +262,7 @@
   // himpunan output 3 kelas (indeks) dan 4 kelas (skor risiko)
   function grafikOutput(w, tampil, jenis) {
     var set = data.cara.himpunan_output[jenis], nama = Object.keys(set), empat = nama.length === 4;
-    var warna = empat ? [KELAS.Rendah, KELAS.Sedang, KELAS.Tinggi, "#c0392b"] : BAHAYA;
+    var warna = empat ? [KELAS.Rendah, KELAS.Sedang, KELAS.Tinggi, KELAS["Sangat Tinggi"]] : BAHAYA;
     var ruang = empat ? (w - 44) / 4 : 200, lipat = ruang < 96;
     var h = (empat ? 250 : 200) + (lipat ? 14 : 0), m = { l: 30, r: 14, t: lipat ? 44 : 30, b: empat ? 90 : 40 };
     var x = skala(0, 100, m.l, w - m.r), y = skala(0, 1, h - m.b, m.t);

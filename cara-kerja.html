@@ -5,15 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B2A42">
 <title>Cara Kerja | Peringatan Dini Risiko Karhutla Kaltim</title>
-<meta name="description" content="Cara sistem fuzzy Mamdani menghitung skor risiko karhutla Kaltim dari data cuaca, lengkap dengan contoh hitungan.">
+<meta name="description" content="Cara sistem membaca data cuaca dan menilai tingkat bahaya karhutla di 203 titik Kalimantan Timur.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/gaya.css">
 <link rel="stylesheet" href="css/artikel.css">
+<script>
+  /* Pengalihan tautan hash lama ke halaman detail yang sesuai */
+  (function () {
+    var hash = window.location.hash;
+    var petaHash = {
+      "#variabel": "detail-lima-data-cuaca.html",
+      "#keanggotaan": "detail-cara-menilai-tingkat.html",
+      "#kenapa": "detail-cara-menilai-tingkat.html#kenapa",
+      "#aturan": "detail-45-aturan.html",
+      "#inferensi": "detail-cara-menilai-tingkat.html#inferensi",
+      "#contoh": "detail-contoh-hitungan.html",
+      "#nyata": "detail-hasil-uji-satelit.html#nyata",
+      "#istilah": "detail-lima-data-cuaca.html#istilah",
+      "#batasan": "detail-hasil-uji-satelit.html#batasan"
+    };
+    if (hash && petaHash[hash]) {
+      window.location.replace(petaHash[hash]);
+    }
+  })();
+</script>
 </head>
-<body data-data="validasi cara_kerja contoh_hitung">
+<body>
 <!-- 1. Header & Navigasi Utama -->
 <header class="kepala-beranda">
   <p class="strip-info">Sistem riset Informatika Universitas Mulawarman. Bukan pengganti peringatan resmi BMKG atau BPBD.</p>
@@ -41,188 +61,355 @@
   </div>
 </header>
 
-<div class="artikel">
-  <nav class="toc" aria-label="Daftar isi">
-    <p class="toc-judul">Daftar isi</p>
-    <ol>
-      <li><a href="#alur">Alur kerja</a></li>
-      <li><a href="#variabel">Lima data cuaca</a></li>
-      <li><a href="#keanggotaan">Fungsi keanggotaan</a></li>
-      <li><a href="#kenapa">Kenapa fuzzy</a></li>
-      <li><a href="#aturan">45 aturan</a></li>
-      <li><a href="#inferensi">Inferensi Mamdani</a></li>
-      <li><a href="#contoh">Contoh hitungan</a></li>
-      <li><a href="#nyata">Hasil di dunia nyata</a></li>
-      <li><a href="#istilah">Istilah singkat</a></li>
-      <li><a href="#batasan">Keterbatasan</a></li>
-    </ol>
-  </nav>
+<main class="bungkus" style="padding-top: 16px; padding-bottom: 64px; display: flex; flex-direction: column; gap: 32px;">
+  <!-- SECTION 1: HERO (Ringkas, bacaan di bawah 1 menit) -->
+  <section class="hero-ringkas">
+    <div class="badge-kategori">
+      <span class="titik"></span>
+      <span>Cara Kerja</span>
+    </div>
+    <div class="hero-ringkas-baris">
+      <div>
+        <h1>Dari cuaca menjadi tingkat bahaya</h1>
+        <p>Setiap pagi sistem membaca cuaca di 203 titik Kaltim, lalu menilai seberapa mudah api menyala.</p>
+      </div>
+      <div class="badge-pembaruan">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="bp-teks">
+          <small>Pembaruan Rutin</small>
+          <b>Setiap pagi</b>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <main class="isi">
-    <div class="hero-hal">
-      <p class="label">Cara kerja</p>
-      <p class="judul-hal">Dari data cuaca menjadi satu skor risiko</p>
-      <p>Sistem membaca lima data cuaca di tiap titik, menilainya dengan 45 aturan JIKA-MAKA seperti yang dilakukan petugas berpengalaman, lalu menyatukannya menjadi skor 0 sampai 100. Bagian yang teknis bisa dilewati, dan ringkasan di awal tiap bagian sudah cukup untuk memahami garis besarnya.</p>
+  <!-- SECTION 2: 4 LANGKAH ALUR PEMROSESAN -->
+  <section id="alur" style="display: flex; flex-direction: column; gap: 14px;">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <span class="sub-label">Tahapan Pengolahan</span>
+    </div>
+    <div class="grid-langkah">
+      <!-- Langkah 1 -->
+      <div class="kartu-langkah">
+        <div>
+          <div class="kl-atas">
+            <span class="kl-nomor">01</span>
+            <div class="kl-ikon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+            </div>
+          </div>
+          <h3>Ambil data cuaca</h3>
+          <p>Suhu, kelembapan, hujan, angin, dan lamanya tidak hujan.</p>
+        </div>
+        <a class="kl-link" href="detail-lima-data-cuaca.html">
+          <span>Pelajari lebih lanjut</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Langkah 2 -->
+      <div class="kartu-langkah">
+        <div>
+          <div class="kl-atas">
+            <span class="kl-nomor">02</span>
+            <div class="kl-ikon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            </div>
+          </div>
+          <h3>Nilai kekeringan</h3>
+          <p>Seberapa kering tanah dan daun.</p>
+        </div>
+        <a class="kl-link" href="detail-cara-menilai-tingkat.html">
+          <span>Pelajari lebih lanjut</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Langkah 3 -->
+      <div class="kartu-langkah">
+        <div>
+          <div class="kl-atas">
+            <span class="kl-nomor">03</span>
+            <div class="kl-ikon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+            </div>
+          </div>
+          <h3>Nilai cuaca api</h3>
+          <p>Seberapa mudah api menyala dan menyebar.</p>
+        </div>
+        <a class="kl-link" href="detail-cara-menilai-tingkat.html">
+          <span>Pelajari lebih lanjut</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Langkah 4 -->
+      <div class="kartu-langkah">
+        <div>
+          <div class="kl-atas">
+            <span class="kl-nomor">04</span>
+            <div class="kl-ikon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></svg>
+            </div>
+          </div>
+          <h3>Beri skor dan warna</h3>
+          <p>Skor 0 sampai 100, lalu jadi warna di peta.</p>
+        </div>
+        <a class="kl-link" href="detail-45-aturan.html">
+          <span>Pelajari lebih lanjut</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: SKALA SKOR 0 SAMPAI 100 -->
+  <section class="kartu-dok">
+    <div class="kartu-dok-kepala">
+      <div>
+        <h2 class="kartu-dok-judul">Skala Indeks Bahaya (0 - 100)</h2>
+        <p class="kartu-dok-sub">Tingkat kerentanan yang dikonversi menjadi panduan tindakan pencegahan di lapangan.</p>
+      </div>
     </div>
 
-    <section id="alur">
-      <h2>Alur kerja sistem</h2>
-      <p class="pengantar">Setiap pagi sistem mengambil data cuaca untuk 203 titik grid di Kalimantan Timur, lalu menilai seberapa berbahaya kondisi itu untuk kebakaran hutan dan lahan.</p>
-      <ol class="alur">
-        <li><b>Data cuaca</b>Suhu, kelembapan, hujan, angin, dan hari tanpa hujan tiap titik.</li>
-        <li><b>Fuzzifikasi</b>Tiap angka diubah menjadi derajat "seberapa rendah, sedang, tinggi". Satu suhu bisa sedikit "sedang" sekaligus sedikit "tinggi".</li>
-        <li><b>Aturan</b>45 aturan JIKA-MAKA menilai bahaya secara bertahap.</li>
-        <li><b>Defuzzifikasi</b>Hasil semua aturan digabung kembali menjadi satu angka biasa.</li>
-        <li><b>Skor dan kelas</b>Skor 0 sampai 100, lalu kelas Rendah sampai Sangat Tinggi.</li>
-      </ol>
-    </section>
-
-    <section id="variabel">
-      <h2>Lima data cuaca yang dipakai</h2>
-      <div class="tabel-gulir">
-        <table class="tabel">
-          <thead><tr><th>Data</th><th>Satuan</th><th>Kenapa dipakai</th></tr></thead>
-          <tbody>
-            <tr><td><b>Suhu maksimum harian</b></td><td>&deg;C</td><td>Suhu tertinggi dalam sehari, saat daun, ranting, dan serasah paling kering dan paling mudah terbakar.</td></tr>
-            <tr><td><b>Kelembapan udara minimum harian</b></td><td>%</td><td>Kelembapan terendah dalam sehari, biasanya siang hari. Bersama suhu maksimum, ini mewakili kondisi terkering dalam sehari.</td></tr>
-            <tr><td><b>Curah hujan harian</b></td><td>mm</td><td>Hujan membasahi bahan bakar. Makin sedikit hujan, makin berbahaya.</td></tr>
-            <tr><td><b>Kecepatan angin maksimum</b></td><td>km/jam</td><td>Angin membantu api menyebar lebih cepat dan memasok udara.</td></tr>
-            <tr><td><b>Hari tanpa hujan</b></td><td>hari</td><td>Jumlah hari berturut-turut dengan hujan kurang dari 3 mm. Ambang 3 mm dipakai karena data cuaca model (ERA5) cenderung mencatat gerimis berlebihan di daerah tropis.</td></tr>
-          </tbody>
-        </table>
+    <div class="skala-bar-wrapper">
+      <div class="skala-bar">
+        <div class="sb-segmen" style="background-color: #3A9D5D;" title="Rendah: 0-25"></div>
+        <div class="sb-segmen" style="background-color: #F2C94C;" title="Sedang: 25-50"></div>
+        <div class="sb-segmen" style="background-color: #E46A2E;" title="Tinggi: 50-75"></div>
+        <div class="sb-segmen" style="background-color: #9B1C1C;" title="Sangat Tinggi: 75-100"></div>
       </div>
-      <p class="kecil">Riset memakai data ERA5 2019 sampai 2026. Sistem harian memakai prakiraan Open-Meteo dengan variabel yang sama.</p>
-    </section>
-
-    <section id="keanggotaan">
-      <h2>Fungsi keanggotaan</h2>
-      <div class="ringkas-box"><b>Ringkasnya</b>Tiap data cuaca dinilai lewat tiga tingkat: rendah, sedang, dan tinggi. Satu angka boleh masuk dua tingkat sekaligus dengan derajat berbeda. Itulah bedanya dengan batas tegas.</div>
-      <p>Setiap data dibagi menjadi tiga himpunan, misalnya suhu "rendah", "sedang", dan "tinggi". Himpunan di kedua tepi berbentuk trapesium supaya nilai yang sangat rendah atau sangat tinggi tetap punya derajat penuh (1). Himpunan tengah berbentuk segitiga.</p>
-      <details class="lanjut">
-        <summary>Detail teknis: dari mana batasnya</summary>
-        <div><p>Batas ditentukan secara campuran: suhu, kelembapan, dan angin memakai persentil 10, 50, dan 90 (P10, P50, P90) data harian; curah hujan memakai ambang 3 mm, P50, dan P90; hari tanpa hujan memakai kategori BMKG 5, 10, dan 20 hari. Batas ini dikunci tetap sehingga hasil di notebook riset dan di situs selalu sama.</p></div>
-      </details>
-      <div data-isi="batas"></div>
-      <p class="kecil">Warna di grafik menunjukkan tingkat bahaya himpunan: hijau aman, kuning sedang, merah berbahaya. Sumbu datar dipotong supaya bagian penting terlihat.</p>
-      <div class="grid-mf">
-        <div class="kartu-grafik"><h3>Suhu maksimum</h3><div class="grafik" data-grafik="mf-suhu"></div></div>
-        <div class="kartu-grafik"><h3>Kelembapan minimum</h3><div class="grafik" data-grafik="mf-kelembapan"></div></div>
-        <div class="kartu-grafik"><h3>Curah hujan</h3><div class="grafik" data-grafik="mf-hujan"></div></div>
-        <div class="kartu-grafik"><h3>Kecepatan angin maksimum</h3><div class="grafik" data-grafik="mf-angin"></div></div>
-        <div class="kartu-grafik"><h3>Hari tanpa hujan</h3><div class="grafik" data-grafik="mf-hari_tanpa_hujan"></div></div>
+      <div class="skala-angka">
+        <span>0</span>
+        <span>25</span>
+        <span>50</span>
+        <span>75</span>
+        <span>100</span>
       </div>
-      <p class="kecil">Sumber batas: notebook bagian C2. Bentuk himpunan: bagian C3.</p>
-    </section>
+    </div>
 
-    <section id="kenapa">
-      <h2>Kenapa fuzzy, bukan if-else biasa?</h2>
-      <p>Cara if-else memakai batas tegas. Dengan batas kering 57%, kelembapan 56,9% dianggap kering, tetapi 57,1% tidak, padahal bedanya hanya 0,2%. Hasil bisa melompat hanya karena angka sedikit bergeser.</p>
-      <div data-isi="kenapa"></div>
-      <p>Dengan fuzzy, kedua nilai itu tetap hampir sama keringnya. Perubahan kecil di cuaca hanya menghasilkan perubahan kecil di skor. Pada uji 2019 sampai 2026, cara ini juga lebih baik membedakan hari berapi (AUC 0,802 berbanding 0,748 untuk if-else, lihat <a href="tentang.html#percaya">Tentang</a>).</p>
-    </section>
-
-    <section id="aturan">
-      <h2>Sistem bertingkat dengan 45 aturan</h2>
-      <div class="ringkas-box"><b>Ringkasnya</b>Aturan disusun dua tingkat. Pertama, sistem menilai kekeringan (hujan dan hari tanpa hujan) serta kondisi cuaca api (suhu, kelembapan, angin). Kedua, kedua penilaian itu digabung menjadi skor risiko.</div>
-      <p>Aturan disusun dalam dua tingkat supaya mudah ditelusuri. Setiap himpunan diberi skor bahaya 0 (aman), 1 (sedang), atau 2 (berbahaya). Jumlah skor menentukan hasil aturan.</p>
-      <div class="tingkat" aria-label="Susunan aturan bertingkat">
-        <div class="tk-grup">
-          <div class="tk-masuk"><span>Curah hujan</span><span>Hari tanpa hujan</span></div>
-          <div class="tk-indeks">Indeks Kekeringan<small>9 aturan</small></div>
+    <div class="grid-skala">
+      <div class="kartu-skala" style="--warna-kelas: #3A9D5D;">
+        <div class="ks-atas">
+          <span class="ks-nama">Rendah</span>
+          <span class="ks-rentang">0 - 25</span>
         </div>
-        <div class="tk-grup">
-          <div class="tk-masuk"><span>Suhu</span><span>Kelembapan</span><span>Angin</span></div>
-          <div class="tk-indeks">Indeks Cuaca Api<small>27 aturan</small></div>
+        <p>Lahan lembap, risiko penyebaran api sangat kecil bahkan jika ada pemicu.</p>
+      </div>
+      <div class="kartu-skala" style="--warna-kelas: #F2C94C;">
+        <div class="ks-atas">
+          <span class="ks-nama">Sedang</span>
+          <span class="ks-rentang">25 - 50</span>
         </div>
-        <div class="tk-akhir">Skor Risiko Karhutla<small>9 aturan dari kedua indeks, lalu kelas Rendah sampai Sangat Tinggi</small></div>
+        <p>Permukaan mulai kering. Api bisa merambat pelan di vegetasi terbuka.</p>
       </div>
-
-      <h3>Tingkat 1: Indeks Kekeringan (9 aturan)</h3>
-      <p>Skor bahaya: hujan tinggi 0, sedang 1, rendah 2; hari tanpa hujan pendek 0, menengah 1, panjang 2. Jumlah 0 sampai 1 menjadi rendah, 2 sedang, 3 sampai 4 tinggi.</p>
-      <div data-isi="aturan-kekeringan"></div>
-
-      <h3>Tingkat 1: Indeks Cuaca Api (27 aturan)</h3>
-      <p>Skor bahaya: suhu rendah 0, sedang 1, tinggi 2; kelembapan lembap 0, sedang 1, kering 2; angin pelan 0, sedang 1, kencang 2. Jumlah 0 sampai 2 menjadi rendah, 3 sedang, 4 sampai 6 tinggi.</p>
-      <details class="lanjut">
-        <summary>Lihat 27 aturan cuaca api</summary>
-        <div data-isi="aturan-api"></div>
-      </details>
-
-      <h3>Tingkat 2: Skor Risiko (9 aturan)</h3>
-      <p>Skor bahaya kedua indeks: rendah 0, sedang 1, tinggi 2. Jumlah 0 sampai 1 menjadi risiko rendah, 2 sedang, 3 tinggi, dan 4 sangat tinggi.</p>
-      <div data-isi="aturan-risiko"></div>
-      <p class="kecil">Sumber tabel: notebook bagian D3, D4, dan D5.</p>
-    </section>
-
-    <section id="inferensi">
-      <h2>Inferensi Mamdani</h2>
-      <div class="ringkas-box"><b>Ringkasnya</b>Tiap aturan memberi "suara" dengan kekuatan berbeda. Semua suara digabung, lalu diambil titik beratnya sebagai satu skor akhir.</div>
-      <p>Setiap aturan diproses dalam tiga tahap:</p>
-      <ol>
-        <li><b>Implikasi MIN.</b> Kekuatan aturan adalah derajat terkecil dari bagian JIKA. Himpunan hasil dipotong setinggi kekuatan itu.</li>
-        <li><b>Agregasi MAX.</b> Semua potongan digabung; di tiap titik diambil nilai terbesar.</li>
-        <li><b>Defuzzifikasi centroid.</b> Gabungan itu diubah menjadi satu angka, yaitu titik beratnya.</li>
-      </ol>
-      <p>Indeks kekeringan dan indeks cuaca api memakai tiga himpunan hasil pada rentang 0 sampai 100. Skor risiko memakai empat himpunan.</p>
-      <div class="grid-mf">
-        <div class="kartu-grafik"><h3>Himpunan hasil tingkat 1 (3 kelas)</h3><div class="grafik" data-grafik="out-3"></div></div>
-        <div class="kartu-grafik"><h3>Himpunan skor risiko (4 kelas)</h3><div class="grafik" data-grafik="out-4"></div></div>
+      <div class="kartu-skala" style="--warna-kelas: #E46A2E;">
+        <div class="ks-atas">
+          <span class="ks-nama">Tinggi</span>
+          <span class="ks-rentang">50 - 75</span>
+        </div>
+        <p>Serasah kering mudah tersulut. Api menyebar cepat jika terbantu angin.</p>
       </div>
-      <p>Skor akhir dikelompokkan menjadi empat kelas: <span class="badge b-rendah">Rendah</span> 0 sampai 25, <span class="badge b-sedang">Sedang</span> 25 sampai 50, <span class="badge b-tinggi">Tinggi</span> 50 sampai 75, dan <span class="badge b-sangat">Sangat Tinggi</span> 75 sampai 100.</p>
-    </section>
+      <div class="kartu-skala" style="--warna-kelas: #9B1C1C;">
+        <div class="ks-atas">
+          <span class="ks-nama">Sangat Tinggi</span>
+          <span class="ks-rentang">75 - 100</span>
+        </div>
+        <p>Kekeringan parah. Potensi kebakaran hebat yang tak terkendali.</p>
+      </div>
+    </div>
+  </section>
 
-    <section id="contoh">
-      <h2>Contoh hitungan langkah demi langkah</h2>
-      <p>Dua contoh berikut dihitung dengan modul fuzzy yang sama dengan sistem harian, memakai data cuaca historis dari notebook riset. Angka derajat ditampilkan dua desimal.</p>
-      <article class="contoh" data-isi="contoh-1"></article>
-      <article class="contoh" data-isi="contoh-2"></article>
-    </section>
+  <!-- SECTION 4: KARTU SOROTAN "KENAPA TIDAK PAKAI BATAS KAKU?" -->
+  <section class="kartu-kaku">
+    <div class="kk-kiri">
+      <div class="badge-kategori">
+        <span class="titik"></span>
+        <span>Pendekatan Logika Fuzzy</span>
+      </div>
+      <h2>Kenapa tidak pakai batas kaku?</h2>
+      <p>Di alam, perubahan cuaca tidak mengenal tombol on/off. Batas tajam sering menghasilkan peringatan palsu atau terlambat.</p>
+      <div class="kk-poin">
+        <div class="kk-baris">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#BA1A1A" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <div>
+            <b>Batas kaku:</b> kelembapan 56,9% dianggap kering, 57,1% tidak, padahal bedanya hanya 0,2%.
+          </div>
+        </div>
+        <div class="kk-baris">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E6192" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+          <div>
+            <b>Cara kami:</b> berubah bertahap, lebih adil.
+          </div>
+        </div>
+      </div>
+      <a class="kl-link" href="detail-cara-menilai-tingkat.html#kenapa">
+        <span>Pelajari lebih lanjut tentang logika inferensi</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
 
-    <section id="nyata">
-      <h2>Hasil di dunia nyata</h2>
-      <p>Peta berikut membandingkan hari paling aman dan hari paling berisiko pada 2026 menurut sistem, lengkap dengan titik panas yang benar-benar terdeteksi satelit pada hari itu.</p>
-      <figure class="gambar-riset">
-        <h3>Hari paling aman vs paling berisiko 2026</h3>
-        <p class="jelas">Saat hampir semua kotak hijau, tidak ada titik panas. Saat kotak merah mendominasi, titik panas bermunculan.</p>
-        <button type="button" aria-label="Perbesar peta hari paling aman dan paling berisiko 2026"><img src="img/riset/g2-peta-aman-vs-berisiko-2026.png" width="1400" height="714" loading="lazy" alt="Dua peta grid Kalimantan Timur: kiri hari paling aman 2026 hampir seluruhnya hijau tanpa titik panas, kanan hari paling berisiko 2026 didominasi merah dan merah tua dengan banyak titik panas."><span>Perbesar</span></button>
-        <figcaption data-isi="g2">Kiri: hari paling aman 2026. Kanan: hari paling berisiko 2026. Sumber: notebook bagian G2.</figcaption>
-      </figure>
-    </section>
+    <!-- Grafik Perbandingan Garis Tangga vs Garis Landai -->
+    <div class="kk-kanan">
+      <div class="kk-kanan-kepala">
+        <span style="font-weight: 700; color: var(--primary);">Perbandingan Sensitivitas</span>
+        <div style="display: flex; gap: 12px; font-family: var(--font-mono);">
+          <span style="color: var(--redam);">-- Batas Kaku</span>
+          <span style="color: var(--tautan); font-weight: 700;">- Bertahap (Kami)</span>
+        </div>
+      </div>
+      <svg viewBox="0 0 540 180" fill="none" aria-label="Grafik perbandingan batas kaku garis tangga vs model bertahap garis landai">
+        <!-- Kisi sumbu -->
+        <line x1="40" y1="20" x2="520" y2="20" stroke="var(--garis)" stroke-dasharray="3 3"/>
+        <line x1="40" y1="80" x2="520" y2="80" stroke="var(--garis)" stroke-dasharray="3 3"/>
+        <line x1="40" y1="140" x2="520" y2="140" stroke="#8D98A2"/>
+        <line x1="40" y1="20" x2="40" y2="140" stroke="#8D98A2"/>
 
-    <section id="istilah">
-      <h2>Istilah singkat</h2>
-      <dl class="kamus">
-        <dt>Fuzzy</dt><dd>Cara menilai yang mengenal "agak" dan "sedikit", bukan hanya ya atau tidak.</dd>
-        <dt>Himpunan</dt><dd>Satu tingkat penilaian, misalnya suhu "rendah", "sedang", atau "tinggi".</dd>
-        <dt>Derajat keanggotaan</dt><dd>Seberapa kuat sebuah angka masuk ke satu tingkat, dari 0 (tidak sama sekali) sampai 1 (penuh).</dd>
-        <dt>Persentil (P10, P50, P90)</dt><dd>Nilai pembatas dari data harian: 10%, 50%, dan 90% hari nilainya lebih kecil dari batas itu.</dd>
-        <dt>ERA5</dt><dd>Data cuaca hasil olahan model global yang dipakai untuk riset 2019 sampai 2026.</dd>
-        <dt>Titik panas</dt><dd>Titik yang terdeteksi satelit sebagai suhu permukaan sangat tinggi, biasanya tanda ada api.</dd>
-      </dl>
-    </section>
+        <!-- Garis ambang 57% -->
+        <line x1="280" y1="20" x2="280" y2="140" stroke="#BA1A1A" stroke-dasharray="4 2"/>
+        <text x="285" y="32" fill="#BA1A1A" font-family="Public Sans" font-size="10" font-weight="700">Ambang 57%</text>
 
-    <section id="batasan">
-      <h2>Keterbatasan</h2>
-      <ul class="batasan">
-        <li>Sistem hanya menilai cuaca. Sumber api (misalnya pembakaran lahan oleh manusia), jenis lahan, dan gambut belum diperhitungkan.</li>
-        <li>Data cuaca berupa rata-rata area sekitar 28 km, sehingga lebih halus dibanding pengukuran stasiun.</li>
-        <li>Karena pemicu api tidak dinilai, banyak alarm tidak diikuti kebakaran (presisi masih rendah).</li>
-        <li>Prakiraan H+4 ke atas lebih mudah meleset.</li>
-      </ul>
-      <p>Skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian kebakaran. Hasil uji lengkap ada di halaman <a href="tentang.html#percaya">Tentang</a>.</p>
-    </section>
-  </main>
-</div>
+        <!-- Garis tangga (Batas kaku) -->
+        <path d="M 40 140 L 280 140 L 280 20 L 520 20" fill="none" stroke="#73777E" stroke-dasharray="5 5" stroke-width="2.5"/>
 
-<footer class="kaki">
-  <div class="bungkus lebar"><p><strong>Penting:</strong> skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran.</p></div>
+        <!-- Garis landai (Bertahap) -->
+        <path d="M 40 140 C 180 140, 220 135, 280 80 C 340 25, 380 20, 520 20" fill="none" stroke="#2E6192" stroke-linecap="round" stroke-width="3.5"/>
+
+        <!-- Titik simpul -->
+        <circle cx="270" cy="140" r="4" fill="#73777E"/>
+        <circle cx="290" cy="20" r="4" fill="#73777E"/>
+        <circle cx="280" cy="80" r="5" fill="#2E6192"/>
+        <circle cx="280" cy="80" r="9" stroke="#2E6192" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+        <!-- Label sumbu datar -->
+        <text x="40" y="160" fill="var(--redam)" font-family="var(--font-mono)" font-size="11">40% Kelembapan</text>
+        <text x="260" y="160" fill="var(--redam)" font-family="var(--font-mono)" font-size="11">57% Kelembapan</text>
+        <text x="450" y="160" fill="var(--redam)" font-family="var(--font-mono)" font-size="11">75% Kelembapan</text>
+
+        <!-- Label sumbu tegak -->
+        <text x="26" y="24" fill="var(--redam)" font-family="var(--font-mono)" font-size="11" text-anchor="middle">1.0</text>
+        <text x="26" y="84" fill="var(--redam)" font-family="var(--font-mono)" font-size="11" text-anchor="middle">0.5</text>
+        <text x="26" y="144" fill="var(--redam)" font-family="var(--font-mono)" font-size="11" text-anchor="middle">0.0</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- SECTION 5: INGIN TAHU LEBIH DALAM? (5 KARTU TAUTAN) -->
+  <section style="display: flex; flex-direction: column; gap: 16px;">
+    <div>
+      <span class="sub-label">Dokumentasi Teknis</span>
+      <h2 style="margin: 4px 0 0; font-size: 1.4rem; color: var(--primary); font-weight: 800;">Ingin tahu lebih dalam?</h2>
+    </div>
+    <div class="grid-lima-kartu">
+      <!-- Kartu 1 -->
+      <a class="kartu-lima" href="detail-lima-data-cuaca.html">
+        <div>
+          <div class="kl-ikon-wadah">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+          </div>
+          <h3>Lima data cuaca</h3>
+          <p>Data apa saja yang dibaca sistem dan alasannya.</p>
+        </div>
+        <div class="kl-panah-bawah">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Kartu 2 -->
+      <a class="kartu-lima" href="detail-cara-menilai-tingkat.html">
+        <div>
+          <div class="kl-ikon-wadah">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+          </div>
+          <h3>Cara menilai tingkat</h3>
+          <p>Bagaimana angka cuaca diubah menjadi rendah, sedang, tinggi.</p>
+        </div>
+        <div class="kl-panah-bawah">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Kartu 3 -->
+      <a class="kartu-lima" href="detail-45-aturan.html">
+        <div>
+          <div class="kl-ikon-wadah">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <h3>45 aturan penilaian</h3>
+          <p>Aturan JIKA-MAKA yang menimbang semua kondisi.</p>
+        </div>
+        <div class="kl-panah-bawah">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Kartu 4 -->
+      <a class="kartu-lima" href="detail-contoh-hitungan.html">
+        <div>
+          <div class="kl-ikon-wadah">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/></svg>
+          </div>
+          <h3>Contoh hitungan lengkap</h3>
+          <p>Satu hari nyata dihitung langkah demi langkah.</p>
+        </div>
+        <div class="kl-panah-bawah">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Kartu 5 (Lebar / Span 2) -->
+      <a class="kartu-lima lebar" href="detail-hasil-uji-satelit.html">
+        <div>
+          <div class="kl-ikon-wadah">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></svg>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+            <h3 style="margin: 0;">Hasil uji dengan data satelit</h3>
+            <span class="badge-ringkas" style="margin: 0;">NASA FIRMS 2019-2026</span>
+          </div>
+          <p>Seberapa cocok skor dengan titik api sebenarnya yang tertangkap sensor VIIRS di langit Benua Etam.</p>
+        </div>
+        <div class="kl-panah-bawah">
+          <span style="font-size: 0.8rem; color: var(--redam); font-family: var(--font-mono);">AUC 0,802</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<!-- 6. Footer Standar Tiga Kolom -->
+<footer class="kaki-utama">
+  <div class="bungkus">
+    <div class="grid-kaki">
+      <div class="kolom-kaki">
+        <h4>TENTANG SITUS</h4>
+        <p>Sistem Peringatan Dini Karhutla Kaltim dikembangkan untuk pemantauan potensi kebakaran hutan dan lahan berbasis estimasi cuaca terpadu di wilayah Kalimantan Timur.</p>
+      </div>
+      <div class="kolom-kaki">
+        <h4>SUMBER DATA</h4>
+        <p>Prakiraan cuaca harian dari Open-Meteo. Hasil sistem diuji dengan data titik panas NASA FIRMS 2019 sampai 2026.</p>
+      </div>
+      <div class="kolom-kaki">
+        <h4>PENTING</h4>
+        <p>Skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian kebakaran. Untuk keadaan darurat, hubungi BPBD setempat.</p>
+      </div>
+    </div>
+    <div class="bawah-kaki">
+      <p>Samarinda, Kalimantan Timur • Informatika Universitas Mulawarman</p>
+      <p>&copy; 2026 Sistem Peringatan Dini Karhutla Kaltim</p>
+    </div>
+  </div>
 </footer>
 
-<dialog id="lightbox" class="lightbox" aria-label="Gambar diperbesar">
-  <div class="lb-atas"><p></p><button type="button" class="lb-tutup" aria-label="Tutup">&times;</button></div>
-  <div class="lb-gulir"><img alt=""></div>
-</dialog>
-
-<script src="js/grafik.js"></script>
+<!-- 7. Menu Tab Bawah (Khusus Layar HP) -->
+<nav class="tab-bawah" aria-label="Menu utama HP">
+  <ul>
+    <li><a href="index.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Beranda</span></a></li>
+    <li><a href="peta-risiko.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z"/></svg><span>Peta Risiko</span></a></li>
+    <li><a href="cara-kerja.html" class="aktif" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v3h12V9M12 12v3"/></svg><span>Cara Kerja</span></a></li>
+    <li><a href="tentang.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Tentang</span></a></li>
+  </ul>
+</nav>
 </body>
 </html>

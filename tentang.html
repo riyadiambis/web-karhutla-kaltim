@@ -5,13 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B2A42">
 <title>Tentang | Peringatan Dini Risiko Karhutla Kaltim</title>
-<meta name="description" content="Tentang situs peringatan dini karhutla Kaltim dan hasil validasi model terhadap titik panas NASA FIRMS.">
+<meta name="description" content="Tentang sistem peringatan dini karhutla Kaltim dan validasi empiris model terhadap data satelit NASA FIRMS.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/gaya.css">
 <link rel="stylesheet" href="css/artikel.css">
+<script>
+  /* Pengalihan tautan hash lama ke halaman detail yang sesuai */
+  (function () {
+    var hash = window.location.hash;
+    var petaHash = {
+      "#percaya": "detail-hasil-uji-satelit.html"
+    };
+    if (hash && petaHash[hash]) {
+      window.location.replace(petaHash[hash]);
+    }
+  })();
+</script>
 </head>
 <body data-data="validasi">
 <!-- 1. Header & Navigasi Utama -->
@@ -41,182 +53,247 @@
   </div>
 </header>
 
-<div class="artikel">
-  <nav class="toc" aria-label="Daftar isi">
-    <p class="toc-judul">Daftar isi</p>
-    <ol>
-      <li><a href="#apa">Apa yang ditampilkan</a></li>
-      <li><a href="#hitung">Cara menghitung</a></li>
-      <li><a href="#percaya">Seberapa bisa dipercaya?</a></li>
-      <li><a href="#sumber">Sumber data</a></li>
-      <li><a href="#pengembang">Pengembang</a></li>
-    </ol>
-  </nav>
+<main class="bungkus" style="padding-top: 24px; padding-bottom: 64px; display: flex; flex-direction: column; gap: 32px;">
+  <!-- SECTION 1: HERO (Validasi Empiris & Akurasi) -->
+  <section class="hero-tentang">
+    <div class="badge-kategori">
+      <span class="titik"></span>
+      <span>Validasi Empiris &amp; Metrik Akurasi</span>
+    </div>
+    <h1 style="margin: 0; font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; color: var(--primary); letter-spacing: -0.02em;">
+      Seberapa bisa dipercaya?
+    </h1>
+    <p style="margin: 0; font-size: 1.05rem; color: var(--redam); line-height: 1.5;">
+      Kami menguji sistem ini dengan <b style="font-family: var(--font-mono); color: var(--primary);">57.105</b> titik api dari satelit NASA selama 2019 sampai 2026.
+    </p>
+    <div class="ht-chips">
+      <div class="chip-fakta">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Titik panas VIIRS NASA FIRMS</span>
+      </div>
+      <div class="chip-fakta">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>2019 sampai 2026</span>
+      </div>
+      <div class="chip-fakta">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z"/></svg>
+        <span>Kalimantan Timur</span>
+      </div>
+    </div>
+  </section>
 
-  <main class="isi">
-    <div class="hero-hal">
-      <p class="label">Tentang situs ini</p>
-      <p class="judul-hal">Seberapa mudah api menyala di Kalimantan Timur?</p>
-      <p>Situs ini menjawabnya dari data cuaca, lalu menampilkannya sebagai peta berwarna yang mudah dibaca. Di halaman ini Anda bisa melihat apa yang ditampilkan, cara menghitungnya, dan seberapa bisa dipercaya hasilnya.</p>
+  <!-- SECTION 2: GRAFIK KORELASI TINGKAT BAHAYA (e6 dari validasi.json) -->
+  <section class="kartu-dok">
+    <div class="kartu-dok-kepala">
+      <div>
+        <span class="sub-label">Korelasi Tingkat Bahaya</span>
+        <h2 class="kartu-dok-judul" style="margin-top: 4px;">Makin merah, makin sering muncul api</h2>
+        <p class="kartu-dok-sub">Frekuensi harian deteksi titik panas NASA FIRMS pada setiap kelas risiko model cuaca.</p>
+      </div>
+      <span class="kartu-dok-badge">57.105 Titik Api</span>
     </div>
 
-    <section id="apa">
-      <h2>Apa yang ditampilkan situs ini?</h2>
-      <p>Peta potensi kebakaran hutan dan lahan (karhutla) di Kalimantan Timur. Wilayah dibagi menjadi kotak-kotak kecil, dan tiap kotak diberi warna sesuai tingkat risikonya: Rendah, Sedang, Tinggi, atau Sangat Tinggi.</p>
-      <div class="angka-grid">
-        <div class="angka"><b>203</b><span>titik grid yang dinilai</span></div>
-        <div class="angka"><b>11</b><span>hari: 3 hari lalu, hari ini, dan 7 hari ke depan</span></div>
-        <div class="angka"><b>28 km</b><span>jarak antar titik (resolusi 0,25 derajat)</span></div>
-        <div class="angka"><b>4</b><span>kelas risiko berwarna</span></div>
-      </div>
-      <p class="kecil">H-3 sampai H-1 adalah kondisi yang sudah terjadi, dipakai untuk evaluasi. Hari ini dan H+1 sampai H+7 adalah prakiraan cuaca. Resolusi 28 km mengikuti resolusi asli data ERA5.</p>
-    </section>
+    <!-- Grafik SVG Dinamis e6 dari validasi.json -->
+    <div class="grafik" data-grafik="e6"></div>
 
-    <section id="hitung">
-      <h2>Bagaimana risiko dihitung?</h2>
-      <p>Seperti petugas berpengalaman yang menimbang beberapa tanda sekaligus, sistem membaca lima data cuaca di setiap titik:</p>
-      <ul class="chip-row"><li>Suhu</li><li>Kelembapan</li><li>Hujan</li><li>Angin</li><li>Hari tanpa hujan</li></ul>
-      <p>Cuaca tidak bisa dibagi tegas menjadi "kering" atau "basah". Karena itu dipakai sistem fuzzy Mamdani, yang menilai kondisi secara bertahap, bukan dengan satu garis batas yang kaku.</p>
-      <div class="ringkas-box"><b>Intinya</b>Sistem memakai 45 aturan. Hari dianggap tanpa hujan bila curah hujannya kurang dari 3 mm. Hasilnya berupa skor 0 sampai 100, lalu dikelompokkan menjadi empat kelas risiko.</div>
-      <p>Penjelasan lengkap beserta contoh hitungan ada di halaman <a href="cara-kerja.html">Cara Kerja</a>.</p>
-    </section>
+    <div style="background: var(--s-container); border-left: 3px solid var(--tautan); border-radius: var(--r); padding: 12px 16px; margin-top: 16px; font-size: 0.88rem; line-height: 1.45;">
+      <b style="color: var(--primary); display: block; margin-bottom: 2px;">Di kelas Sangat Tinggi, sekitar 29 dari 100 hari ditemukan titik api.</b>
+      <span style="color: var(--redam);">Peluang munculnya titik api di kelas Sangat Tinggi sekitar 41 kali lipat dibanding kelas Rendah (28,93% berbanding 0,70%).</span>
+    </div>
+  </section>
 
-    <section id="percaya">
-      <h2>Seberapa bisa dipercaya?</h2>
-      <div class="ringkas-box"><b>Singkatnya</b>Makin tinggi kelas risiko, makin sering titik panas (tanda api yang terlihat satelit) benar-benar muncul. Di kelas Rendah, kurang dari 1 dari 100 hari-grid memuat titik panas. Di kelas Sangat Tinggi, sekitar 29 dari 100.</div>
-
-      <div class="angka-grid">
-        <div class="angka"><b>0,802</b><span>skor kemampuan model membedakan hari berapi (AUC). 1 berarti sempurna, 0,5 sama dengan menebak</span></div>
-        <div class="angka"><b>8 dari 8</b><span>tahun evaluasi di mana model fuzzy unggul dibanding cara sederhana</span></div>
-        <div class="angka"><b>57.105</b><span>titik panas NASA FIRMS dipakai untuk menguji (2019 sampai 20 September 2026)</span></div>
-        <div class="angka"><b>72,9%</b><span>titik panas muncul pada hari berstatus alarm (kelas Tinggi dan Sangat Tinggi)</span></div>
-      </div>
-
-      <h3>Titik panas di tiap kelas risiko</h3>
-      <div class="kelas-grid">
-        <div class="rendah"><em>Rendah</em><b>0,70%</b><span>hari-grid memuat titik panas</span></div>
-        <div class="sedang"><em>Sedang</em><b>2,81%</b><span>hari-grid memuat titik panas</span></div>
-        <div class="tinggi"><em>Tinggi</em><b>9,19%</b><span>hari-grid memuat titik panas</span></div>
-        <div class="sangat"><em>Sangat Tinggi</em><b>28,93%</b><span>hari-grid memuat titik panas</span></div>
-      </div>
-
-      <details class="lanjut">
-        <summary>Rincian angka dan artinya</summary>
+  <!-- SECTION 3: 3 KARTU METRIK KUNCI -->
+  <section style="display: flex; flex-direction: column; gap: 14px;">
+    <div class="grid-tiga-metrik">
+      <!-- Metrik 1 -->
+      <div class="kartu-metrik">
         <div>
-          <p>Model diuji melalui validasi retrospektif 2019 sampai 20 September 2026 terhadap 57.105 titik panas NASA FIRMS. Berikut arti angka-angkanya.</p>
-          <dl class="kamus">
-            <dt>Hari-grid</dt>
-            <dd>Satu titik grid pada satu hari. Itulah satuan yang dihitung.</dd>
-            <dt>AUC: fuzzy 0,802, if-else tegas 0,748, hari tanpa hujan saja 0,701</dt>
-            <dd>Ukuran seberapa baik cara hitung membedakan hari berapi dari hari tanpa api. Model fuzzy paling tinggi dan unggul konsisten di 8 dari 8 tahun evaluasi.</dd>
-            <dt>Korelasi Spearman bulanan 0,666</dt>
-            <dd>Seberapa selaras naik-turunnya skor risiko dengan naik-turunnya jumlah titik panas dari bulan ke bulan. Makin dekat ke 1, makin selaras.</dd>
-            <dt>Status alarm</dt>
-            <dd>Gabungan kelas Tinggi dan Sangat Tinggi. Alarm muncul pada 19,2% hari-grid, tetapi berhasil mencakup 60,94% hari-grid berapi dan 72,9% titik panas.</dd>
-            <dt>Presisi 10,55%</dt>
-            <dd>Dari semua alarm, sekitar 11 dari 100 benar-benar diikuti titik panas. Sisanya alarm yang tidak berujung api, karena sistem hanya menilai cuaca.</dd>
-            <dt>Lift 3,17 kali lipat</dt>
-            <dd>Peluang titik panas pada hari alarm 3,17 kali lipat peluang dasar (3,32% hari-grid memuat titik panas).</dd>
-          </dl>
-        </div>
-      </details>
-
-      <p class="kecil">Grafik di bawah dibuat dari angka hasil notebook riset (<code>data/validasi.json</code>).</p>
-
-      <div class="kartu-grafik">
-        <h3>Titik panas per kelas risiko</h3>
-        <p class="jelas">Makin tinggi kelas risiko, makin sering titik panas muncul.</p>
-        <div class="grafik" data-grafik="e6"></div>
-        <p class="sumber-sel">Persentase hari-grid yang memuat minimal satu titik panas. Sumber: notebook bagian E6.</p>
-      </div>
-
-      <div class="kartu-grafik">
-        <h3>Dibanding cara yang lebih sederhana</h3>
-        <p class="jelas">Fuzzy paling baik membedakan hari yang ada api dari hari yang tidak ada api.</p>
-        <div class="grafik" data-grafik="f2"></div>
-        <p class="sumber-sel">AUC harian dan korelasi Spearman bulanan tiga metode. Sumber: notebook bagian F2.</p>
-      </div>
-
-      <figure class="gambar-riset sempit">
-        <h3>Kurva ROC</h3>
-        <p class="jelas">Hampir di sepanjang kurva, garis fuzzy berada di atas dua cara lain: lebih banyak api tertangkap untuk jumlah alarm palsu yang sama.</p>
-        <button type="button" aria-label="Perbesar gambar kurva ROC"><img src="img/riset/h1-kurva-roc.png" width="889" height="790" loading="lazy" alt="Kurva ROC: Fuzzy Mamdani AUC 0,802, if-else tegas 0,748, hari tanpa hujan saja 0,701, dibanding garis tebakan acak."><span>Perbesar</span></button>
-        <figcaption>Sumbu datar: rasio alarm palsu. Sumbu tegak: rasio api tertangkap. Garis putus-putus diagonal adalah tebakan acak. Sumber: notebook bagian H1.</figcaption>
-      </figure>
-
-      <div class="kartu-grafik">
-        <h3>Hasil alarm vs kenyataan</h3>
-        <p class="jelas">Alarm (kelas Tinggi dan Sangat Tinggi) menangkap sebagian besar hari berapi, dengan harga alarm palsu yang cukup banyak.</p>
-        <div class="grafik" data-grafik="h2"></div>
-        <p class="sumber-sel">Jumlah hari-grid 2019 sampai 2026. Sumber: notebook bagian H2.</p>
-      </div>
-
-      <div class="kartu-grafik">
-        <h3>Porsi hari vs porsi titik panas</h3>
-        <p class="jelas">Kelas Tinggi dan Sangat Tinggi hanya sebagian kecil hari, tetapi menampung sebagian besar titik panas.</p>
-        <div class="grafik" data-grafik="h3"></div>
-        <p class="sumber-sel">Sumber: notebook bagian H3.</p>
-      </div>
-
-      <div class="kartu-grafik">
-        <h3>Stabil dari tahun ke tahun</h3>
-        <p class="jelas">Fuzzy unggul di setiap tahun, baik tahun kering maupun tahun basah.</p>
-        <div class="grafik" data-grafik="h5"></div>
-        <p class="sumber-sel">AUC per tahun. Sumber: notebook bagian H5.</p>
-      </div>
-
-      <details class="lanjut">
-        <summary>Lihat analisis lebih lanjut</summary>
-        <div>
-          <div class="kartu-grafik">
-            <h3>Memilih ambang alarm</h3>
-            <p class="jelas">Ambang rendah menangkap lebih banyak api tetapi lebih sering salah alarm. Ambang 50 dipilih karena api yang terlewat lebih merugikan daripada alarm palsu.</p>
-            <div class="grafik" data-grafik="h4"></div>
-            <p class="sumber-sel">Presisi, recall, dan F1 untuk ambang skor 25 sampai 75. Sumber: notebook bagian H4.</p>
+          <div class="km-atas">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--tautan)" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span class="kartu-dok-badge">2019-2026</span>
           </div>
-
-          <figure class="gambar-riset">
-            <h3>Musim kebakaran 2026, hari demi hari</h3>
-            <p class="jelas">Skor risiko bertahan di atas batas kelas Tinggi sejak awal Agustus, sebelum titik panas memuncak pada 19 Agustus.</p>
-            <button type="button" aria-label="Perbesar gambar deret harian Juli sampai September 2026"><img src="img/riset/g3-deret-harian-jul-sep-2026.png" width="1600" height="474" loading="lazy" alt="Grafik rata-rata skor risiko harian dan jumlah titik panas harian Kalimantan Timur, Juli sampai 20 September 2026."><span>Perbesar</span></button>
-            <figcaption>Garis biru: rata-rata skor risiko harian se-Kaltim. Batang merah: jumlah titik panas per hari. Garis merah putus-putus: batas kelas Tinggi (skor 50). Sumber: notebook bagian G3.</figcaption>
-          </figure>
+          <div class="km-angka">8 dari 8 tahun</div>
+          <p>lebih baik dari cara sederhana (if-else tegas dan hari tanpa hujan saja)</p>
         </div>
-      </details>
-
-      <div class="peringatan"><p><strong>Perlu diingat:</strong> skor adalah potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran. Nilai H-3 sampai H-1 mencerminkan kondisi yang sudah terjadi untuk evaluasi, sedangkan prakiraan untuk H+4 ke atas merupakan perkiraan kasar yang lebih dinamis.</p></div>
-    </section>
-
-    <section id="sumber">
-      <h2>Sumber data</h2>
-      <ul>
-        <li>Prakiraan cuaca: <a href="https://open-meteo.com/">Open-Meteo</a></li>
-        <li>Validasi titik panas: <a href="https://firms.modaps.eosdis.nasa.gov/">NASA FIRMS</a></li>
-        <li>Peta dasar: &copy; OpenStreetMap, ditampilkan dengan Leaflet</li>
-      </ul>
-      <p>Data diperbarui otomatis setiap pagi sekitar pukul 05.30 WITA.</p>
-    </section>
-
-    <section id="pengembang">
-      <h2>Pengembang</h2>
-      <div class="tim-grid">
-        <div><b>Rahmat Riyadi</b><span>Data, model fuzzy, dan otomasi</span></div>
-        <div><b>Fahri</b><span>Peta interaktif</span></div>
-        <div><b>Richo / Husein</b><span>Antarmuka dan informasi</span></div>
       </div>
-      <p>Kontak resmi: akan ditambahkan setelah ditentukan tim.</p>
-    </section>
-  </main>
-</div>
 
-<footer class="kaki">
-  <div class="bungkus lebar"><p><strong>Penting:</strong> skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian lokasi atau waktu kebakaran.</p></div>
+      <!-- Metrik 2 -->
+      <div class="kartu-metrik">
+        <div>
+          <div class="km-atas">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--tautan)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></svg>
+            <span class="kartu-dok-badge">Sensitivitas</span>
+          </div>
+          <div class="km-angka">72,9%</div>
+          <p>Titik api muncul saat status berada pada kelas Tinggi atau Sangat Tinggi.</p>
+        </div>
+      </div>
+
+      <!-- Metrik 3 -->
+      <div class="kartu-metrik">
+        <div>
+          <div class="km-atas">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--tautan)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="kartu-dok-badge">Pembaruan</span>
+          </div>
+          <div class="km-angka" style="font-size: 1.5rem;">Setiap pagi</div>
+          <p>diperbarui otomatis setiap pagi</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tautan Aksi ke Laporan Uji Lengkap -->
+    <a class="link-aksi-uji" href="detail-hasil-uji-satelit.html">
+      <span>Lihat hasil uji lengkap dan tabel konfusi metrik</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </section>
+
+  <!-- SECTION 4: YANG PERLU DIINGAT (3 Keterbatasan Operasional Sesuai Desain) -->
+  <section class="kartu-diingat">
+    <div class="kd-kepala">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--tautan)" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div>
+        <h3>Yang Perlu Diingat</h3>
+        <span class="sub-label">Keterbatasan Operasional</span>
+      </div>
+    </div>
+    <div class="grid-tiga-diingat">
+      <div class="kd-item">
+        <div class="kd-item-judul">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+          <span>Parameter Cuaca</span>
+        </div>
+        <p>Sistem hanya membaca cuaca, bukan sumber api.</p>
+      </div>
+
+      <div class="kd-item">
+        <div class="kd-item-judul">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+          <span>Resolusi Grid</span>
+        </div>
+        <p>Satu kotak mewakili area sekitar 28 km.</p>
+      </div>
+
+      <div class="kd-item">
+        <div class="kd-item-judul">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Rentang Prakiraan</span>
+        </div>
+        <p>Prakiraan 4 hari ke depan atau lebih masih kasar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: TIM PENGEMBANG (Sesuai Koreksi 2) -->
+  <section class="kartu-dok">
+    <div class="kartu-dok-kepala">
+      <div>
+        <span class="sub-label">Personil Penelitian</span>
+        <h2 class="kartu-dok-judul" style="margin-top: 4px;">Tim Pengembang</h2>
+      </div>
+    </div>
+    <div class="grid-tim-peneliti">
+      <div class="kartu-tim">
+        <div class="avatar-tim">RR</div>
+        <div>
+          <h4>Rahmat Riyadi</h4>
+          <p>Data, model fuzzy, dan otomasi</p>
+        </div>
+      </div>
+      <div class="kartu-tim">
+        <div class="avatar-tim">FH</div>
+        <div>
+          <h4>Fahri</h4>
+          <p>Peta interaktif</p>
+        </div>
+      </div>
+      <div class="kartu-tim">
+        <div class="avatar-tim">RH</div>
+        <div>
+          <h4>Richo / Husein</h4>
+          <p>Antarmuka dan informasi</p>
+        </div>
+      </div>
+    </div>
+    <div class="afiliasi-teks" style="margin-top: 16px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      <span>Program Studi Informatika, Universitas Mulawarman</span>
+    </div>
+  </section>
+
+  <!-- SECTION 6: UNTUK PENELITI (Sains Terbuka) -->
+  <section class="kartu-dok">
+    <div class="kartu-dok-kepala">
+      <div>
+        <span class="sub-label">Sains Terbuka &amp; Replikasi</span>
+        <h2 class="kartu-dok-judul" style="margin-top: 4px;">Untuk Peneliti</h2>
+      </div>
+    </div>
+    <p style="margin: 0 0 16px; font-size: 0.92rem; color: var(--redam);">
+      Data mentah, skrip model komputasi, dan modul evaluasi disediakan secara terbuka untuk diteliti ulang atau dikembangkan lebih lanjut.
+    </p>
+    <div class="grid-peneliti-links">
+      <a class="btn-peneliti" href="[URL NOTEBOOK KAGGLE]" target="_blank" rel="noopener noreferrer">
+        <div class="bp-kiri">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          <span>Notebook riset (Kaggle)</span>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+      </a>
+
+      <a class="btn-peneliti" href="[URL DATASET KAGGLE]" target="_blank" rel="noopener noreferrer">
+        <div class="bp-kiri">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          <span>Dataset cuaca (Kaggle)</span>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+      </a>
+
+      <a class="btn-peneliti" href="https://github.com/riyadiambis/web-karhutla-kaltim" target="_blank" rel="noopener noreferrer">
+        <div class="bp-kiri">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <span>Kode sumber (GitHub)</span>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+      </a>
+    </div>
+  </section>
+</main>
+
+<!-- 7. Footer Standar Tiga Kolom -->
+<footer class="kaki-utama">
+  <div class="bungkus">
+    <div class="grid-kaki">
+      <div class="kolom-kaki">
+        <h4>TENTANG SITUS</h4>
+        <p>Sistem Peringatan Dini Karhutla Kaltim dikembangkan untuk pemantauan potensi kebakaran hutan dan lahan berbasis estimasi cuaca terpadu di wilayah Kalimantan Timur.</p>
+      </div>
+      <div class="kolom-kaki">
+        <h4>SUMBER DATA</h4>
+        <p>Prakiraan cuaca harian dari Open-Meteo. Hasil sistem diuji dengan data titik panas NASA FIRMS 2019 sampai 2026.</p>
+      </div>
+      <div class="kolom-kaki">
+        <h4>PENTING</h4>
+        <p>Skor menunjukkan potensi bahaya berdasarkan cuaca, bukan kepastian kebakaran. Untuk keadaan darurat, hubungi BPBD setempat.</p>
+      </div>
+    </div>
+    <div class="bawah-kaki">
+      <p>Samarinda, Kalimantan Timur • Informatika Universitas Mulawarman</p>
+      <p>&copy; 2026 Sistem Peringatan Dini Karhutla Kaltim</p>
+    </div>
+  </div>
 </footer>
 
-<dialog id="lightbox" class="lightbox" aria-label="Gambar diperbesar">
-  <div class="lb-atas"><p></p><button type="button" class="lb-tutup" aria-label="Tutup">&times;</button></div>
-  <div class="lb-gulir"><img alt=""></div>
-</dialog>
+<!-- 8. Menu Tab Bawah (Khusus Layar HP) -->
+<nav class="tab-bawah" aria-label="Menu utama HP">
+  <ul>
+    <li><a href="index.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg><span>Beranda</span></a></li>
+    <li><a href="peta-risiko.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a4 4 0 0 0 8 0c0-2-1-3-1-5 3 2 5 5 5 9a9 9 0 0 1-18 0c0-6 5-8 9-13z"/></svg><span>Peta Risiko</span></a></li>
+    <li><a href="cara-kerja.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v3h12V9M12 12v3"/></svg><span>Cara Kerja</span></a></li>
+    <li><a href="tentang.html" class="aktif" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Tentang</span></a></li>
+  </ul>
+</nav>
 
 <script src="js/grafik.js"></script>
 </body>
