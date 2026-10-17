@@ -1,4 +1,4 @@
-/* Grafik riset untuk halaman Tentang dan Cara Kerja: SVG buatan sendiri tanpa library,
+/* Grafik riset untuk halaman Tentang, Cara Kerja, dan detail teknis: SVG buatan sendiri tanpa library,
    animasi sekali saat masuk layar, lightbox gambar, dan daftar isi aktif.
    Angka dibaca dari data/validasi.json, data/cara_kerja.json, dan data/contoh_hitung.json. */
 (function () {
@@ -295,8 +295,30 @@
     return svg(w, h, isi, "Himpunan output " + nama.join(", "));
   }
 
+  // derajat "kering" menurut kelembapan: batas kaku if-else vs himpunan fuzzy bertahap
+  function grafikKaku(w, tampil) {
+    var b = data.cara.batas.variabel.kelembapan, batas = data.contoh.kenapa_fuzzy.batas_kering, nama = data.cara.label.kelembapan[0];
+    var r = [40, 80], h = 200, m = { l: 30, r: 14, t: 30, b: 40 };
+    var x = skala(r[0], r[1], m.l, w - m.r), y = skala(0, 1, h - m.b, m.t);
+    var t = tirai(m.l - 4, 0, w - m.l - m.r + 8, h, tampil), isi = "<defs>" + t.def + "</defs>";
+    isi += garis(m.l, y(0), w - m.r, y(0), "sumbu") + garis(m.l, y(1), w - m.r, y(1), "kisi");
+    isi += teks(m.l - 8, y(0) + 4, "0", ' text-anchor="end"') + teks(m.l - 8, y(1) + 4, "1", ' text-anchor="end"');
+    [r[0], b[0], b[1], r[1]].forEach(function (n) {
+      isi += teks(x(n), h - m.b + 18, fmtPas(n), ' class="label" text-anchor="middle"');
+    });
+    isi += teks(w - m.r, h - 4, SATUAN.kelembapan, ' text-anchor="end"');
+    isi += garis(x(batas), m.t - 4, x(batas), y(0), "tanda") + teks(x(batas) + 6, m.t - 10, "Ambang " + fmtPas(batas) + "%", ' class="label" style="fill:#BA1A1A"');
+    isi += teks(x(r[0]) + 6, m.t - 10, esc(nama), ' class="nilai" style="fill:' + BAHAYA[2] + '"');
+    isi += '<g clip-path="url(#' + t.id + ')">';
+    isi += '<path d="' + jalur([[x(r[0]), y(1)], [x(batas), y(1)], [x(batas), y(0)], [x(r[1]), y(0)]]) + '" fill="none" stroke="#73777E" stroke-width="2.5" stroke-dasharray="5 5"/>';
+    isi += '<path d="' + jalur([[x(r[0]), y(1)], [x(b[0]), y(1)], [x(b[1]), y(0)], [x(r[1]), y(0)]]) + '" fill="none" stroke="#2E6192" stroke-width="3" stroke-linejoin="round"/>';
+    isi += "</g>";
+    return legenda([[contohGaris("#73777E", "5 5"), "Batas Kaku"], [contohGaris("#2E6192", "", 3), "Bertahap (Kami)"]]) +
+      svg(w, h, isi, "Derajat " + nama + " menurut kelembapan: batas kaku " + fmtPas(batas) + "%, bertahap dari " + fmtPas(b[0]) + "% sampai " + fmtPas(b[1]) + "%");
+  }
+
   var GRAFIK = {
-    e6: grafikE6, f2: grafikF2, h2: grafikH2, h3: grafikH3, h4: grafikH4, h5: grafikH5,
+    e6: grafikE6, f2: grafikF2, h2: grafikH2, h3: grafikH3, h4: grafikH4, h5: grafikH5, kaku: grafikKaku,
     "out-3": function (w, t) { return grafikOutput(w, t, "tiga_kelas"); },
     "out-4": function (w, t) { return grafikOutput(w, t, "empat_kelas"); }
   };
@@ -333,7 +355,7 @@
       k.nilai.map(function (n) {
         return ["<b>" + fmt(n.kelembapan, 1) + "%</b>",
           n.ifelse_poin ? "Kering, 1 poin bahaya" : "Tidak kering, 0 poin",
-          Object.keys(n.fuzzy).map(function (l) { return esc(l) + " " + fmt(n.fuzzy[l], 3); }).join(" · ")];
+          Object.keys(n.fuzzy).map(function (l) { return esc(l) + " " + (n.fuzzy[l] > 0 ? fmt(n.fuzzy[l], 2) : "0"); }).join(" · ")];
       }), ["angka", "", ""]);
   }
 
@@ -443,7 +465,11 @@
   function mulaiAnimasi() {
     var semua = document.querySelectorAll("[data-grafik]");
     if (!GERAK || !("IntersectionObserver" in window)) {
-      semua.forEach(function (el) { el.classList.add("tampil"); });
+      // tanpa animasi: tirai langsung dibuka penuh supaya garis grafik tetap terlihat
+      semua.forEach(function (el) {
+        el.classList.add("tampil");
+        el.querySelectorAll("rect[data-tirai]").forEach(function (r) { r.setAttribute("width", r.getAttribute("data-tirai")); });
+      });
       return;
     }
     pengamat = new IntersectionObserver(function (entri) {

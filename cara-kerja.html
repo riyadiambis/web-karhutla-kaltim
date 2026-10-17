@@ -33,7 +33,7 @@
   })();
 </script>
 </head>
-<body>
+<body data-data="cara_kerja contoh_hitung">
 <!-- 1. Header & Navigasi Utama -->
 <header class="kepala-beranda">
   <p class="strip-info">Sistem riset Informatika Universitas Mulawarman. Bukan pengganti peringatan resmi BMKG atau BPBD.</p>
@@ -167,17 +167,17 @@
   <section class="kartu-dok">
     <div class="kartu-dok-kepala">
       <div>
-        <h2 class="kartu-dok-judul">Skala Indeks Bahaya (0 - 100)</h2>
+        <h2 class="kartu-dok-judul">Skala Indeks Bahaya (0 sampai 100)</h2>
         <p class="kartu-dok-sub">Tingkat kerentanan yang dikonversi menjadi panduan tindakan pencegahan di lapangan.</p>
       </div>
     </div>
 
     <div class="skala-bar-wrapper">
       <div class="skala-bar">
-        <div class="sb-segmen" style="background-color: #3A9D5D;" title="Rendah: 0-25"></div>
-        <div class="sb-segmen" style="background-color: #F2C94C;" title="Sedang: 25-50"></div>
-        <div class="sb-segmen" style="background-color: #E46A2E;" title="Tinggi: 50-75"></div>
-        <div class="sb-segmen" style="background-color: #9B1C1C;" title="Sangat Tinggi: 75-100"></div>
+        <div class="sb-segmen" style="background-color: #3A9D5D;" title="Rendah: 0 sampai 25"></div>
+        <div class="sb-segmen" style="background-color: #F2C94C;" title="Sedang: 25 sampai 50"></div>
+        <div class="sb-segmen" style="background-color: #E46A2E;" title="Tinggi: 50 sampai 75"></div>
+        <div class="sb-segmen" style="background-color: #9B1C1C;" title="Sangat Tinggi: 75 sampai 100"></div>
       </div>
       <div class="skala-angka">
         <span>0</span>
@@ -192,28 +192,28 @@
       <div class="kartu-skala" style="--warna-kelas: #3A9D5D;">
         <div class="ks-atas">
           <span class="ks-nama">Rendah</span>
-          <span class="ks-rentang">0 - 25</span>
+          <span class="ks-rentang">0 sampai 25</span>
         </div>
         <p>Lahan lembap, risiko penyebaran api sangat kecil bahkan jika ada pemicu.</p>
       </div>
       <div class="kartu-skala" style="--warna-kelas: #F2C94C;">
         <div class="ks-atas">
           <span class="ks-nama">Sedang</span>
-          <span class="ks-rentang">25 - 50</span>
+          <span class="ks-rentang">25 sampai 50</span>
         </div>
         <p>Permukaan mulai kering. Api bisa merambat pelan di vegetasi terbuka.</p>
       </div>
       <div class="kartu-skala" style="--warna-kelas: #E46A2E;">
         <div class="ks-atas">
           <span class="ks-nama">Tinggi</span>
-          <span class="ks-rentang">50 - 75</span>
+          <span class="ks-rentang">50 sampai 75</span>
         </div>
         <p>Serasah kering mudah tersulut. Api menyebar cepat jika terbantu angin.</p>
       </div>
       <div class="kartu-skala" style="--warna-kelas: #9B1C1C;">
         <div class="ks-atas">
           <span class="ks-nama">Sangat Tinggi</span>
-          <span class="ks-rentang">75 - 100</span>
+          <span class="ks-rentang">75 sampai 100</span>
         </div>
         <p>Kekeringan parah. Potensi kebakaran hebat yang tak terkendali.</p>
       </div>
@@ -249,48 +249,12 @@
       </a>
     </div>
 
-    <!-- Grafik Perbandingan Garis Tangga vs Garis Landai -->
+    <!-- Grafik derajat kering: batas kaku vs bertahap, digambar dari data oleh js/grafik.js -->
     <div class="kk-kanan">
       <div class="kk-kanan-kepala">
         <span style="font-weight: 700; color: var(--primary);">Perbandingan Sensitivitas</span>
-        <div style="display: flex; gap: 12px; font-family: var(--font-mono);">
-          <span style="color: var(--redam);">-- Batas Kaku</span>
-          <span style="color: var(--tautan); font-weight: 700;">- Bertahap (Kami)</span>
-        </div>
       </div>
-      <svg viewBox="0 0 540 180" fill="none" aria-label="Grafik perbandingan batas kaku garis tangga vs model bertahap garis landai">
-        <!-- Kisi sumbu -->
-        <line x1="40" y1="20" x2="520" y2="20" stroke="var(--garis)" stroke-dasharray="3 3"/>
-        <line x1="40" y1="80" x2="520" y2="80" stroke="var(--garis)" stroke-dasharray="3 3"/>
-        <line x1="40" y1="140" x2="520" y2="140" stroke="#8D98A2"/>
-        <line x1="40" y1="20" x2="40" y2="140" stroke="#8D98A2"/>
-
-        <!-- Garis ambang 57% -->
-        <line x1="280" y1="20" x2="280" y2="140" stroke="#BA1A1A" stroke-dasharray="4 2"/>
-        <text x="285" y="32" fill="#BA1A1A" font-family="Public Sans" font-size="10" font-weight="700">Ambang 57%</text>
-
-        <!-- Garis tangga (Batas kaku) -->
-        <path d="M 40 140 L 280 140 L 280 20 L 520 20" fill="none" stroke="#73777E" stroke-dasharray="5 5" stroke-width="2.5"/>
-
-        <!-- Garis landai (Bertahap) -->
-        <path d="M 40 140 C 180 140, 220 135, 280 80 C 340 25, 380 20, 520 20" fill="none" stroke="#2E6192" stroke-linecap="round" stroke-width="3.5"/>
-
-        <!-- Titik simpul -->
-        <circle cx="270" cy="140" r="4" fill="#73777E"/>
-        <circle cx="290" cy="20" r="4" fill="#73777E"/>
-        <circle cx="280" cy="80" r="5" fill="#2E6192"/>
-        <circle cx="280" cy="80" r="9" stroke="#2E6192" stroke-width="1.5" fill="none" opacity="0.4"/>
-
-        <!-- Label sumbu datar -->
-        <text x="40" y="160" fill="var(--redam)" font-family="var(--font-mono)" font-size="11">40% Kelembapan</text>
-        <text x="260" y="160" fill="var(--redam)" font-family="var(--font-mono)" font-size="11">57% Kelembapan</text>
-        <text x="450" y="160" fill="var(--redam)" font-family="var(--font-mono)" font-size="11">75% Kelembapan</text>
-
-        <!-- Label sumbu tegak -->
-        <text x="26" y="24" fill="var(--redam)" font-family="var(--font-mono)" font-size="11" text-anchor="middle">1.0</text>
-        <text x="26" y="84" fill="var(--redam)" font-family="var(--font-mono)" font-size="11" text-anchor="middle">0.5</text>
-        <text x="26" y="144" fill="var(--redam)" font-family="var(--font-mono)" font-size="11" text-anchor="middle">0.0</text>
-      </svg>
+      <div class="grafik" data-grafik="kaku"></div>
     </div>
   </section>
 
@@ -350,7 +314,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"/></svg>
           </div>
           <h3>Contoh hitungan lengkap</h3>
-          <p>Satu hari nyata dihitung langkah demi langkah.</p>
+          <p>Dua hari nyata dihitung langkah demi langkah.</p>
         </div>
         <div class="kl-panah-bawah">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -411,5 +375,6 @@
     <li><a href="tentang.html"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Tentang</span></a></li>
   </ul>
 </nav>
+<script src="js/grafik.js"></script>
 </body>
 </html>

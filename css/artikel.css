@@ -71,6 +71,7 @@
   .layout-detail {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 18px;
   }
 }
@@ -804,11 +805,6 @@
   justify-content: space-between;
   margin-bottom: 8px;
   font-size: 0.78rem;
-}
-.kk-kanan svg {
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 /* 5 Kartu Tautan Detail ("Ingin tahu lebih dalam?") */
