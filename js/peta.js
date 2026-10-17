@@ -35,21 +35,22 @@
 
   function ikonPetaSaja(aktif) {
     if (aktif) {
-      return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
+      return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
         '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect>' +
         '<rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>' +
-        '<span>Tampilkan grid</span>';
+        '<span class="sr">Tampilkan grid</span>';
     }
-    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
+    return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">' +
       '<polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>' +
       '<line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>' +
-      '<span>Peta saja</span>';
+      '<span class="sr">Peta saja</span>';
   }
 
   function terapkanModePetaSaja() {
     var btn = $("btn-peta-saja");
     if (btn) {
       btn.setAttribute("aria-pressed", modePetaSaja ? "true" : "false");
+      btn.setAttribute("title", modePetaSaja ? "Tampilkan grid risiko" : "Mode peta saja (sembunyikan grid)");
       btn.innerHTML = ikonPetaSaja(modePetaSaja);
     }
     if (lapisan && peta) {
@@ -284,12 +285,13 @@
     L.control.zoom({ position: modePetaRisiko ? "bottomright" : (window.innerWidth < 768 ? "topright" : "bottomright") }).addTo(peta);
     if (modePetaRisiko) L.control.attribution({ position: "bottomleft" }).addTo(peta);
 
-    // Tombol kontrol mode Peta Saja di pojok kiri atas peta (khusus peta-risiko)
-    var kontrolPeta = L.control({ position: "topleft" });
+    // Tombol kontrol mode Peta Saja di pojok kanan bawah peta di bawah zoom (khusus peta-risiko)
+    var kontrolPeta = L.control({ position: "bottomright" });
     kontrolPeta.onAdd = function () {
       var wadah = L.DomUtil.create("div", "kontrol-peta-saja");
       wadah.innerHTML = '<button type="button" id="btn-peta-saja" class="btn-peta-saja" aria-pressed="' +
-        (modePetaSaja ? "true" : "false") + '" title="Sembunyikan atau tampilkan grid">' +
+        (modePetaSaja ? "true" : "false") + '" title="' +
+        (modePetaSaja ? "Tampilkan grid risiko" : "Mode peta saja (sembunyikan grid)") + '">' +
         ikonPetaSaja(modePetaSaja) + '</button>';
       L.DomEvent.disableClickPropagation(wadah);
       L.DomEvent.disableScrollPropagation(wadah);

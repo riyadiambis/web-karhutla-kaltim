@@ -63,6 +63,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   color-scheme: light;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -425,30 +426,28 @@ button {
 }
 
 .kontrol-peta-saja {
-  margin: 10px 0 0 10px;
+  margin: 0 24px 24px 0;
 }
 
 .btn-peta-saja {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 7px;
-  min-height: 40px;
-  padding: 8px 14px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   background: #FFFFFF;
   color: var(--primary);
-  border: 1px solid var(--garis);
+  border: 1px solid rgba(195, 199, 205, 0.45);
   border-radius: var(--r);
-  font-family: var(--font-sans);
-  font-size: 0.84rem;
-  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   transition: all 0.15s ease;
 }
 
 .btn-peta-saja:hover {
   background: var(--s-low);
-  border-color: #B8C2CC;
+  color: var(--primary);
 }
 
 .btn-peta-saja[aria-pressed="true"] {
@@ -1803,15 +1802,7 @@ button {
   color: #5B6770;
 }
 
-/* Header */
-.kepala-peta {
-  flex: none;
-  position: relative;
-  z-index: 30;
-  background: #FFFFFF;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
+/* Header global strip-info */
 .strip-info {
   margin: 0;
   padding: 6px 16px;
@@ -1821,91 +1812,6 @@ button {
   font-size: 12px;
   line-height: 17px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.nav-peta {
-  height: 64px;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.merek-peta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  min-width: 0;
-  color: inherit;
-  text-decoration: none;
-}
-
-.merek-peta:hover {
-  text-decoration: none;
-}
-
-.logo-peta {
-  flex: none;
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  border-radius: var(--r);
-  background: var(--primary);
-  color: var(--sedang);
-}
-
-.merek-teks {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  line-height: 1.25;
-}
-
-.merek-teks b {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.merek-teks small {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--redam);
-}
-
-.merek-teks .sub-mobile { display: none; }
-
-.menu-peta {
-  display: flex;
-  gap: 32px;
-  height: 100%;
-}
-
-.menu-peta a {
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-  border-bottom: 2px solid transparent;
-  color: var(--redam);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.menu-peta a:hover {
-  color: var(--primary);
-  text-decoration: none;
-}
-
-.menu-peta a[aria-current] {
-  color: var(--primary);
-  font-weight: 700;
-  border-bottom-color: var(--primary);
 }
 
 /* Area peta */
@@ -2450,7 +2356,7 @@ button {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin: 0 24px 24px 0;
+    margin: 0 24px 8px 0;
     border: 0;
     background: none;
     box-shadow: none;
@@ -2478,14 +2384,7 @@ button {
     line-height: 15px;
     font-weight: 600;
   }
-  .nav-peta {
-    height: 72px;
-    padding: 0 16px;
-  }
-  .menu-peta { display: none; }
-  .merek-teks b { font-size: var(--text-lg); font-weight: 600; }
-  .merek-teks .sub-desktop { display: none; }
-  .merek-teks .sub-mobile { display: block; color: #2E6192; letter-spacing: 0.08em; }
+
 
   .layar-peta {
     display: flex;
@@ -2625,6 +2524,14 @@ button {
     color: var(--primary);
   }
   .hal-peta .leaflet-control-zoom a + a { border-top: 1px solid #E0E3E5; }
+  .hal-peta .leaflet-bottom.leaflet-right .kontrol-peta-saja {
+    margin: 8px 16px 0 0;
+  }
+  .hal-peta .btn-peta-saja {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-md);
+  }
 
   .pil-info {
     left: 8px;
@@ -2778,6 +2685,7 @@ button {
 
 /* 1. Header Beranda */
 .kepala-beranda {
+  flex: none;
   background: #FFFFFF;
   border-bottom: 1px solid var(--garis);
   position: sticky;
@@ -2873,6 +2781,7 @@ button {
   text-decoration: none;
 }
 
+.menu-beranda a.aktif,
 .menu-beranda a[aria-current="page"] {
   color: var(--primary);
   font-weight: 700;
