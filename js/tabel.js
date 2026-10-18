@@ -200,7 +200,7 @@
       {
         kelas: "Rendah",
         warna: "#3A9D5D",
-        rentang: "0 - 25",
+        rentang: "0 sampai 25",
         bgIkon: "#E6F4EA",
         teksIkon: "#3A9D5D",
         ikon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>'
@@ -208,7 +208,7 @@
       {
         kelas: "Sedang",
         warna: "#F2C94C",
-        rentang: "25 - 50",
+        rentang: "25 sampai 50",
         bgIkon: "#FFF6D6",
         teksIkon: "#8C6B00",
         ikon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 2 22 22 22"></polygon><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg>'
@@ -216,7 +216,7 @@
       {
         kelas: "Tinggi",
         warna: "#E46A2E",
-        rentang: "50 - 75",
+        rentang: "50 sampai 75",
         bgIkon: "#FDEBDD",
         teksIkon: "#E46A2E",
         ikon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path></svg>'
@@ -224,7 +224,7 @@
       {
         kelas: "Sangat Tinggi",
         warna: "#9B1C1C",
-        rentang: "75 - 100",
+        rentang: "75 sampai 100",
         bgIkon: "#FFE3E0",
         teksIkon: "#9B1C1C",
         ikon: '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>'
@@ -240,7 +240,7 @@
             '<div class="ai-ikon" style="background-color:' + item.bgIkon + ';color:' + item.teksIkon + ';">' +
               item.ikon +
             '</div>' +
-            '<div>' +
+            '<div class="ai-judul-wrap">' +
               '<h3 class="ai-nama' + kelasSgt + '">' + item.kelas + '</h3>' +
               '<span class="ai-rentang font-mono">' + item.rentang + '</span>' +
             '</div>' +
