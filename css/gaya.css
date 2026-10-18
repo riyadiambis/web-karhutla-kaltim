@@ -2720,10 +2720,19 @@ button {
 }
 
 .bk-skor {
-  font-family: var(--font-mono);
   font-size: 13px;
-  font-weight: 700;
   color: var(--ink);
+  white-space: nowrap;
+}
+
+.bk-rerata {
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+
+.bk-angka {
+  font-family: var(--font-mono);
+  font-weight: 700;
 }
 
 .baris-kab[data-kelas="sangat"] .bk-skor {
@@ -2743,6 +2752,29 @@ button {
   height: 100%;
   border-radius: 2px;
 }
+
+.bk-catatan-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--redam);
+  line-height: 1.2;
+}
+
+.bk-titik-top {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.bk-titik-top.k-rendah { background: var(--rendah); }
+.bk-titik-top.k-sedang { background: var(--sedang); }
+.bk-titik-top.k-tinggi { background: var(--tinggi); }
+.bk-titik-top.k-sangat { background: var(--sangat); }
 
 /* Kartu 2: Tren 7 Hari ke Depan */
 .kartu-tren-7hari {
@@ -3278,6 +3310,16 @@ button {
   }
   .kartu-wilayah-top {
     order: 3;
+  }
+  .baris-kab {
+    gap: 6px 0;
+  }
+  .bk-kiri {
+    width: 100%;
+  }
+  .bk-kanan {
+    width: 100%;
+    justify-content: flex-end;
   }
   .bagian-anjuran {
     order: 6;

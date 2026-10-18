@@ -32,6 +32,13 @@
     return denganJam ? s + " WITA" : s;
   }
 
+  function kelasDariSkor(s) {
+    if (s > 75) return "Sangat Tinggi";
+    if (s > 50) return "Tinggi";
+    if (s > 25) return "Sedang";
+    return "Rendah";
+  }
+
   function hitung(data, idx) {
     var jumlah = {}, kab = {}, tertinggi = 0;
     URUT.forEach(function (k) { jumlah[k] = 0; });
@@ -45,7 +52,14 @@
     });
     rekap = Object.keys(kab).sort().map(function (nama) {
       var k = kab[nama];
-      return { nama: nama, n: k.n, rerata: k.total / k.n, kelas: URUT[k.top] };
+      var rerata = k.total / k.n;
+      return {
+        nama: nama,
+        n: k.n,
+        rerata: rerata,
+        kelas: kelasDariSkor(rerata),
+        kelasTerparah: URUT[k.top]
+      };
     });
     return { jumlah: jumlah, tertinggi: URUT[tertinggi] };
   }
@@ -59,16 +73,24 @@
     if (wadah) {
       wadah.innerHTML = baris.map(function (k, i) {
         var lebarMeter = Math.min(100, Math.max(0, k.rerata));
+        var adaKotakLebihTinggi = URUT.indexOf(k.kelasTerparah) > URUT.indexOf(k.kelas);
+        var catatanTerparah = adaKotakLebihTinggi ?
+          '<div class="bk-catatan-top">' +
+            '<span class="bk-titik-top k-' + KODE[k.kelasTerparah] + '" aria-hidden="true"></span>' +
+            '<span>ada kotak ' + k.kelasTerparah + '</span>' +
+          '</div>' : '';
+
         return '<li class="baris-kab" data-kelas="' + KODE[k.kelas] + '">' +
           '<div class="bk-kiri">' +
             '<span class="bk-no">' + (i + 1) + '.</span>' +
             '<span class="bk-nama">' + k.nama + '</span>' +
           '</div>' +
           '<div class="bk-kanan">' +
-            '<span class="bk-skor">rerata ' + fmt(k.rerata) + '</span>' +
+            '<span class="bk-skor"><span class="bk-rerata">rerata</span> <span class="bk-angka">' + fmt(k.rerata) + '</span></span>' +
             badge(k.kelas) +
           '</div>' +
           '<div class="bk-meter" role="img" aria-label="Rerata skor ' + fmt(k.rerata) + ' dari 100"><i class="k-' + KODE[k.kelas] + '" style="width:' + lebarMeter + '%"></i></div>' +
+          catatanTerparah +
         '</li>';
       }).join("");
     }
