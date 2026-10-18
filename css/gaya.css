@@ -2753,28 +2753,26 @@ button {
   border-radius: 2px;
 }
 
-.bk-catatan-top {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--redam);
-  line-height: 1.2;
-}
-
 .bk-titik-top {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   flex-shrink: 0;
   display: inline-block;
+  cursor: help;
 }
 
 .bk-titik-top.k-rendah { background: var(--rendah); }
 .bk-titik-top.k-sedang { background: var(--sedang); }
 .bk-titik-top.k-tinggi { background: var(--tinggi); }
 .bk-titik-top.k-sangat { background: var(--sangat); }
+
+.keterangan-titik-top {
+  margin: 10px 0 0;
+  font-size: 11px;
+  color: var(--redam);
+  line-height: 1.35;
+}
 
 /* Kartu 2: Tren 7 Hari ke Depan */
 .kartu-tren-7hari {
@@ -3310,16 +3308,79 @@ button {
   }
   .kartu-wilayah-top {
     order: 3;
+    padding: 14px 10px;
+  }
+  .daftar-kab-top {
+    gap: 6px;
   }
   .baris-kab {
-    gap: 6px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    min-height: 48px;
+    padding: 7px 8px;
+    gap: 4px 5px;
   }
   .bk-kiri {
-    width: 100%;
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+  }
+  .bk-no {
+    font-size: 11px;
+    width: 15px;
+    flex-shrink: 0;
+  }
+  .bk-nama {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
   .bk-kanan {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-self: end;
+    white-space: nowrap;
+  }
+  .bk-skor {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .bk-rerata {
+    font-size: 11.5px;
+  }
+  .bk-angka {
+    font-size: 13px;
+  }
+  .baris-kab .badge {
+    padding: 2px 6px;
+    font-size: 11px;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+  .bk-meter {
+    grid-column: 1 / -1;
+    grid-row: 2;
     width: 100%;
-    justify-content: flex-end;
+    height: 3px;
+    border-radius: 1.5px;
+  }
+  .bk-meter i {
+    border-radius: 1.5px;
+  }
+  .keterangan-titik-top {
+    margin-top: 8px;
+    font-size: 11px;
   }
   .bagian-anjuran {
     order: 6;

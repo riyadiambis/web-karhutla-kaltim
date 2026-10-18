@@ -74,23 +74,20 @@
       wadah.innerHTML = baris.map(function (k, i) {
         var lebarMeter = Math.min(100, Math.max(0, k.rerata));
         var adaKotakLebihTinggi = URUT.indexOf(k.kelasTerparah) > URUT.indexOf(k.kelas);
-        var catatanTerparah = adaKotakLebihTinggi ?
-          '<div class="bk-catatan-top">' +
-            '<span class="bk-titik-top k-' + KODE[k.kelasTerparah] + '" aria-hidden="true"></span>' +
-            '<span>ada kotak ' + k.kelasTerparah + '</span>' +
-          '</div>' : '';
+        var titikTop = adaKotakLebihTinggi ?
+          '<span class="bk-titik-top k-' + KODE[k.kelasTerparah] + '" title="Ada kotak ' + k.kelasTerparah + ' di wilayah ini" aria-label="Ada kotak ' + k.kelasTerparah + ' di wilayah ini"></span>' : '';
 
         return '<li class="baris-kab" data-kelas="' + KODE[k.kelas] + '">' +
           '<div class="bk-kiri">' +
             '<span class="bk-no">' + (i + 1) + '.</span>' +
             '<span class="bk-nama">' + k.nama + '</span>' +
+            titikTop +
           '</div>' +
           '<div class="bk-kanan">' +
             '<span class="bk-skor"><span class="bk-rerata">rerata</span> <span class="bk-angka">' + fmt(k.rerata) + '</span></span>' +
             badge(k.kelas) +
           '</div>' +
           '<div class="bk-meter" role="img" aria-label="Rerata skor ' + fmt(k.rerata) + ' dari 100"><i class="k-' + KODE[k.kelas] + '" style="width:' + lebarMeter + '%"></i></div>' +
-          catatanTerparah +
         '</li>';
       }).join("");
     }
